@@ -22,7 +22,6 @@ const MODULES = [
   { id: 'academy', label: 'Academy', icon: '📘', requiresData: false },
   { id: 'reports', label: 'Reports', icon: '📄', requiresData: true },
   { id: 'moreTools', label: 'More Tools', icon: '🔧', requiresData: false },
-  { id: 'settings', label: 'Settings', icon: '⚙️', requiresData: false },
 ];
 
 const MODULE_LOADERS = {
@@ -362,7 +361,7 @@ function updateWelcomeScreenContent() {
           <div class="welcome-hero">
             <h1 class="welcome-title">Willkommen bei SignalOne</h1>
             <p class="welcome-subtitle">
-              Verbinde deine Live-Daten und erlebe Performance Marketing auf einem neuen Level.
+              Verbinde deine Meta-Daten und erlebe Performance Marketing auf einem neuen Level.
             </p>
           </div>
           
@@ -374,14 +373,14 @@ function updateWelcomeScreenContent() {
               <div class="welcome-step">
                 <div class="welcome-step-number">1</div>
                 <div class="welcome-step-text">
-                  Wähle oben einen <strong>Kanal</strong> (Meta, Google, TikTok)
+                  Wähle <strong>Meta</strong> als Kanal im Header-Dropdown
                 </div>
               </div>
               
               <div class="welcome-step">
                 <div class="welcome-step-number">2</div>
                 <div class="welcome-step-text">
-                  Klicke auf <strong>„Verbinden“</strong> im Header
+                  Klicke auf <strong>„Verbinden“</strong> um dein Meta-Konto zu verknüpfen
                 </div>
               </div>
               
@@ -569,7 +568,7 @@ function updateWelcomeScreenContent() {
               <div class="welcome-step">
                 <div class="welcome-step-number">1</div>
                 <div class="welcome-step-text">
-                  Wähle oben einen <strong>Kanal</strong> (Meta, Google, TikTok)
+                  Wähle <strong>Meta</strong> als Kanal im Header-Dropdown
                 </div>
               </div>
               
@@ -605,9 +604,6 @@ function updateWelcomeScreenContent() {
     `;
   }
 }
-
-// ... [REST OF THE FILE REMAINS EXACTLY THE SAME] ...
-// (Continue from "// NAVIGATION" section to end)
 
 // ===================================
 // MODULE LOADING  ✅ FIXED (Lifecycle)
