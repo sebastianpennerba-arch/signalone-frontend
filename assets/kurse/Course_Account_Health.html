@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignalOne Academy - Account Health Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .header {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .header h1 {
+            font-size: 2.3em;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(148, 163, 184, 0.1);
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+        .tab-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .tab-btn.active {
+            color: #fbbf24;
+            border-bottom-color: #fbbf24;
+        }
+        .content {
+            display: none;
+        }
+        .content.active { display: block; }
+        .module {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .module h3 { color: #fbbf24; margin-bottom: 15px; font-size: 1.3em; }
+        .module p { line-height: 1.8; color: #cbd5e1; margin-bottom: 15px; }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .metric-card {
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .metric-label { color: #94a3b8; font-size: 0.9em; margin-bottom: 10px; }
+        .metric-value { font-size: 1.5em; font-weight: bold; color: #fbbf24; }
+        .threshold-box {
+            background: rgba(51, 65, 85, 0.5);
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .green { color: #10b981; }
+        .yellow { color: #f59e0b; }
+        .red { color: #ef4444; }
+        .ritual-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid #3b82f6;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .ritual-box h4 { color: #93c5fd; margin-bottom: 15px; }
+        .ritual-step { color: #cbd5e1; margin: 10px 0; padding-left: 20px; position: relative; }
+        .ritual-step:before { content: '→'; position: absolute; left: 0; color: #fbbf24; }
+        .btn { padding: 12px 24px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        table { width: 100%; margin: 20px 0; }
+        table tr { border-bottom: 1px solid rgba(148, 163, 184, 0.2); }
+        table th { background: rgba(251, 191, 36, 0.1); padding: 12px; text-align: left; color: #fbbf24; font-weight: 600; }
+        table td { padding: 12px; color: #cbd5e1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Account Health Dashboard</h1>
+            <p style="color: #94a3b8;">What to Monitor Weekly (and Why)</p>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+                <div style="background: rgba(100, 116, 139, 0.2); padding: 10px 20px; border-radius: 8px;">⏱️ 45 Min</div>
+                <div style="background: rgba(100, 116, 139, 0.2); padding: 10px 20px; border-radius: 8px;">🟢 Beginner</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">📖 Overview</button>
+            <button class="tab-btn" onclick="switchTab(1)">📊 10 Key KPIs</button>
+            <button class="tab-btn" onclick="switchTab(2)">🎯 Thresholds</button>
+            <button class="tab-btn" onclick="switchTab(3)">🔄 Weekly Ritual</button>
+            <button class="tab-btn" onclick="switchTab(4)">⚠️ Red Flags</button>
+            <button class="tab-btn" onclick="switchTab(5)">📥 Resources</button>
+        </div>
+
+        <!-- TAB 0 -->
+        <div class="content active">
+            <div class="module">
+                <h3>Why You Need a Health Dashboard</h3>
+                <p>Most marketers track 50+ metrics and ignore all of them. Instead, track 10 KPIs that actually matter. Check them weekly. That's it.</p>
+                <p style="color: #fbbf24; margin-top: 20px; font-weight: 600;">The Problem: "If I track everything, I manage nothing."</p>
+                <p style="color: #cbd5e1;">The Solution: Track ONLY the 10 metrics that tell you the truth.</p>
+            </div>
+
+            <div class="module">
+                <h3>The 3 Layers of Account Health</h3>
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <p class="metric-label">💰 SPEND LAYER</p>
+                        <p style="color: #10b981; margin-top: 10px;">Are you spending the budget you planned?</p>
+                    </div>
+                    <div class="metric-card">
+                        <p class="metric-label">⚙️ EFFICIENCY LAYER</p>
+                        <p style="color: #fbbf24; margin-top: 10px;">Is it profitable? What's your ROAS?</p>
+                    </div>
+                    <div class="metric-card">
+                        <p class="metric-label">📈 GROWTH LAYER</p>
+                        <p style="color: #93c5fd; margin-top: 10px;">Are you growing month-over-month?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 1 -->
+        <div class="content">
+            <div class="module">
+                <h3>📊 The 10 KPIs You Actually Need</h3>
+            </div>
+
+            <div class="metric-grid" style="margin: 20px 0;">
+                <div class="metric-card">
+                    <p class="metric-label">1️⃣ Daily Spend</p>
+                    <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9em;">Is your budget being spent?</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">2️⃣ ROAS</p>
+                    <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9em;">Revenue / Ad Spend</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">3️⃣ CPA</p>
+                    <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9em;">Cost Per Acquisition</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">4️⃣ CTR</p>
+                    <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9em;">Click-through Rate</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">5️⃣ CPM</p>
+                    <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9em;">Cost Per 1000 Impressions</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">6️⃣ Frequency</p>
+                    <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9em;">Avg. Times Seen Per Person</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">7️⃣ Conversion Rate</p>
+                    <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9em;">Clicks / Purchases</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">8️⃣ AOV</p>
+                    <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9em;">Average Order Value</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">9️⃣ Profit</p>
+                    <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9em;">Actual $ in the bank</p>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-label">🔟 Trend</p>
+                    <p style="color: #cbd5e1; margin-top: 10px; font-size: 0.9em;">Week-over-Week change</p>
+                </div>
+            </div>
+
+            <div class="module">
+                <h3>Why These 10?</h3>
+                <p>These 10 metrics cover all 3 layers of account health. Together, they tell you EVERYTHING:</p>
+                <ul style="margin-left: 20px; color: #cbd5e1; line-height: 2;">
+                    <li><strong>If ROAS falls → Check CTR, CPA, Frequency</strong> (One of these 3 broke)</li>
+                    <li><strong>If Spend drops → Check CPM, Frequency</strong> (Algorithm is under-delivering)</li>
+                    <li><strong>If Profit falls → Check AOV, CPA, COGS</strong> (Margin problem, not traffic)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TAB 2 -->
+        <div class="content">
+            <div class="module">
+                <h3>🎯 Set Your Thresholds (Green / Yellow / Red)</h3>
+                <p>For each KPI, decide: What's OK? What's concerning? What's a crisis?</p>
+            </div>
+
+            <table>
+                <tr>
+                    <th>KPI</th>
+                    <th style="color: #10b981;">🟢 GREEN</th>
+                    <th style="color: #f59e0b;">🟡 YELLOW</th>
+                    <th style="color: #ef4444;">🔴 RED</th>
+                </tr>
+                <tr>
+                    <td><strong>ROAS</strong></td>
+                    <td style="color: #10b981;">> 3.0x</td>
+                    <td style="color: #f59e0b;">2.0–2.9x</td>
+                    <td style="color: #ef4444;">< 2.0x</td>
+                </tr>
+                <tr>
+                    <td><strong>CTR</strong></td>
+                    <td style="color: #10b981;">> 1.5%</td>
+                    <td style="color: #f59e0b;">1.0–1.4%</td>
+                    <td style="color: #ef4444;">< 1.0%</td>
+                </tr>
+                <tr>
+                    <td><strong>CPA</strong></td>
+                    <td style="color: #10b981;">< Breakeven</td>
+                    <td style="color: #f59e0b;">Breakeven ±10%</td>
+                    <td style="color: #ef4444;">> Breakeven +20%</td>
+                </tr>
+                <tr>
+                    <td><strong>Frequency</strong></td>
+                    <td style="color: #10b981;">< 3.0</td>
+                    <td style="color: #f59e0b;">3.0–4.0</td>
+                    <td style="color: #ef4444;">> 4.0</td>
+                </tr>
+                <tr>
+                    <td><strong>Conversion Rate</strong></td>
+                    <td style="color: #10b981;">> 3%</td>
+                    <td style="color: #f59e0b;">2–3%</td>
+                    <td style="color: #ef4444;">< 2%</td>
+                </tr>
+            </table>
+
+            <div class="module" style="margin-top: 30px;">
+                <p style="color: #fbbf24; font-weight: 600;">⚠️ Create a Threshold Sheet für dich selbst</p>
+                <p style="color: #cbd5e1; margin-top: 10px;">Basierend auf deiner Industrie, Produkt-Typ und Gewinnspanne. Deine Schwellenwerte sind anders als meine.</p>
+            </div>
+        </div>
+
+        <!-- TAB 3 -->
+        <div class="content">
+            <div class="module">
+                <h3>🔄 The Weekly Health Check Ritual (20 Min)</h3>
+                <p style="color: #fbbf24; font-weight: 600; margin-bottom: 20px;">Do this EVERY Monday morning. Takes 20 minutes.</p>
+
+                <div class="ritual-box">
+                    <h4>Step 1: Pull Numbers (5 min)</h4>
+                    <div class="ritual-step">Open Meta Ads Manager</div>
+                    <div class="ritual-step">Pull ROAS, CTR, CPA, CPM, Frequency for last 7 days</div>
+                    <div class="ritual-step">Compare to last week (7 days prior)</div>
+                </div>
+
+                <div class="ritual-box">
+                    <h4>Step 2: Check Against Thresholds (3 min)</h4>
+                    <div class="ritual-step">Is ROAS green / yellow / red?</div>
+                    <div class="ritual-step">Is CTR trending up or down?</div>
+                    <div class="ritual-step">Is Frequency above threshold?</div>
+                </div>
+
+                <div class="ritual-box">
+                    <h4>Step 3: Identify Root Cause (7 min)</h4>
+                    <div class="ritual-step">If yellow / red → Which metric broke?</div>
+                    <div class="ritual-step">CTR down? → Creative fatigue (change creative)</div>
+                    <div class="ritual-step">CPA up? → Targeting decay (expand audience)</div>
+                    <div class="ritual-step">ROAS stable? → All good, keep going</div>
+                </div>
+
+                <div class="ritual-box">
+                    <h4>Step 4: Take Action (5 min)</h4>
+                    <div class="ritual-step">Green across board? → Increase budget 20%</div>
+                    <div class="ritual-step">Yellow on anything? → Refresh that metric (new creative or audience)</div>
+                    <div class="ritual-step">Red on anything? → Diagnose immediately, don't wait</div>
+                </div>
+            </div>
+
+            <div class="module" style="margin-top: 30px;">
+                <p style="color: #10b981; font-weight: 600;">✅ That's it. 20 minutes, once a week. Your account stays healthy.</p>
+            </div>
+        </div>
+
+        <!-- TAB 4 -->
+        <div class="content">
+            <div class="module">
+                <h3>⚠️ Red Flags: When to Take Immediate Action</h3>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <div class="threshold-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
+                    <strong style="color: #ef4444;">🚨 ROAS drops > 30% overnight</strong><br>
+                    <p style="margin-top: 10px; color: #cbd5e1;">Likely: Creative fatigue, bid spike, or audience breakdown</p>
+                    <p style="margin-top: 10px; color: #fbbf24;"><strong>Action:</strong> Pause campaign immediately, diagnose, then relaunch with new creative</p>
+                </div>
+
+                <div class="threshold-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
+                    <strong style="color: #ef4444;">🚨 Frequency > 5 + CTR drops 50%+</strong><br>
+                    <p style="margin-top: 10px; color: #cbd5e1;">Your audience is tired. Ad has seen all the people it can reach.</p>
+                    <p style="margin-top: 10px; color: #fbbf24;"><strong>Action:</strong> Pause, create new creative, relaunch in 3-5 days</p>
+                </div>
+
+                <div class="threshold-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
+                    <strong style="color: #ef4444;">🚨 Daily spend drops > 50% (unintentionally)</strong><br>
+                    <p style="margin-top: 10px; color: #cbd5e1;">Meta's algorithm broke. Or your account got limited.</p>
+                    <p style="margin-top: 10px; color: #fbbf24;"><strong>Action:</strong> Check billing, check account status, increase bid slightly</p>
+                </div>
+
+                <div class="threshold-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
+                    <strong style="color: #ef4444;">🚨 CPA > 2x breakeven</strong><br>
+                    <p style="margin-top: 10px; color: #cbd5e1;">You're losing money. This won't fix itself.</p>
+                    <p style="margin-top: 10px; color: #fbbf24;"><strong>Action:</strong> Pause immediately. Do CPA root cause analysis.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5 -->
+        <div class="content">
+            <div class="module">
+                <h3>📥 Free Resources</h3>
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 25px; margin-bottom: 20px;">
+                    <h4 style="color: #10b981; margin-bottom: 15px;">Account Health Dashboard Template</h4>
+                    <p style="color: #cbd5e1; margin-bottom: 15px;">Ready-to-use Google Sheets. Auto-calculates trends & thresholds:</p>
+                    <button class="btn" onclick="alert('📥 Template wird heruntergeladen...')">📥 Download Dashboard (Google Sheets)</button>
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 25px;">
+                    <h4 style="color: #10b981; margin-bottom: 15px;">Weekly Check Ritual Checklist</h4>
+                    <p style="color: #cbd5e1; margin-bottom: 15px;">Printable checklist. Do it every Monday morning:</p>
+                    <button class="btn" onclick="alert('📥 Checklist wird heruntergeladen...')">📥 Download Checklist (PDF)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.content');
+
+        function switchTab(index) {
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            tabs[index].classList.add('active');
+            contents[index].classList.add('active');
+        }
+    </script>
+</body>
+</html>

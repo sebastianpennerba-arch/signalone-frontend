@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignalOne Academy - Budget Allocation Framework</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .header {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .header h1 {
+            font-size: 2.3em;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(148, 163, 184, 0.1);
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+        .tab-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .tab-btn.active { color: #fbbf24; border-bottom-color: #fbbf24; }
+        .content { display: none; }
+        .content.active { display: block; }
+        .module {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .module h3 { color: #fbbf24; margin-bottom: 15px; font-size: 1.3em; }
+        .module p { line-height: 1.8; color: #cbd5e1; margin-bottom: 15px; }
+        .allocation-box {
+            background: rgba(51, 65, 85, 0.5);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        table { width: 100%; margin: 20px 0; border-collapse: collapse; }
+        table tr { border-bottom: 1px solid rgba(148, 163, 184, 0.2); }
+        table th { background: rgba(251, 191, 36, 0.1); padding: 12px; text-align: left; color: #fbbf24; font-weight: 600; }
+        table td { padding: 12px; color: #cbd5e1; }
+        .btn { padding: 12px 24px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Budget Allocation Framework</h1>
+            <p style="color: #94a3b8;">How to Split Your Budget Across Campaigns (The 70/20/10 Rule)</p>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+                <div style="background: rgba(100, 116, 139, 0.2); padding: 10px 20px; border-radius: 8px;">⏱️ 50 Min</div>
+                <div style="background: rgba(100, 116, 139, 0.2); padding: 10px 20px; border-radius: 8px;">🟡 Intermediate</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">📖 Overview</button>
+            <button class="tab-btn" onclick="switchTab(1)">📊 70/20/10 Rule</button>
+            <button class="tab-btn" onclick="switchTab(2)">🎯 By Funnel Stage</button>
+            <button class="tab-btn" onclick="switchTab(3)">🧮 Calculator</button>
+            <button class="tab-btn" onclick="switchTab(4)">📥 Resources</button>
+        </div>
+
+        <div class="content active">
+            <div class="module">
+                <h3>Why Most People Get Budget Allocation Wrong</h3>
+                <p><strong>Common mistake:</strong> "I'll split my €1000 budget evenly across 5 campaigns."</p>
+                <p style="margin-top: 15px;">Result: Not enough budget for winners to scale. Too much budget wasted on losers.</p>
+                <p style="margin-top: 15px; color: #fbbf24; font-weight: 600;">This course teaches you the 70/20/10 rule used by agencies managing €1M+/month.</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="module">
+                <h3>📊 The 70/20/10 Rule</h3>
+            </div>
+
+            <div class="allocation-box">
+                <p style="color: #10b981; font-weight: 600; font-size: 1.2em;">70% → Proven Winners</p>
+                <p style="margin-top: 10px; color: #cbd5e1;">Campaigns that already work. ROAS > 3x. Scale these.</p>
+                <p style="margin-top: 10px; font-style: italic; color: #94a3b8;">Example: Your best performing campaign gets €700 of €1000 budget.</p>
+            </div>
+
+            <div class="allocation-box">
+                <p style="color: #fbbf24; font-weight: 600; font-size: 1.2em;">20% → Testing New Ideas</p>
+                <p style="margin-top: 10px; color: #cbd5e1;">New hooks, audiences, creatives. Small budgets to find next winner.</p>
+                <p style="margin-top: 10px; font-style: italic; color: #94a3b8;">Example: 4 test campaigns @ €50 each = €200 total.</p>
+            </div>
+
+            <div class="allocation-box">
+                <p style="color: #93c5fd; font-weight: 600; font-size: 1.2em;">10% → Retargeting</p>
+                <p style="margin-top: 10px; color: #cbd5e1;">People who already visited. Cheap conversions.</p>
+                <p style="margin-top: 10px; font-style: italic; color: #94a3b8;">Example: €100 retargeting budget.</p>
+            </div>
+
+            <div class="module" style="margin-top: 30px;">
+                <p style="color: #10b981; font-weight: 600;">Why this works: 70% on proven = stable revenue. 20% testing = future winners. 10% retargeting = easy wins.</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="module">
+                <h3>🎯 Budget by Funnel Stage</h3>
+                <table>
+                    <tr>
+                        <th>Stage</th>
+                        <th>Budget %</th>
+                        <th>Goal</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Awareness (Cold)</strong></td>
+                        <td>50%</td>
+                        <td>Get clicks, build audience</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Consideration (Warm)</strong></td>
+                        <td>30%</td>
+                        <td>Nurture interest, educate</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Conversion (Hot)</strong></td>
+                        <td>20%</td>
+                        <td>Close the sale</td>
+                    </tr>
+                </table>
+                <p style="margin-top: 20px; color: #fbbf24;">This is for NEW brands building an audience. If you have retargeting data, use 70/20/10 instead.</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="module">
+                <h3>🧮 Budget Calculator</h3>
+                <div style="background: rgba(30, 41, 59, 0.6); padding: 20px; border-radius: 12px;">
+                    <p style="color: #fbbf24; margin-bottom: 10px;">Total Monthly Budget:</p>
+                    <input type="number" id="total-budget" placeholder="€1000" style="width: 100%; padding: 10px; background: rgba(51, 65, 85, 0.8); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; color: #e2e8f0; margin-bottom: 15px;">
+
+                    <button onclick="calculateAllocation()" class="btn" style="width: 100%;">🧮 Calculate Allocation</button>
+
+                    <div id="allocation-result" style="margin-top: 20px; padding: 15px; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; border-radius: 8px; display: none;">
+                        <p style="color: #10b981; font-weight: 600;">Your 70/20/10 Allocation:</p>
+                        <div id="winners" style="margin-top: 15px;"></div>
+                        <div id="testing" style="margin-top: 10px;"></div>
+                        <div id="retargeting" style="margin-top: 10px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="module">
+                <h3>📥 Free Resources</h3>
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 25px;">
+                    <h4 style="color: #10b981; margin-bottom: 15px;">Budget Allocation Template</h4>
+                    <p style="color: #cbd5e1; margin-bottom: 15px;">Google Sheets that auto-calculates 70/20/10 for your budget:</p>
+                    <button class="btn" onclick="alert('📥 Template wird heruntergeladen...')">📥 Download Template</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.content');
+        function switchTab(index) {
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            tabs[index].classList.add('active');
+            contents[index].classList.add('active');
+        }
+
+        function calculateAllocation() {
+            const budget = parseFloat(document.getElementById('total-budget').value);
+            if (!budget) {
+                alert('Bitte Budget eingeben!');
+                return;
+            }
+
+            const winners = (budget * 0.7).toFixed(0);
+            const testing = (budget * 0.2).toFixed(0);
+            const retargeting = (budget * 0.1).toFixed(0);
+
+            document.getElementById('winners').innerHTML = `<strong style="color: #10b981;">70% Proven Winners:</strong> €${winners}`;
+            document.getElementById('testing').innerHTML = `<strong style="color: #fbbf24;">20% Testing:</strong> €${testing}`;
+            document.getElementById('retargeting').innerHTML = `<strong style="color: #93c5fd;">10% Retargeting:</strong> €${retargeting}`;
+            document.getElementById('allocation-result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

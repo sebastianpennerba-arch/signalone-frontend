@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignalOne Academy - Video Ads That Convert</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .header {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .header h1 {
+            font-size: 2.3em;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(148, 163, 184, 0.1);
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+        .tab-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .tab-btn.active { color: #fbbf24; border-bottom-color: #fbbf24; }
+        .content { display: none; }
+        .content.active { display: block; }
+        .module {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .module h3 { color: #fbbf24; margin-bottom: 15px; font-size: 1.3em; }
+        .module p { line-height: 1.8; color: #cbd5e1; margin-bottom: 15px; }
+        .script-box {
+            background: rgba(51, 65, 85, 0.5);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: 'Monaco', monospace;
+        }
+        .timestamp { color: #fbbf24; font-weight: 600; }
+        .script-line { color: #cbd5e1; margin: 8px 0; }
+        .tip-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        table { width: 100%; margin: 20px 0; border-collapse: collapse; }
+        table tr { border-bottom: 1px solid rgba(148, 163, 184, 0.2); }
+        table th { background: rgba(251, 191, 36, 0.1); padding: 12px; text-align: left; color: #fbbf24; font-weight: 600; }
+        table td { padding: 12px; color: #cbd5e1; }
+        .btn { padding: 12px 24px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎥 Video Ads That Convert</h1>
+            <p style="color: #94a3b8;">Hook-to-CTA in 15 Seconds (The Complete Script Formula)</p>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+                <div style="background: rgba(100, 116, 139, 0.2); padding: 10px 20px; border-radius: 8px;">⏱️ 60 Min</div>
+                <div style="background: rgba(100, 116, 139, 0.2); padding: 10px 20px; border-radius: 8px;">🟡 Intermediate</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">📖 Overview</button>
+            <button class="tab-btn" onclick="switchTab(1)">⏱️ First 3 Seconds</button>
+            <button class="tab-btn" onclick="switchTab(2)">📝 Script Formula</button>
+            <button class="tab-btn" onclick="switchTab(3)">🎬 Editing Rules</button>
+            <button class="tab-btn" onclick="switchTab(4)">📊 Video Formats</button>
+            <button class="tab-btn" onclick="switchTab(5)">🎯 CTA Techniques</button>
+            <button class="tab-btn" onclick="switchTab(6)">📥 Resources</button>
+        </div>
+
+        <!-- TAB 0 -->
+        <div class="content active">
+            <div class="module">
+                <h3>Why Video Ads Outperform Static</h3>
+                <p><strong>Data from 10,000+ campaigns:</strong> Video ads get 2-3x higher engagement than static images.</p>
+                <p style="margin-top: 15px;">But here's the catch: 90% of video ads fail because they're too long, too boring, or have no hook.</p>
+                <p style="margin-top: 15px; color: #fbbf24; font-weight: 600;">This course teaches you the 15-second formula that converts.</p>
+            </div>
+
+            <div class="module">
+                <h3>The Brutal Reality</h3>
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Static Image Ad</th>
+                        <th>Bad Video Ad</th>
+                        <th>Good Video Ad</th>
+                    </tr>
+                    <tr>
+                        <td>3-Second View Rate</td>
+                        <td>N/A</td>
+                        <td>20%</td>
+                        <td>65%</td>
+                    </tr>
+                    <tr>
+                        <td>15-Second Completion</td>
+                        <td>N/A</td>
+                        <td>5%</td>
+                        <td>35%</td>
+                    </tr>
+                    <tr>
+                        <td>CTR</td>
+                        <td>0.8%</td>
+                        <td>0.6%</td>
+                        <td>2.5%</td>
+                    </tr>
+                    <tr style="background: rgba(16, 185, 129, 0.1);">
+                        <td><strong>Conversion Rate</strong></td>
+                        <td>2.0%</td>
+                        <td>1.5%</td>
+                        <td><strong style="color: #10b981;">5.5%</strong></td>
+                    </tr>
+                </table>
+                <p style="margin-top: 20px; color: #fbbf24; font-weight: 600;">Good video = 2.75x better conversion than static. But only if you do it right.</p>
+            </div>
+
+            <div class="module">
+                <h3>What You'll Learn</h3>
+                <ul style="margin-left: 20px; color: #cbd5e1; line-height: 2;">
+                    <li>The first 3 seconds (hook patterns that work)</li>
+                    <li>The 15-second script formula (Hook → Problem → Solution → CTA)</li>
+                    <li>Editing rules (cuts, text overlays, music)</li>
+                    <li>Which video formats to use (UGC vs Talking Head vs B-Roll)</li>
+                    <li>CTA techniques that force clicks</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TAB 1: FIRST 3 SECONDS -->
+        <div class="content">
+            <div class="module">
+                <h3>⏱️ The First 3 Seconds: Make or Break</h3>
+                <p><strong>80% of viewers decide in the first 3 seconds whether to keep watching.</strong></p>
+                <p style="margin-top: 15px;">Your hook must do ONE thing: pattern interrupt. Break their scroll.</p>
+            </div>
+
+            <div class="module">
+                <h3>6 Hook Patterns That Work</h3>
+
+                <div class="script-box">
+                    <div class="timestamp">1. Question Hook</div>
+                    <div class="script-line">"Are you still wasting money on Facebook ads?"</div>
+                    <div class="tip-box">
+                        <strong style="color: #10b981;">Why it works:</strong> Brain automatically tries to answer. Creates engagement.
+                    </div>
+                </div>
+
+                <div class="script-box">
+                    <div class="timestamp">2. Shock/Contradiction Hook</div>
+                    <div class="script-line">"I spent $50,000 on ads and made ZERO profit. Here's what I learned."</div>
+                    <div class="tip-box">
+                        <strong style="color: #10b981;">Why it works:</strong> Unexpected. Creates curiosity about the mistake.
+                    </div>
+                </div>
+
+                <div class="script-box">
+                    <div class="timestamp">3. Result Hook (Numbers)</div>
+                    <div class="script-line">"We went from 2x to 8x ROAS in 30 days. Here's how."</div>
+                    <div class="tip-box">
+                        <strong style="color: #10b981;">Why it works:</strong> Specific numbers = believability. Promises answer.
+                    </div>
+                </div>
+
+                <div class="script-box">
+                    <div class="timestamp">4. Direct Address Hook</div>
+                    <div class="script-line">"If you're running Facebook ads and your ROAS is below 3x, watch this."</div>
+                    <div class="tip-box">
+                        <strong style="color: #10b981;">Why it works:</strong> Speaks directly to target audience. Creates relevance.
+                    </div>
+                </div>
+
+                <div class="script-box">
+                    <div class="timestamp">5. POV/Story Hook</div>
+                    <div class="script-line">"POV: You just lost $1000 on a Facebook ad that didn't convert."</div>
+                    <div class="tip-box">
+                        <strong style="color: #10b981;">Why it works:</strong> Emotional connection. Viewer sees themselves.
+                    </div>
+                </div>
+
+                <div class="script-box">
+                    <div class="timestamp">6. Visual Pattern Interrupt</div>
+                    <div class="script-line">[Fast cuts, zoom in, sudden movement] + "Stop scrolling."</div>
+                    <div class="tip-box">
+                        <strong style="color: #10b981;">Why it works:</strong> Movement breaks the scroll. Demands attention.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: SCRIPT FORMULA -->
+        <div class="content">
+            <div class="module">
+                <h3>📝 The 15-Second Script Formula</h3>
+                <p>This is the structure of every high-converting video ad. Copy it exactly.</p>
+            </div>
+
+            <div class="script-box">
+                <div class="timestamp">0:00-0:03 | HOOK</div>
+                <div class="script-line">Pattern interrupt. Get attention.</div>
+                <div class="script-line" style="margin-top: 10px; font-style: italic; color: #fbbf24;">"Are you wasting money on Facebook ads?"</div>
+            </div>
+
+            <div class="script-box">
+                <div class="timestamp">0:03-0:08 | PROBLEM</div>
+                <div class="script-line">State the pain. Agitate it.</div>
+                <div class="script-line" style="margin-top: 10px; font-style: italic; color: #fbbf24;">"Most people get 2x ROAS and think it's good. But you're actually losing money after product costs and fees."</div>
+            </div>
+
+            <div class="script-box">
+                <div class="timestamp">0:08-0:12 | SOLUTION</div>
+                <div class="script-line">Present your product/service as the fix.</div>
+                <div class="script-line" style="margin-top: 10px; font-style: italic; color: #fbbf24;">"Our tool finds winning hooks in 24 hours. Guaranteed 4x ROAS or money back."</div>
+            </div>
+
+            <div class="script-box">
+                <div class="timestamp">0:12-0:15 | CTA</div>
+                <div class="script-line">Tell them exactly what to do next.</div>
+                <div class="script-line" style="margin-top: 10px; font-style: italic; color: #fbbf24;">"Click below. Try it free for 14 days."</div>
+            </div>
+
+            <div class="module" style="margin-top: 30px;">
+                <h3>Script Template Generator</h3>
+                <div style="background: rgba(30, 41, 59, 0.6); padding: 20px; border-radius: 12px;">
+                    <p style="color: #fbbf24; margin-bottom: 10px;">Your Target Audience's Problem:</p>
+                    <input type="text" id="problem-input" placeholder="z.B. Low ROAS on Meta Ads" style="width: 100%; padding: 10px; background: rgba(51, 65, 85, 0.8); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; color: #e2e8f0; margin-bottom: 15px;">
+
+                    <p style="color: #fbbf24; margin-bottom: 10px;">Your Solution:</p>
+                    <input type="text" id="solution-input" placeholder="z.B. AI Hook Generator" style="width: 100%; padding: 10px; background: rgba(51, 65, 85, 0.8); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; color: #e2e8f0; margin-bottom: 15px;">
+
+                    <button onclick="generateScript()" class="btn" style="width: 100%;">✨ Generate Video Script</button>
+
+                    <div id="script-result" style="margin-top: 20px; padding: 15px; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; border-radius: 8px; display: none;">
+                        <p style="color: #10b981; font-weight: 600;">Your Generated Script:</p>
+                        <div id="gen-hook" style="margin-top: 15px;"></div>
+                        <div id="gen-problem" style="margin-top: 10px;"></div>
+                        <div id="gen-solution" style="margin-top: 10px;"></div>
+                        <div id="gen-cta" style="margin-top: 10px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: EDITING RULES -->
+        <div class="content">
+            <div class="module">
+                <h3>🎬 Editing Rules (The 5 Non-Negotiables)</h3>
+            </div>
+
+            <div class="tip-box">
+                <strong style="color: #10b981;">Rule #1: Cut Every 2-3 Seconds</strong>
+                <p style="margin-top: 10px; color: #cbd5e1;">Attention span is 2 seconds on mobile. New angle/cut every 2-3 seconds keeps attention.</p>
+            </div>
+
+            <div class="tip-box">
+                <strong style="color: #10b981;">Rule #2: Text Overlays (Always)</strong>
+                <p style="margin-top: 10px; color: #cbd5e1;">85% watch without sound. Key points must be on-screen as text.</p>
+            </div>
+
+            <div class="tip-box">
+                <strong style="color: #10b981;">Rule #3: No Intro (Start Mid-Sentence)</strong>
+                <p style="margin-top: 10px; color: #cbd5e1;">No "Hey guys, today I'm gonna..." Start with the hook immediately.</p>
+            </div>
+
+            <div class="tip-box">
+                <strong style="color: #10b981;">Rule #4: Music = 30% Volume</strong>
+                <p style="margin-top: 10px; color: #cbd5e1;">Background music yes. But voice must be 70% louder. Music should be subtle.</p>
+            </div>
+
+            <div class="tip-box">
+                <strong style="color: #10b981;">Rule #5: 9:16 Vertical (Mobile First)</strong>
+                <p style="margin-top: 10px; color: #cbd5e1;">Square (1:1) is dead. Vertical takes up full screen on mobile = better performance.</p>
+            </div>
+
+            <div class="module" style="margin-top: 30px;">
+                <h3>Quick Editing Checklist</h3>
+                <ul style="margin-left: 20px; color: #cbd5e1; line-height: 2;">
+                    <li>✅ Hook in first 3 seconds</li>
+                    <li>✅ Cut every 2-3 seconds</li>
+                    <li>✅ Text overlays on key points</li>
+                    <li>✅ No intro/outro</li>
+                    <li>✅ CTA in last 3 seconds</li>
+                    <li>✅ 9:16 vertical format</li>
+                    <li>✅ Music at 30% volume</li>
+                    <li>✅ Total length: 10-20 seconds</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TAB 4: VIDEO FORMATS -->
+        <div class="content">
+            <div class="module">
+                <h3>📊 Which Video Format to Use</h3>
+            </div>
+
+            <table>
+                <tr>
+                    <th>Format</th>
+                    <th>Best For</th>
+                    <th>Avg. CTR</th>
+                    <th>Cost to Produce</th>
+                </tr>
+                <tr>
+                    <td><strong>UGC (User Generated)</strong></td>
+                    <td>E-commerce, DTC Brands</td>
+                    <td style="color: #10b981;">2.5-4.0%</td>
+                    <td>€50-200/video</td>
+                </tr>
+                <tr>
+                    <td><strong>Talking Head</strong></td>
+                    <td>Services, Coaching, B2B</td>
+                    <td style="color: #fbbf24;">1.5-2.5%</td>
+                    <td>€0 (DIY) - €500</td>
+                </tr>
+                <tr>
+                    <td><strong>B-Roll + Voiceover</strong></td>
+                    <td>Tech, SaaS, Apps</td>
+                    <td style="color: #f59e0b;">1.0-2.0%</td>
+                    <td>€100-500</td>
+                </tr>
+                <tr>
+                    <td><strong>Animated Explainer</strong></td>
+                    <td>Complex Products</td>
+                    <td style="color: #94a3b8;">0.8-1.5%</td>
+                    <td>€500-2000</td>
+                </tr>
+                <tr>
+                    <td><strong>Testimonial</strong></td>
+                    <td>High-Ticket, Trust-Building</td>
+                    <td style="color: #10b981;">2.0-3.5%</td>
+                    <td>€0-300</td>
+                </tr>
+            </table>
+
+            <div class="module" style="margin-top: 30px;">
+                <h3>Format Decision Tree</h3>
+                <div style="background: rgba(51, 65, 85, 0.5); padding: 20px; border-radius: 8px; margin: 20px 0; line-height: 2; color: #cbd5e1;">
+                    <strong style="color: #fbbf24;">If you sell physical products:</strong> → UGC<br>
+                    <strong style="color: #fbbf24;">If you sell services/coaching:</strong> → Talking Head<br>
+                    <strong style="color: #fbbf24;">If you sell software/app:</strong> → Screen Recording + Voiceover<br>
+                    <strong style="color: #fbbf24;">If you need trust:</strong> → Customer Testimonial<br>
+                    <strong style="color: #fbbf24;">If product is complex:</strong> → Animated Explainer
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: CTA TECHNIQUES -->
+        <div class="content">
+            <div class="module">
+                <h3>🎯 CTA Techniques That Force Clicks</h3>
+                <p>Your video is perfect. But if the CTA is weak, no one clicks.</p>
+            </div>
+
+            <div class="tip-box">
+                <strong style="color: #10b981;">Technique #1: Point to the Button</strong>
+                <p style="margin-top: 10px; color: #cbd5e1;">Literally point at the "Learn More" button. Visual cue = higher CTR.</p>
+                <p style="margin-top: 10px; font-style: italic; color: #fbbf24;">"Click the button below. Try it free."</p>
+            </div>
+
+            <div class="tip-box">
+                <strong style="color: #10b981;">Technique #2: Create Urgency</strong>
+                <p style="margin-top: 10px; color: #cbd5e1;">Time-limited or scarcity-based CTA.</p>
+                <p style="margin-top: 10px; font-style: italic; color: #fbbf24;">"Only 10 spots left this month. Click now."</p>
+            </div>
+
+            <div class="tip-box">
+                <strong style="color: #10b981;">Technique #3: Risk Reversal</strong>
+                <p style="margin-top: 10px; color: #cbd5e1;">Remove all risk. Make it a no-brainer.</p>
+                <p style="margin-top: 10px; font-style: italic; color: #fbbf24;">"Try it free for 14 days. Cancel anytime. No credit card."</p>
+            </div>
+
+            <div class="tip-box">
+                <strong style="color: #10b981;">Technique #4: Social Proof CTA</strong>
+                <p style="margin-top: 10px; color: #cbd5e1;">Show that others already did it.</p>
+                <p style="margin-top: 10px; font-style: italic; color: #fbbf24;">"Join 5,000+ marketers. Click below."</p>
+            </div>
+
+            <div class="tip-box">
+                <strong style="color: #10b981;">Technique #5: Curiosity CTA</strong>
+                <p style="margin-top: 10px; color: #cbd5e1;">Promise the answer if they click.</p>
+                <p style="margin-top: 10px; font-style: italic; color: #fbbf24;">"Click to see the full case study."</p>
+            </div>
+        </div>
+
+        <!-- TAB 6: RESOURCES -->
+        <div class="content">
+            <div class="module">
+                <h3>📥 Free Resources</h3>
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 25px; margin-bottom: 20px;">
+                    <h4 style="color: #10b981; margin-bottom: 15px;">Video Script Templates (50+)</h4>
+                    <p style="color: #cbd5e1; margin-bottom: 15px;">Ready-to-use scripts for every industry. Copy → Customize → Film:</p>
+                    <button class="btn" onclick="alert('📥 Templates werden heruntergeladen...')">📥 Download Scripts</button>
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 25px; margin-bottom: 20px;">
+                    <h4 style="color: #10b981; margin-bottom: 15px;">Editing Checklist</h4>
+                    <p style="color: #cbd5e1; margin-bottom: 15px;">20-point checklist before publishing your video ad:</p>
+                    <button class="btn" onclick="alert('📥 Checklist wird heruntergeladen...')">📥 Download Checklist</button>
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 25px;">
+                    <h4 style="color: #10b981; margin-bottom: 15px;">Music Library (Royalty-Free)</h4>
+                    <p style="color: #cbd5e1; margin-bottom: 15px;">100+ background tracks for video ads (Meta-safe):</p>
+                    <button class="btn" onclick="alert('📥 Music Library wird geöffnet...')">📥 Browse Music</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.content');
+
+        function switchTab(index) {
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            tabs[index].classList.add('active');
+            contents[index].classList.add('active');
+        }
+
+        function generateScript() {
+            const problem = document.getElementById('problem-input').value;
+            const solution = document.getElementById('solution-input').value;
+
+            if (!problem || !solution) {
+                alert('Bitte beide Felder ausfüllen!');
+                return;
+            }
+
+            const hook = `"Are you struggling with ${problem}?"`;
+            const problemText = `"Most people deal with ${problem} every day. It costs you time, money, and frustration."`;
+            const solutionText = `"${solution} solves this in minutes. Guaranteed results or money back."`;
+            const cta = `"Click below. Try ${solution} free for 14 days."`;
+
+            document.getElementById('gen-hook').innerHTML = `<span style="color: #fbbf24; font-weight: 600;">0:00-0:03 | HOOK:</span><br><span style="color: #cbd5e1;">${hook}</span>`;
+            document.getElementById('gen-problem').innerHTML = `<span style="color: #fbbf24; font-weight: 600;">0:03-0:08 | PROBLEM:</span><br><span style="color: #cbd5e1;">${problemText}</span>`;
+            document.getElementById('gen-solution').innerHTML = `<span style="color: #fbbf24; font-weight: 600;">0:08-0:12 | SOLUTION:</span><br><span style="color: #cbd5e1;">${solutionText}</span>`;
+            document.getElementById('gen-cta').innerHTML = `<span style="color: #fbbf24; font-weight: 600;">0:12-0:15 | CTA:</span><br><span style="color: #cbd5e1;">${cta}</span>`;
+
+            document.getElementById('script-result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

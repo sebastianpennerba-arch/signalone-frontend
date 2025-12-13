@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignalOne Academy - The 3-Second Rule: Mastering Ad Hooks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .course-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        .course-header {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .course-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            background: rgba(100, 116, 139, 0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid #3b82f6;
+            color: #93c5fd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        /* NAVIGATION TABS */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(148, 163, 184, 0.1);
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+
+        .tab-button {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab-button.active {
+            color: #fbbf24;
+            border-bottom-color: #fbbf24;
+        }
+
+        .tab-button:hover {
+            color: #e2e8f0;
+        }
+
+        /* TAB CONTENT */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* MODULES */
+        .module {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .module h3 {
+            color: #fbbf24;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .module p {
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+        }
+
+        /* LEARNING OUTCOMES */
+        .learning-outcomes {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .learning-outcomes h4 {
+            color: #93c5fd;
+            margin-bottom: 15px;
+        }
+
+        .learning-outcomes ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .learning-outcomes li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #cbd5e1;
+        }
+
+        .learning-outcomes li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* HOOK FRAMEWORKS */
+        .hook-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .hook-card {
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .hook-card:hover {
+            border-color: #fbbf24;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .hook-card h4 {
+            color: #fbbf24;
+            margin-bottom: 10px;
+        }
+
+        .hook-card p {
+            color: #cbd5e1;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* INTERACTIVE CHECKLIST */
+        .checklist {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #fbbf24;
+        }
+
+        .checklist-item label {
+            flex: 1;
+            cursor: pointer;
+            color: #cbd5e1;
+        }
+
+        .checklist-item input[type="checkbox"]:checked + label {
+            color: #10b981;
+            text-decoration: line-through;
+        }
+
+        /* DOWNLOAD BUTTONS */
+        .download-section {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .download-section h4 {
+            color: #10b981;
+            margin-bottom: 15px;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(251, 191, 36, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border: 1px solid #3b82f6;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(59, 130, 246, 0.3);
+        }
+
+        /* CASE STUDIES */
+        .case-study {
+            background: rgba(51, 65, 85, 0.5);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .case-study h4 {
+            color: #10b981;
+            margin-bottom: 10px;
+        }
+
+        .case-study-metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            color: #cbd5e1;
+        }
+
+        /* PROGRESS BAR */
+        .progress-section {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #fbbf24 100%);
+            width: 20%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* FOOTER */
+        .course-footer {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .course-footer h3 {
+            color: #fbbf24;
+            margin-bottom: 15px;
+        }
+
+        .course-footer p {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .course-header h1 {
+                font-size: 1.8em;
+            }
+
+            .course-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .hook-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="course-container">
+        <!-- HEADER -->
+        <div class="course-header">
+            <h1>🎯 The 3-Second Rule</h1>
+            <p style="font-size: 1.2em; color: #94a3b8; margin-bottom: 20px;">Mastering Ad Hooks That Stop the Scroll</p>
+            <div class="course-meta">
+                <div class="meta-item">⏱️ 45 Minuten</div>
+                <div class="meta-item"><span class="badge">Beginner to Intermediate</span></div>
+                <div class="meta-item">📚 6 Module</div>
+            </div>
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="progress-section">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span>Dein Fortschritt</span>
+                <span id="progress-text">0/6 abgeschlossen</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('overview')">📋 Übersicht</button>
+            <button class="tab-button" onclick="switchTab('frameworks')">🎨 Hook Frameworks</button>
+            <button class="tab-button" onclick="switchTab('case-studies')">📊 Case Studies</button>
+            <button class="tab-button" onclick="switchTab('checklist')">✅ Checklist</button>
+            <button class="tab-button" onclick="switchTab('resources')">📥 Ressourcen</button>
+        </div>
+
+        <!-- TAB 1: OVERVIEW -->
+        <div id="overview" class="tab-content active">
+            <div class="module">
+                <h3>Modul 1: Warum 90% der Brand Recall in 6 Sekunden passiert</h3>
+                <p>
+                    Die erste Wahrheit des modernen Marketings: <strong>Aufmerksamkeit ist die knappste Ressource.</strong>
+                </p>
+                <p>
+                    In einer Welt, in der Menschen täglich 500+ Ads sehen, entscheidest du in den ersten 3–6 Sekunden, ob jemand dein Ad sieht oder scrollt:
+                </p>
+                <ul style="margin-left: 20px; color: #cbd5e1; line-height: 2;">
+                    <li>🧠 <strong>1–2 Sekunden:</strong> Visuelles Processing (Farbe, Bewegung, Kontrast)</li>
+                    <li>🧠 <strong>3–4 Sekunden:</strong> Botschaft erfassen (Was ist der Punkt?)</li>
+                    <li>🧠 <strong>5–6 Sekunden:</strong> Entscheidung (Interessant genug zum Bleiben?)</li>
+                </ul>
+                <p style="margin-top: 20px;">
+                    Nach 6 Sekunden ist die Entscheidung getroffen. Wer bis dahin nicht "hooks" (= fesselt), verliert.
+                </p>
+                <div class="learning-outcomes">
+                    <h4>📌 Wichtigste Erkenntnisse:</h4>
+                    <ul>
+                        <li>90% der Brand Recall passiert in der ersten Hook (6 Sekunden)</li>
+                        <li>Ein Hook ist nicht die ganze Ad – es ist der Anfang</li>
+                        <li>Der Hook muss zwei Dinge tun: Stop + Curiosity</li>
+                        <li>Format egal (Video, Carousel, Static) – Hook ist universell</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="module">
+                <h3>Modul 2: Die Psychologie hinter dem Hook</h3>
+                <p>
+                    Es gibt 3 psychologische Trigger, die Menschen zum Bleiben bringen:
+                </p>
+                <div style="margin: 20px 0;">
+                    <div style="background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <strong style="color: #93c5fd;">🎯 Curiosity Gap</strong>
+                        <p style="margin-top: 10px;">Das Gehirn HASST unvollständige Information. Ein guter Hook öffnet eine Frage, die dein Brain zwangsläufig beantworten will.</p>
+                        <p style="margin-top: 10px; color: #fbbf24;"><em>Beispiel:</em> "Diese 3-Dollar-Tasse macht sich selbst reinigen" (Was?! Wie?!)</p>
+                    </div>
+
+                    <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <strong style="color: #10b981;">⚡ Loss Aversion (FOMO)</strong>
+                        <p style="margin-top: 10px;">Menschen mögen es nicht, Dinge zu verpassen. Ein Hook, der JETZT-Dringlichkeit vermittelt, stoppt den Scroll.</p>
+                        <p style="margin-top: 10px; color: #fbbf24;"><em>Beispiel:</em> "Nur 3 von 50 Spots noch frei" (Knappheit + Urgenz)</p>
+                    </div>
+
+                    <div style="background: rgba(251, 191, 36, 0.1); border-left: 4px solid #fbbf24; padding: 15px; border-radius: 8px;">
+                        <strong style="color: #fbbf24;">👁️ Visual Contrast</strong>
+                        <p style="margin-top: 10px;">Das Auge wird von Kontrast angezogen. Ein Hook muss sich vom Hintergrund unterscheiden (Farbe, Bewegung, Größe).</p>
+                        <p style="margin-top: 10px; color: #fbbf24;"><em>Beispiel:</em> Weißer Text auf grünem Hintergrund in einer Flut von blauen Ads</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module">
+                <h3>Modul 3: Die 9 Hook Frameworks (Und wann du sie verwendest)</h3>
+                <p>
+                    Es gibt nicht "einen" Hook. Es gibt 9 bewährte Frameworks, die in verschiedenen Kontexten funktionieren.
+                </p>
+                <p style="color: #fbbf24; margin-top: 20px; font-weight: 600;">
+                    ⬇️ Siehe "Hook Frameworks" Tab für detaillierte Erklärungen + Beispiele
+                </p>
+            </div>
+
+            <div class="module">
+                <h3>Modul 4: Wie man einen Hook in 3 Sekunden scriptet</h3>
+                <p>
+                    Ein guter Hook hat diese Struktur:
+                </p>
+                <div style="background: rgba(51, 65, 85, 0.5); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #fbbf24;">
+                    <p><strong style="color: #fbbf24;">Sekunde 1-2: STOP</strong></p>
+                    <p style="color: #cbd5e1;">Ein unerwartetes Statement, eine Frage oder eine visuelle Aktion, die den Scroll stoppt.</p>
+                    <p style="margin-top: 15px;"><strong style="color: #fbbf24;">Sekunde 3: CURIOSITY</strong></p>
+                    <p style="color: #cbd5e1;">Ein kurzer Satz, der Neugier weckt und zum Weiterschauen führt.</p>
+                    <p style="margin-top: 15px;"><strong style="color: #fbbf24;">Sekunde 4-6: REVEAL</strong></p>
+                    <p style="color: #cbd5e1;">Kurze Erklärung, warum das wichtig ist, oder nächster Hook.</p>
+                </div>
+                <p style="margin-top: 20px;">
+                    <strong>Beispiel: Fitness-Produkt</strong><br>
+                    <em>"Diese Geek brauchte 3 Sekunden für 100 Pushups"</em> (Stop + Curiosity)<br>
+                    <em>→ Cut zu: "Nicht durch Kraft. Durch dies Gerät."</em> (Reveal)
+                </p>
+            </div>
+
+            <div class="module">
+                <h3>Modul 5 & 6: Case Studies + Deine Hook schreiben</h3>
+                <p>
+                    → Siehe "Case Studies" und "Checklist" Tabs
+                </p>
+            </div>
+        </div>
+
+        <!-- TAB 2: HOOK FRAMEWORKS -->
+        <div id="frameworks" class="tab-content">
+            <div class="module">
+                <h3>Die 9 Hook Frameworks (Detailliert)</h3>
+                <p>Jeder Hook funktioniert nach einem dieser 9 Muster. Wähle basierend auf deinem Produkt:</p>
+            </div>
+
+            <div class="hook-grid">
+                <div class="hook-card">
+                    <h4>1️⃣ Pattern Interrupt</h4>
+                    <p><strong>Wann:</strong> Wenn alles normal aussieht, tu etwas Verrücktes.</p>
+                    <p><strong>Beispiel:</strong> "Ich kaufe einen Porsche mit $200" (Unmöglich? = Attention)</p>
+                    <p style="margin-top: 10px; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 10px; color: #fbbf24;">Best für: High-ticket, Agenturen, Transformation</p>
+                </div>
+
+                <div class="hook-card">
+                    <h4>2️⃣ Curiosity Gap</h4>
+                    <p><strong>Wann:</strong> Wenn du eine unbeantwortete Frage stellst.</p>
+                    <p><strong>Beispiel:</strong> "Das #1 Geheimnis das 7-Figuren-Marketer dir nicht sagen"</p>
+                    <p style="margin-top: 10px; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 10px; color: #fbbf24;">Best für: Kurse, Info-Produkte, Growth Hacks</p>
+                </div>
+
+                <div class="hook-card">
+                    <h4>3️⃣ Humor</h4>
+                    <p><strong>Wann:</strong> Wenn deine Brand lustig sein kann und dein Audience das mag.</p>
+                    <p><strong>Beispiel:</strong> "Meine Freundin sagt, ich bin süchtig nach Online-Shopping. Ich hab nicht gehört, ich war Amazon-Prime Fenster einkaufen."</p>
+                    <p style="margin-top: 10px; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 10px; color: #fbbf24;">Best für: DTC, junge Audience, Lifestyle</p>
+                </div>
+
+                <div class="hook-card">
+                    <h4>4️⃣ Honest Truth / Vulnerability</h4>
+                    <p><strong>Wann:</strong> Wenn du etwas zugibst, das andere nicht sagen würden.</p>
+                    <p><strong>Beispiel:</strong> "Wir haben $50k verloren, bevor wir kapiert haben, warum unsere Ads nicht funktionieren."</p>
+                    <p style="margin-top: 10px; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 10px; color: #fbbf24;">Best für: Coaching, B2B, Authority</p>
+                </div>
+
+                <div class="hook-card">
+                    <h4>5️⃣ Handwriting Hook</h4>
+                    <p><strong>Wann:</strong> Wenn du mit Handschrift über die Ad schreibst.</p>
+                    <p><strong>Beispiel:</strong> "Hey [Name], wir haben gerade 3 neue Templates für dich hochgeladen..."</p>
+                    <p style="margin-top: 10px; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 10px; color: #fbbf24;">Best für: Personalisierung, E-Mail, Notifications</p>
+                </div>
+
+                <div class="hook-card">
+                    <h4>6️⃣ Question Hook</h4>
+                    <p><strong>Wann:</strong> Wenn du eine rhetorische Frage stellst.</p>
+                    <p><strong>Beispiel:</strong> "Möchtest du die nächsten 10 Jahre damit verschwenden, die falschen Leute zu targetieren?"</p>
+                    <p style="margin-top: 10px; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 10px; color: #fbbf24;">Best für: B2B, Premium-Produkte</p>
+                </div>
+
+                <div class="hook-card">
+                    <h4>7️⃣ Comment Reply</h4>
+                    <p><strong>Wann:</strong> Wenn du auf einen Kommentar antwortest (Format = Comment-Video).</p>
+                    <p><strong>Beispiel:</strong> "@John: Naja, eigentlich ist die Antwort komplizierter..." (Dann erklärt du es)</p>
+                    <p style="margin-top: 10px; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 10px; color: #fbbf24;">Best für: UGC, TikTok-Native, Authenticity</p>
+                </div>
+
+                <div class="hook-card">
+                    <h4>8️⃣ Transformation / Before-After</h4>
+                    <p><strong>Wann:</strong> Wenn du das Ergebnis von Tag 1 zu Tag 30 zeigst.</p>
+                    <p><strong>Beispiel:</strong> [BEFORE: sad person] "vs." [AFTER: happy person] "8 Wochen später"</p>
+                    <p style="margin-top: 10px; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 10px; color: #fbbf24;">Best für: Fitness, Beauty, Coaching</p>
+                </div>
+
+                <div class="hook-card">
+                    <h4>9️⃣ Bold Statement / Contrarian</h4>
+                    <p><strong>Wann:</strong> Wenn du etwas sagst, das der Norm widerspricht.</p>
+                    <p><strong>Beispiel:</strong> "Billiges Traffic ist nicht dein Problem. Schlechte Landing Pages sind."</p>
+                    <p style="margin-top: 10px; border-top: 1px solid rgba(148, 163, 184, 0.2); padding-top: 10px; color: #fbbf24;">Best für: Agenturen, Thought Leadership</p>
+                </div>
+            </div>
+
+            <div class="module" style="margin-top: 30px;">
+                <h3>🎯 Hook Framework Selector</h3>
+                <p>Welcher Hook passt zu deinem Produkt?</p>
+                <div style="margin-top: 20px;">
+                    <p style="color: #fbbf24; font-weight: 600;">Ecommerce / Physical Product?</p>
+                    <p style="color: #cbd5e1;">→ Transformation, Curiosity Gap, oder Humor</p>
+                    <p style="color: #fbbf24; font-weight: 600; margin-top: 15px;">Digital / Coaching / Info?</p>
+                    <p style="color: #cbd5e1;">→ Honest Truth, Question Hook, oder Curiosity Gap</p>
+                    <p style="color: #fbbf24; font-weight: 600; margin-top: 15px;">B2B / Enterprise?</p>
+                    <p style="color: #cbd5e1;">→ Bold Statement, Question Hook, oder Case Study</p>
+                    <p style="color: #fbbf24; font-weight: 600; margin-top: 15px;">Viral / Retention?</p>
+                    <p style="color: #cbd5e1;">→ Humor, Comment Reply, oder Pattern Interrupt</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: CASE STUDIES -->
+        <div id="case-studies" class="tab-content">
+            <div class="module">
+                <h3>Case Study 1: Luxury Watch Brand</h3>
+            </div>
+
+            <div class="case-study">
+                <h4>Die Situation:</h4>
+                <p>Luxus-Uhren-Brand. Teuer Produkt ($2000+). Meta Ads Performance: CTR 0.8%, CPA $120.</p>
+                <h4 style="margin-top: 15px;">Das Problem:</h4>
+                <p>Hook war zu "salesy": "Jetzt 50% Rabatt auf Rolex-Uhren" (Falsch für Luxury)</p>
+                <h4 style="margin-top: 15px;">Die Lösung:</h4>
+                <p>Neuer Hook: "Diese Uhr behält ihren Wert besser als dein Portfolio" (Contrarian)</p>
+                <h4 style="margin-top: 15px;">Die Ergebnisse:</h4>
+                <div class="case-study-metric">
+                    <span>CTR:</span>
+                    <strong style="color: #10b981;">0.8% → 2.4% (+200%)</strong>
+                </div>
+                <div class="case-study-metric">
+                    <span>CPA:</span>
+                    <strong style="color: #10b981;">$120 → $85 (-29%)</strong>
+                </div>
+                <div class="case-study-metric">
+                    <span>ROAS:</span>
+                    <strong style="color: #10b981;">2.1x → 4.8x (+129%)</strong>
+                </div>
+                <p style="margin-top: 15px; color: #fbbf24;"><strong>Insight:</strong> Der Hook passt zur audience. Luxury ist nicht "günstig", sondern "investition".</p>
+            </div>
+
+            <div class="case-study" style="margin-top: 20px;">
+                <h4>Die Situation:</h4>
+                <p>Fitness-App. Junges Publikum (18–35). CTR 1.2%, aber schlechte Conversion.</p>
+                <h4 style="margin-top: 15px;">Das Problem:</h4>
+                <p>Hook war motivierend aber generisch: "Transform your body in 30 days"</p>
+                <h4 style="margin-top: 15px;">Die Lösung:</h4>
+                <p>Neuer Hook: Humor + Pattern Interrupt – "Dieser Dude brauchte 3 Tage länger als sein Chihuahua um fitness zu werden" (Comedy + Relatable)</p>
+                <h4 style="margin-top: 15px;">Die Ergebnisse:</h4>
+                <div class="case-study-metric">
+                    <span>CTR:</span>
+                    <strong style="color: #10b981;">1.2% → 3.8% (+216%)</strong>
+                </div>
+                <div class="case-study-metric">
+                    <span>Conversion:</span>
+                    <strong style="color: #10b981;">2.1% → 5.7% (+171%)</strong>
+                </div>
+                <div class="case-study-metric">
+                    <span>ROAS:</span>
+                    <strong style="color: #10b981;">2.0x → 4.2x (+110%)</strong>
+                </div>
+                <p style="margin-top: 15px; color: #fbbf24;"><strong>Insight:</strong> Humor zerstört, wenn die Audience es mag. Richtig = exponentielles Wachstum.</p>
+            </div>
+
+            <div class="case-study" style="margin-top: 20px;">
+                <h4>Die Situation:</h4>
+                <p>Marketing-Agentur. High-Ticket. Ziel = Leads für Beratung.</p>
+                <h4 style="margin-top: 15px;">Das Problem:</h4>
+                <p>Hook war "Safe": "Wir helfen Unternehmen, ihre Ad Spend 3x besser zu nutzen"</p>
+                <h4 style="margin-top: 15px;">Die Lösung:</h4>
+                <p>Neuer Hook: Honest Truth + Contrarian – "Wir haben diese 7 Kampagnen ruiniert, bevor wir gelernt haben, was funktioniert. Hier ist, was wir gelernt haben..."</p>
+                <h4 style="margin-top: 15px;">Die Ergebnisse:</h4>
+                <div class="case-study-metric">
+                    <span>Lead Quality:</span>
+                    <strong style="color: #10b981;">Niedrig → Hochqualifiziert (+340% höhere Close Rate)</strong>
+                </div>
+                <div class="case-study-metric">
+                    <span>Cost per Lead:</span>
+                    <strong style="color: #10b981;">$180 → $95 (-47%)</strong>
+                </div>
+                <div class="case-study-metric">
+                    <span>Conversion (Lead → Client):</span>
+                    <strong style="color: #10b981;">12% → 42% (+250%)</strong>
+                </div>
+                <p style="margin-top: 15px; color: #fbbf24;"><strong>Insight:</strong> Honesty beats sales pitch. Vulnerability ist stärker als Vertrauen.</p>
+            </div>
+        </div>
+
+        <!-- TAB 4: CHECKLIST -->
+        <div id="checklist" class="tab-content">
+            <div class="module">
+                <h3>🎯 Deine Hook-Schreib-Anleitung</h3>
+                <p>Benutze diese Checklist, um deinen eigenen Hook zu schreiben:</p>
+            </div>
+
+            <div class="checklist">
+                <h4 style="margin-bottom: 20px; color: #fbbf24;">Phase 1: Hook Framework auswählen</h4>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check1">
+                    <label for="check1">Welches Produkt verkaufe ich? (Ecommerce, Digital, Service?)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check2">
+                    <label for="check2">Wer ist meine Audience? (Alter, Interessen, Pains?)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check3">
+                    <label for="check3">Welcher Hook passt? (Pattern Interrupt, Curiosity, etc.?)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check4">
+                    <label for="check4">Kann ich diesen Hook in 3 Sekunden zeigen?</label>
+                </div>
+            </div>
+
+            <div class="checklist" style="margin-top: 20px;">
+                <h4 style="margin-bottom: 20px; color: #fbbf24;">Phase 2: Hook schreiben</h4>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check5">
+                    <label for="check5">Hook ist überraschend / unerwartet / lustig / konträr</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check6">
+                    <label for="check6">Hook stoppt den Scroll (Visuelle oder verbale Aktion)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check7">
+                    <label for="check7">Hook weckt Neugierde (Fragt implizit: "Was kommt als Nächstes?")</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check8">
+                    <label for="check8">Hook ist < 20 Wörter (kurz genug für Meta)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check9">
+                    <label for="check9">Hook spricht direkt meine Audience an (Ihre Sprache, ihre Probleme)</label>
+                </div>
+            </div>
+
+            <div class="checklist" style="margin-top: 20px;">
+                <h4 style="margin-bottom: 20px; color: #fbbf24;">Phase 3: Hook mit Kontext kombinieren</h4>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check10">
+                    <label for="check10">Hook + Visual passen zusammen (z.B. Text-Hook + contrasting Image)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check11">
+                    <label for="check11">Hook bricht Branding nicht (passt noch zum Image der Marke)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check12">
+                    <label for="check12">Hook führt logisch zur nächsten Message (Flow macht Sinn)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check13">
+                    <label for="check13">Hook ist testimonial-testbar (Kann ich 10 Varianten davon machen?)</label>
+                </div>
+            </div>
+
+            <div class="checklist" style="margin-top: 20px;">
+                <h4 style="margin-bottom: 20px; color: #fbbf24;">Phase 4: Test & Iteration</h4>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check14">
+                    <label for="check14">Hook getestet mit mindestens 3 Audience-Segmenten</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check15">
+                    <label for="check15">CTR gemessen nach 5 Tagen / 1000 Impressions</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check16">
+                    <label for="check16">Feedback sammeln (Kommentare, Reactions lesen)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check17">
+                    <label for="check17">Hook basierend auf Daten iteriert (oder zur Seite gelegt)</label>
+                </div>
+            </div>
+
+            <div class="module" style="margin-top: 30px;">
+                <h3>✍️ Dein persönlicher Hook Generator</h3>
+                <p>Fülle die Felder aus und generiere deinen ersten Hook:</p>
+
+                <div style="background: rgba(51, 65, 85, 0.5); padding: 20px; border-radius: 12px; margin-top: 20px;">
+                    <p style="color: #fbbf24; font-weight: 600; margin-bottom: 10px;">Produkt:</p>
+                    <input type="text" id="product" placeholder="z.B. Fitness-App, Uhren, Coaching..." style="width: 100%; padding: 10px; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; color: #e2e8f0; margin-bottom: 15px;">
+
+                    <p style="color: #fbbf24; font-weight: 600; margin-bottom: 10px;">Mein größtes Problem (der Audience):</p>
+                    <input type="text" id="problem" placeholder="z.B. Zeit sparen, Geld verdienen, mehr Vertrauen..." style="width: 100%; padding: 10px; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; color: #e2e8f0; margin-bottom: 15px;">
+
+                    <p style="color: #fbbf24; font-weight: 600; margin-bottom: 10px;">Hook Framework (wähle aus):</p>
+                    <select id="framework" style="width: 100%; padding: 10px; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; color: #e2e8f0; margin-bottom: 15px;">
+                        <option value="">-- Wähle aus --</option>
+                        <option value="pattern">Pattern Interrupt</option>
+                        <option value="curiosity">Curiosity Gap</option>
+                        <option value="humor">Humor</option>
+                        <option value="honest">Honest Truth</option>
+                        <option value="contrarian">Bold Statement</option>
+                    </select>
+
+                    <button onclick="generateHook()" class="btn btn-primary" style="width: 100%; margin-top: 15px;">🚀 Hook generieren</button>
+
+                    <div id="hook-result" style="margin-top: 20px; padding: 15px; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; border-radius: 8px; display: none;">
+                        <p style="color: #10b981; font-weight: 600; margin-bottom: 10px;">Dein generierter Hook:</p>
+                        <p id="hook-text" style="color: #cbd5e1; font-size: 1.1em; font-weight: 600;"></p>
+                        <p style="color: #94a3b8; margin-top: 15px; font-size: 0.9em;">💡 Tipp: Das ist ein Anfang. Variiere ihn, teste ihn, iteriere basierend auf CTR!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: RESOURCES -->
+        <div id="resources" class="tab-content">
+            <div class="module">
+                <h3>📥 Deine Gratis-Ressourcen</h3>
+            </div>
+
+            <div class="download-section">
+                <h4>📋 Hook-Vorlagen & Swipe-File</h4>
+                <p style="color: #cbd5e1; margin: 15px 0;">100+ vorgefertigte Hooks, kategorisiert nach Framework und Industrie. Copy-Paste und adaptiere sie:</p>
+                <div class="download-buttons">
+                    <button class="btn btn-primary" onclick="downloadResource('hooks-swipe-file')">📥 Hook Swipe-File (Google Docs)</button>
+                    <button class="btn btn-secondary" onclick="downloadResource('hooks-checklist')">✅ Hook Checklist (PDF)</button>
+                </div>
+            </div>
+
+            <div class="download-section">
+                <h4>📊 Hook Performance Tracker</h4>
+                <p style="color: #cbd5e1; margin: 15px 0;">Spreadsheet zum Tracken deiner Hook Tests (CTR, CPA, Winner-Analyse):</p>
+                <div class="download-buttons">
+                    <button class="btn btn-primary" onclick="downloadResource('hook-tracker')">📥 Hook Tracker Template (Google Sheets)</button>
+                </div>
+            </div>
+
+            <div class="download-section">
+                <h4>🎨 Hook Framework Poster</h4>
+                <p style="color: #cbd5e1; margin: 15px 0;">Visuelles Poster aller 9 Hook Frameworks zum Ausdrucken oder als Desktop-Hintergrund:</p>
+                <div class="download-buttons">
+                    <button class="btn btn-primary" onclick="downloadResource('hook-framework-poster')">📥 Hook Frameworks Poster (PDF)</button>
+                </div>
+            </div>
+
+            <div class="download-section">
+                <h4>📚 Hook Psychology Deep Dive (Advanced)</h4>
+                <p style="color: #cbd5e1; margin: 15px 0;">Wissenschaftlich-basiertes E-Book mit psychologischen Hintergründen (nur für Premium-Kurse):</p>
+                <div class="download-buttons">
+                    <button class="btn btn-secondary" onclick="upgradePrompt()">🔒 Upgrade zu Premium (kostenlos mit Membership)</button>
+                </div>
+            </div>
+
+            <div class="module" style="margin-top: 30px;">
+                <h3>🎓 Nächste Schritte</h3>
+                <p>Nach "The 3-Second Rule" solltest du:</p>
+                <ol style="margin-left: 20px; color: #cbd5e1; line-height: 2;">
+                    <li><strong>Kurs #2: ROAS Mastery</strong> – Lerne, wie du deine Hooks anhand von ROAS optimierst</li>
+                    <li><strong>Kurs #3: Creative Testing</strong> – Lerne das A/B-Test Framework für deine Hooks</li>
+                    <li><strong>Praktizieren:</strong> Schreibe 5 Hooks für dein Produkt + teste sie</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="course-container">
+        <div class="course-footer">
+            <h3>🎯 Fertig mit diesem Kurs?</h3>
+            <p>Du hast die Grundlagen der Hooks gelernt. Jetzt: <strong>Schreib deine ersten Hooks und teste sie!</strong></p>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="markComplete()">✅ Kurs als abgeschlossen markieren</button>
+                <button class="btn btn-secondary" onclick="goToNextCourse()">→ Nächster Kurs: ROAS Mastery</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // TAB SWITCHING
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // HOOK GENERATOR
+        function generateHook() {
+            const product = document.getElementById('product').value;
+            const problem = document.getElementById('problem').value;
+            const framework = document.getElementById('framework').value;
+
+            if (!product || !problem || !framework) {
+                alert('Bitte alle Felder ausfüllen!');
+                return;
+            }
+
+            let hook = '';
+            switch(framework) {
+                case 'pattern':
+                    hook = `${product} dass ${problem} innerhalb von ${Math.floor(Math.random() * 7 + 3)} Tagen löst (Spoiler: Fast niemand weiß davon)`;
+                    break;
+                case 'curiosity':
+                    hook = `Das #1 Geheimnis: Wie man ${problem} mit ${product} löst (Dein Boss will das nicht, dass du das weißt)`;
+                    break;
+                case 'humor':
+                    hook = `Wir verkaufen ${product}. Ja, wirklich. Und es löst ${problem} besser als Kaffee.`;
+                    break;
+                case 'honest':
+                    hook = `Wir haben $50k verloren, bevor wir kapiert haben, wie man ${problem} mit ${product} wirklich löst.`;
+                    break;
+                case 'contrarian':
+                    hook = `${problem} ist nicht dein Problem. Dein Problem ist, dass du ${product} nicht nutzt.`;
+                    break;
+            }
+
+            document.getElementById('hook-text').innerText = hook;
+            document.getElementById('hook-result').style.display = 'block';
+        }
+
+        // DOWNLOAD RESOURCES
+        function downloadResource(type) {
+            alert(`📥 "${type}" wird heruntergeladen...
+
+(In echter Version: PDF/Google Sheets-Link)
+
+Diese Features sind in der vollständigen SignalOne Academy verfügbar.`);
+        }
+
+        // UPGRADE PROMPT
+        function upgradePrompt() {
+            alert('🔓 Upgrade zu SignalOne Academy Premium für:
+- Advanced Kurse
+- Live Group Q&As
+- Personalisierte Templates
+- Zertifikat
+
+Kommt bald!');
+        }
+
+        // MARK COMPLETE
+        function markComplete() {
+            localStorage.setItem('course-1-complete', 'true');
+            document.querySelector('.progress-fill').style.width = '100%';
+            document.getElementById('progress-text').innerText = '6/6 abgeschlossen';
+            alert('✅ Glückwunsch! Du hast "The 3-Second Rule" abgeschlossen!');
+        }
+
+        // GO TO NEXT COURSE
+        function goToNextCourse() {
+            alert('→ Nächster Kurs: ROAS Mastery (90 min)
+
+Öffnet die Academy und wähle Kurs #2...');
+        }
+
+        // CHECKBOX TRACKING
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'checkbox') {
+                const completed = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
+                const total = document.querySelectorAll('.checklist-item input[type="checkbox"]').length;
+                const percent = (completed / total) * 100;
+                document.getElementById('progress-fill').style.width = percent + '%';
+                document.getElementById('progress-text').innerText = `${completed}/${total} abgeschlossen`;
+            }
+        });
+    </script>
+</body>
+</html>

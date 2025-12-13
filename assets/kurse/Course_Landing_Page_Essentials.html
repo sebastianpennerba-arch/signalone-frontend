@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignalOne Academy - Landing Page Essentials</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .header {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .header h1 {
+            font-size: 2.3em;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(148, 163, 184, 0.1);
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+        .tab-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .tab-btn.active { color: #fbbf24; border-bottom-color: #fbbf24; }
+        .content { display: none; }
+        .content.active { display: block; }
+        .module {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .module h3 { color: #fbbf24; margin-bottom: 15px; font-size: 1.3em; }
+        .module p { line-height: 1.8; color: #cbd5e1; margin-bottom: 15px; }
+        .section-box {
+            background: rgba(51, 65, 85, 0.5);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .section-title { color: #10b981; font-weight: 600; font-size: 1.1em; margin-bottom: 10px; }
+        .example-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid #3b82f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .good { color: #10b981; }
+        .bad { color: #ef4444; }
+        .checklist {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 25px;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .checklist-item input {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #fbbf24;
+        }
+        .checklist-item label { flex: 1; cursor: pointer; color: #cbd5e1; }
+        .btn { padding: 12px 24px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        table { width: 100%; margin: 20px 0; border-collapse: collapse; }
+        table tr { border-bottom: 1px solid rgba(148, 163, 184, 0.2); }
+        table th { background: rgba(251, 191, 36, 0.1); padding: 12px; text-align: left; color: #fbbf24; font-weight: 600; }
+        table td { padding: 12px; color: #cbd5e1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Landing Page Essentials</h1>
+            <p style="color: #94a3b8;">The 7 Elements Every Converting Page Needs</p>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+                <div style="background: rgba(100, 116, 139, 0.2); padding: 10px 20px; border-radius: 8px;">⏱️ 45 Min</div>
+                <div style="background: rgba(100, 116, 139, 0.2); padding: 10px 20px; border-radius: 8px;">🟡 Intermediate</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">📖 Overview</button>
+            <button class="tab-btn" onclick="switchTab(1)">🎯 7 Elements</button>
+            <button class="tab-btn" onclick="switchTab(2)">🔥 Above the Fold</button>
+            <button class="tab-btn" onclick="switchTab(3)">📝 Copy Formula</button>
+            <button class="tab-btn" onclick="switchTab(4)">🎨 Design Rules</button>
+            <button class="tab-btn" onclick="switchTab(5)">✅ Audit Tool</button>
+            <button class="tab-btn" onclick="switchTab(6)">📥 Resources</button>
+        </div>
+
+        <!-- TAB 0 -->
+        <div class="content active">
+            <div class="module">
+                <h3>Why Most Landing Pages Fail</h3>
+                <p><strong>Harsh truth:</strong> Your ad gets 1000 clicks → Landing page converts 1.2% → 988 people leave without buying.</p>
+                <p style="margin-top: 15px;">That's not because your traffic is bad. It's because your landing page is missing the 7 essential elements.</p>
+                <p style="margin-top: 15px; color: #fbbf24; font-weight: 600;">This course teaches you those 7 elements. Nothing more, nothing less.</p>
+            </div>
+
+            <div class="module">
+                <h3>The Brutal Math</h3>
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Bad Page (1%)</th>
+                        <th>Good Page (5%)</th>
+                        <th>Great Page (10%)</th>
+                    </tr>
+                    <tr>
+                        <td>1000 Clicks</td>
+                        <td>10 Sales</td>
+                        <td>50 Sales</td>
+                        <td>100 Sales</td>
+                    </tr>
+                    <tr>
+                        <td>Revenue @ €50 AOV</td>
+                        <td>€500</td>
+                        <td>€2,500</td>
+                        <td>€5,000</td>
+                    </tr>
+                    <tr>
+                        <td>Ad Spend @ €1 CPC</td>
+                        <td>€1,000</td>
+                        <td>€1,000</td>
+                        <td>€1,000</td>
+                    </tr>
+                    <tr style="background: rgba(16, 185, 129, 0.1);">
+                        <td><strong>Profit</strong></td>
+                        <td style="color: #ef4444;"><strong>-€500</strong></td>
+                        <td style="color: #f59e0b;"><strong>+€1,500</strong></td>
+                        <td style="color: #10b981;"><strong>+€4,000</strong></td>
+                    </tr>
+                </table>
+                <p style="margin-top: 20px; color: #fbbf24; font-weight: 600;">Same traffic. Same ad. Different landing page = €4,500 difference.</p>
+            </div>
+
+            <div class="module">
+                <h3>What You'll Learn</h3>
+                <ul style="margin-left: 20px; color: #cbd5e1; line-height: 2;">
+                    <li>The 7 non-negotiable elements every landing page needs</li>
+                    <li>How to write copy that converts (with templates)</li>
+                    <li>Above-the-fold optimization (the 3-second test)</li>
+                    <li>Design principles that don't require a designer</li>
+                    <li>How to audit your current page (with scoring system)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TAB 1: 7 ELEMENTS -->
+        <div class="content">
+            <div class="module">
+                <h3>🎯 The 7 Essential Elements</h3>
+                <p>Every landing page that converts has ALL 7. Missing one = conversion rate drops 30-50%.</p>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">1️⃣ HEADLINE (The Hook)</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">What the visitor sees first. Must match ad copy + promise outcome.</p>
+                <div class="example-box">
+                    <p class="bad">❌ "Welcome to Our Store" (Generic, no promise)</p>
+                    <p class="good" style="margin-top: 10px;">✅ "Get 50% More Leads in 30 Days (Guaranteed)" (Specific outcome + proof)</p>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">2️⃣ SUBHEADLINE (The Proof)</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">Backs up the headline with credibility. Social proof or authority.</p>
+                <div class="example-box">
+                    <p class="bad">❌ "Our product is great" (Vague claim)</p>
+                    <p class="good" style="margin-top: 10px;">✅ "Used by 10,000+ marketers. 4.8★ average rating." (Numbers + proof)</p>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">3️⃣ HERO IMAGE/VIDEO (The Visual)</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">Shows the product in use. Real people, real results. NOT stock photos.</p>
+                <div class="example-box">
+                    <p class="bad">❌ Generic stock photo of smiling people</p>
+                    <p class="good" style="margin-top: 10px;">✅ Screenshot of dashboard + real customer using it</p>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">4️⃣ CTA BUTTON (The Action)</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">One primary CTA. Clear, contrasting color. Action-oriented copy.</p>
+                <div class="example-box">
+                    <p class="bad">❌ "Submit" / "Click Here" (Passive)</p>
+                    <p class="good" style="margin-top: 10px;">✅ "Get My Free Template" / "Start 14-Day Trial" (Active + benefit)</p>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">5️⃣ BENEFITS (Not Features)</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">3-5 bullet points. Focus on outcomes, not specs.</p>
+                <div class="example-box">
+                    <p class="bad">❌ "Has 50GB storage" (Feature)</p>
+                    <p class="good" style="margin-top: 10px;">✅ "Never lose a file again – 50GB keeps everything safe" (Benefit)</p>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">6️⃣ SOCIAL PROOF (Trust)</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">Reviews, testimonials, logos, ratings. Must be real and specific.</p>
+                <div class="example-box">
+                    <p class="bad">❌ "People love us!"</p>
+                    <p class="good" style="margin-top: 10px;">✅ "4.9/5 from 2,347 reviews" + real customer quote + photo</p>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">7️⃣ URGENCY/SCARCITY (FOMO)</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">Real deadline or limited quantity. Forces decision.</p>
+                <div class="example-box">
+                    <p class="bad">❌ "Sale ends soon!" (Vague, unbelievable)</p>
+                    <p class="good" style="margin-top: 10px;">✅ "Only 3 spots left for Dec 2025 cohort" (Specific + real)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: ABOVE THE FOLD -->
+        <div class="content">
+            <div class="module">
+                <h3>🔥 Above the Fold: The 3-Second Test</h3>
+                <p><strong>Above the fold = Everything visible without scrolling.</strong></p>
+                <p style="margin-top: 15px;">This is where 70% of visitors decide to stay or leave. You have 3 seconds.</p>
+            </div>
+
+            <div class="module">
+                <h3>The 3-Second Checklist</h3>
+                <p style="color: #fbbf24; margin-bottom: 15px;">Can a visitor answer these 3 questions in 3 seconds?</p>
+                <div class="section-box">
+                    <p style="color: #cbd5e1; font-size: 1.1em;"><strong>1. What is this?</strong></p>
+                    <p style="margin-top: 10px; color: #94a3b8;">→ Headline must be crystal clear</p>
+                </div>
+                <div class="section-box">
+                    <p style="color: #cbd5e1; font-size: 1.1em;"><strong>2. What's in it for me?</strong></p>
+                    <p style="margin-top: 10px; color: #94a3b8;">→ Subheadline shows benefit</p>
+                </div>
+                <div class="section-box">
+                    <p style="color: #cbd5e1; font-size: 1.1em;"><strong>3. What do I do next?</strong></p>
+                    <p style="margin-top: 10px; color: #94a3b8;">→ CTA button is obvious</p>
+                </div>
+            </div>
+
+            <div class="module">
+                <h3>Above-the-Fold Formula</h3>
+                <div style="background: rgba(51, 65, 85, 0.5); padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <p style="color: #fbbf24; font-weight: 600; margin-bottom: 15px;">The Winning Layout:</p>
+                    <div style="color: #cbd5e1; line-height: 2;">
+                        <strong>TOP:</strong> Logo + Trust Badges (SSL, Reviews)<br>
+                        <strong>CENTER LEFT:</strong> Headline + Subheadline + CTA Button<br>
+                        <strong>CENTER RIGHT:</strong> Hero Image/Video<br>
+                        <strong>BOTTOM:</strong> Social Proof Bar (logos or review count)
+                    </div>
+                </div>
+                <p style="color: #10b981; margin-top: 20px;">This layout converts at 5-10%. It's proven.</p>
+            </div>
+        </div>
+
+        <!-- TAB 3: COPY FORMULA -->
+        <div class="content">
+            <div class="module">
+                <h3>📝 The Copy Formula That Converts</h3>
+                <p>You don't need to be a copywriter. You need a formula.</p>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">PAS Framework (Problem-Agitate-Solution)</div>
+                <div style="margin-top: 15px; color: #cbd5e1;">
+                    <p><strong style="color: #fbbf24;">1. Problem:</strong> State the pain point</p>
+                    <p style="margin-top: 10px; font-style: italic;">"Tired of low ROAS on your Meta ads?"</p>
+
+                    <p style="margin-top: 15px;"><strong style="color: #fbbf24;">2. Agitate:</strong> Make it worse</p>
+                    <p style="margin-top: 10px; font-style: italic;">"You're wasting €1000s on bad creatives. Every day."</p>
+
+                    <p style="margin-top: 15px;"><strong style="color: #fbbf24;">3. Solution:</strong> Present your offer</p>
+                    <p style="margin-top: 10px; font-style: italic;">"Our AI finds winning hooks in 24h. Guaranteed ROAS increase or money back."</p>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">BAB Framework (Before-After-Bridge)</div>
+                <div style="margin-top: 15px; color: #cbd5e1;">
+                    <p><strong style="color: #fbbf24;">1. Before:</strong> Their current state</p>
+                    <p style="margin-top: 10px; font-style: italic;">"You're spending 10h/week on ad creative testing"</p>
+
+                    <p style="margin-top: 15px;"><strong style="color: #fbbf24;">2. After:</strong> Desired state</p>
+                    <p style="margin-top: 10px; font-style: italic;">"What if it took 10 minutes instead?"</p>
+
+                    <p style="margin-top: 15px;"><strong style="color: #fbbf24;">3. Bridge:</strong> How to get there</p>
+                    <p style="margin-top: 10px; font-style: italic;">"Our hook generator does it for you. Try it free."</p>
+                </div>
+            </div>
+
+            <div class="module" style="margin-top: 30px;">
+                <h3>Copy Template Generator</h3>
+                <div style="background: rgba(30, 41, 59, 0.6); padding: 20px; border-radius: 12px;">
+                    <p style="color: #fbbf24; margin-bottom: 10px;">Your Product/Service:</p>
+                    <input type="text" id="product" placeholder="z.B. Meta Ads Tool" style="width: 100%; padding: 10px; background: rgba(51, 65, 85, 0.8); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; color: #e2e8f0; margin-bottom: 15px;">
+
+                    <p style="color: #fbbf24; margin-bottom: 10px;">Main Benefit:</p>
+                    <input type="text" id="benefit" placeholder="z.B. 3x ROAS in 30 Tagen" style="width: 100%; padding: 10px; background: rgba(51, 65, 85, 0.8); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 8px; color: #e2e8f0; margin-bottom: 15px;">
+
+                    <button onclick="generateCopy()" class="btn" style="width: 100%;">✨ Generate Landing Page Copy</button>
+
+                    <div id="copy-result" style="margin-top: 20px; padding: 15px; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; border-radius: 8px; display: none;">
+                        <p style="color: #10b981; font-weight: 600;">Your Generated Copy:</p>
+                        <div id="generated-headline" style="margin-top: 15px; color: #fbbf24; font-size: 1.2em; font-weight: bold;"></div>
+                        <div id="generated-subheadline" style="margin-top: 10px; color: #cbd5e1;"></div>
+                        <div id="generated-cta" style="margin-top: 15px; color: #10b981; font-weight: 600;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: DESIGN RULES -->
+        <div class="content">
+            <div class="module">
+                <h3>🎨 Design Rules (No Designer Needed)</h3>
+                <p>You don't need Figma skills. You need these 5 rules.</p>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">Rule #1: One CTA Color (Everywhere)</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">Pick ONE button color. Use it for ALL CTAs. Make it contrast with background.</p>
+                <p style="margin-top: 10px; color: #fbbf24;">✅ Example: Orange buttons on dark blue background</p>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">Rule #2: White Space = Good</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">Don't cram everything together. Space = clarity = higher conversion.</p>
+                <p style="margin-top: 10px; color: #fbbf24;">✅ Minimum 40px padding around sections</p>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">Rule #3: Max 2 Fonts</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">Headlines: Bold sans-serif. Body: Regular sans-serif. That's it.</p>
+                <p style="margin-top: 10px; color: #fbbf24;">✅ Example: Headline = Inter Bold, Body = Inter Regular</p>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">Rule #4: Mobile First</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">70% of traffic is mobile. Design for phone, then adapt to desktop.</p>
+                <p style="margin-top: 10px; color: #fbbf24;">✅ Test every page on your phone BEFORE publishing</p>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">Rule #5: Load Speed < 3 Seconds</div>
+                <p style="color: #cbd5e1; margin-top: 10px;">Every second = 7% conversion loss. Compress images. No autoplay videos above fold.</p>
+                <p style="margin-top: 10px; color: #fbbf24;">✅ Test with PageSpeed Insights</p>
+            </div>
+        </div>
+
+        <!-- TAB 5: AUDIT TOOL -->
+        <div class="content">
+            <div class="module">
+                <h3>✅ Landing Page Audit Checklist</h3>
+                <p style="color: #fbbf24; margin-bottom: 20px;">Score your current landing page. Each checkbox = 1 point.</p>
+            </div>
+
+            <div class="checklist">
+                <h4 style="color: #fbbf24; margin-bottom: 20px;">Above the Fold (0-7 points)</h4>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit1">
+                    <label for="audit1">Headline clearly states outcome/benefit</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit2">
+                    <label for="audit2">Subheadline includes social proof or authority</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit3">
+                    <label for="audit3">Hero image/video shows product in use (not stock)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit4">
+                    <label for="audit4">CTA button is visible + contrasting color</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit5">
+                    <label for="audit5">CTA copy is action-oriented (not "Submit")</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit6">
+                    <label for="audit6">Trust badges visible (SSL, reviews, logos)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit7">
+                    <label for="audit7">Page loads in < 3 seconds on mobile</label>
+                </div>
+
+                <h4 style="color: #fbbf24; margin: 30px 0 20px 0;">Below the Fold (0-8 points)</h4>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit8">
+                    <label for="audit8">3-5 benefit bullets (not feature lists)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit9">
+                    <label for="audit9">Social proof section (reviews/testimonials)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit10">
+                    <label for="audit10">Testimonials include name + photo</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit11">
+                    <label for="audit11">Urgency/scarcity element present (real)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit12">
+                    <label for="audit12">FAQ section answers objections</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit13">
+                    <label for="audit13">Second CTA at bottom of page</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit14">
+                    <label for="audit14">Mobile responsive (all elements work on phone)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="audit15">
+                    <label for="audit15">No distractions (no nav menu, no external links)</label>
+                </div>
+            </div>
+
+            <div class="module" style="margin-top: 30px;">
+                <h3>Your Score:</h3>
+                <div style="background: rgba(51, 65, 85, 0.5); padding: 20px; border-radius: 12px; margin-top: 15px;">
+                    <p style="color: #cbd5e1;"><strong>13-15 points:</strong> <span style="color: #10b981;">Excellent. Minor optimizations only.</span></p>
+                    <p style="color: #cbd5e1; margin-top: 10px;"><strong>10-12 points:</strong> <span style="color: #fbbf24;">Good. Fix 2-3 items to hit 5%+ conversion.</span></p>
+                    <p style="color: #cbd5e1; margin-top: 10px;"><strong>7-9 points:</strong> <span style="color: #f59e0b;">Needs work. Rebuild key sections.</span></p>
+                    <p style="color: #cbd5e1; margin-top: 10px;"><strong>< 7 points:</strong> <span style="color: #ef4444;">Start from scratch. Use templates.</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: RESOURCES -->
+        <div class="content">
+            <div class="module">
+                <h3>📥 Free Resources</h3>
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 25px; margin-bottom: 20px;">
+                    <h4 style="color: #10b981; margin-bottom: 15px;">Landing Page Template (Figma)</h4>
+                    <p style="color: #cbd5e1; margin-bottom: 15px;">Plug-and-play template with all 7 elements. Copy → Customize → Launch:</p>
+                    <button class="btn" onclick="alert('📥 Template wird heruntergeladen...')">📥 Download Template</button>
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 25px; margin-bottom: 20px;">
+                    <h4 style="color: #10b981; margin-bottom: 15px;">Copy Swipe File</h4>
+                    <p style="color: #cbd5e1; margin-bottom: 15px;">50+ high-converting headlines, subheadlines, CTAs organized by industry:</p>
+                    <button class="btn" onclick="alert('📥 Swipe File wird heruntergeladen...')">📥 Download Swipe File</button>
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 25px;">
+                    <h4 style="color: #10b981; margin-bottom: 15px;">Audit Checklist (PDF)</h4>
+                    <p style="color: #cbd5e1; margin-bottom: 15px;">Printable 15-point checklist for quick audits:</p>
+                    <button class="btn" onclick="alert('📥 Checklist wird heruntergeladen...')">📥 Download Checklist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.content');
+
+        function switchTab(index) {
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            tabs[index].classList.add('active');
+            contents[index].classList.add('active');
+        }
+
+        function generateCopy() {
+            const product = document.getElementById('product').value;
+            const benefit = document.getElementById('benefit').value;
+
+            if (!product || !benefit) {
+                alert('Bitte beide Felder ausfüllen!');
+                return;
+            }
+
+            const headline = `${benefit} with ${product}`;
+            const subheadline = `Join 1000+ customers who already use ${product} to achieve real results`;
+            const cta = `Get ${product} Now (Risk-Free)`;
+
+            document.getElementById('generated-headline').innerText = headline;
+            document.getElementById('generated-subheadline').innerText = subheadline;
+            document.getElementById('generated-cta').innerText = `CTA Button: "${cta}"`;
+            document.getElementById('copy-result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

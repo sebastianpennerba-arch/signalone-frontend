@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignalOne Academy - Psychology of Conversion</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .header {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .header h1 {
+            font-size: 2.3em;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(148, 163, 184, 0.1);
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+        .tab-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .tab-btn.active {
+            color: #fbbf24;
+            border-bottom-color: #fbbf24;
+        }
+        .content {
+            display: none;
+        }
+        .content.active { display: block; }
+        .module {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .module h3 { color: #fbbf24; margin-bottom: 15px; font-size: 1.3em; }
+        .module p { line-height: 1.8; color: #cbd5e1; margin-bottom: 15px; }
+        .trigger-box {
+            background: rgba(51, 65, 85, 0.5);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .trigger-title { color: #10b981; font-weight: 600; font-size: 1.1em; }
+        .example { color: #fbbf24; margin-top: 10px; font-style: italic; }
+        .checklist { background: rgba(30, 41, 59, 0.6); border-radius: 12px; padding: 25px; }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .checklist-item input { width: 20px; height: 20px; margin-right: 15px; cursor: pointer; accent-color: #fbbf24; }
+        .checklist-item label { flex: 1; cursor: pointer; color: #cbd5e1; }
+        .btn { padding: 12px 24px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Psychology of Conversion</h1>
+            <p style="color: #94a3b8;">How to Build Ads People Actually Buy From</p>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+                <div style="background: rgba(100, 116, 139, 0.2); padding: 10px 20px; border-radius: 8px;">⏱️ 75 Min</div>
+                <div style="background: rgba(100, 116, 139, 0.2); padding: 10px 20px; border-radius: 8px;">📚 8 Module</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">📖 Overview</button>
+            <button class="tab-btn" onclick="switchTab(1)">🎯 3 Triggers</button>
+            <button class="tab-btn" onclick="switchTab(2)">😊 Social Proof</button>
+            <button class="tab-btn" onclick="switchTab(3)">⚡ Loss Aversion</button>
+            <button class="tab-btn" onclick="switchTab(4)">❓ Curiosity</button>
+            <button class="tab-btn" onclick="switchTab(5)">✅ Audit</button>
+            <button class="tab-btn" onclick="switchTab(6)">📥 Resources</button>
+        </div>
+
+        <!-- TAB 0 -->
+        <div class="content active">
+            <div class="module">
+                <h3>The Science Behind Conversion</h3>
+                <p>Most ads fail because they appeal to logic. But 95% of purchase decisions are emotional (irrational). This course teaches you the 3 psychological triggers that override logic and force a buying decision.</p>
+                <p style="color: #fbbf24; margin-top: 20px; font-weight: 600;">The Big 3:</p>
+                <ul style="margin-left: 20px; color: #cbd5e1; line-height: 2;">
+                    <li><strong style="color: #fbbf24;">Social Proof</strong> – "Everyone else is buying this"</li>
+                    <li><strong style="color: #fbbf24;">Loss Aversion</strong> – "I'll lose out if I don't buy"</li>
+                    <li><strong style="color: #fbbf24;">Curiosity</strong> – "I need to know the answer"</li>
+                </ul>
+                <p style="margin-top: 20px;">The best ads combine all 3. The worst ignore all 3.</p>
+            </div>
+
+            <div class="module">
+                <h3>Why 90% of Ads Fail</h3>
+                <div style="background: rgba(139, 92, 246, 0.1); border-left: 4px solid #d8b4fe; padding: 15px; border-radius: 8px; color: #cbd5e1;">
+                    <strong style="color: #d8b4fe;">Bad Ad:</strong> "Buy our product. It's really good."<br><br>
+                    <strong style="color: #fbbf24;">Why it fails:</strong> No psychology, just a demand. No reason to believe, no urgency, no proof.
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; padding: 15px; border-radius: 8px; margin-top: 15px; color: #cbd5e1;">
+                    <strong style="color: #10b981;">Good Ad:</strong> "1000+ customers raving about this. Limited stock left. See why."<br><br>
+                    <strong style="color: #fbbf24;">Why it works:</strong> Social Proof (1000+ customers), Loss Aversion (limited stock), Curiosity (see why)
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 1 -->
+        <div class="content">
+            <div class="module">
+                <h3>The 3 Psychological Triggers (In Depth)</h3>
+                <p>These are the only 3 things that drive conversion. Everything else is noise.</p>
+            </div>
+
+            <div class="trigger-box">
+                <div class="trigger-title">1️⃣ SOCIAL PROOF (Trust + Confidence)</div>
+                <p style="margin-top: 10px; color: #cbd5e1;">Your brain uses others as a shortcut for decision-making. If 1000 people bought it = safe to buy.</p>
+                <div class="example">📍 "5000+ ⭐⭐⭐⭐⭐ reviews" // "Join 50k happy customers"</div>
+            </div>
+
+            <div class="trigger-box">
+                <div class="trigger-title">2️⃣ LOSS AVERSION (Fear of Missing Out)</div>
+                <p style="margin-top: 10px; color: #cbd5e1;">Your brain hates losing. Loss feels 2x more painful than winning. A good hook triggers this immediately.</p>
+                <div class="example">📍 "Only 5 spots left" // "This deal ends TODAY"</div>
+            </div>
+
+            <div class="trigger-box">
+                <div class="trigger-title">3️⃣ CURIOSITY (Open Loops)</div>
+                <p style="margin-top: 10px; color: #cbd5e1;">Your brain hates incomplete information. A good ad leaves a question unanswered = brain forces you to click.</p>
+                <div class="example">📍 "Here's the secret that 99% don't know..." // "This one weird trick..."</div>
+            </div>
+
+            <div class="module" style="margin-top: 30px;">
+                <h3>Which Trigger for Your Product?</h3>
+                <table style="width: 100%; margin-top: 20px;">
+                    <tr style="border-bottom: 2px solid #fbbf24;">
+                        <td style="padding: 10px; color: #fbbf24; font-weight: 600;">Product Type</td>
+                        <td style="padding: 10px; color: #fbbf24; font-weight: 600;">Best Trigger</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(148, 163, 184, 0.2);">
+                        <td style="padding: 10px; color: #cbd5e1;">Low-Price ($5–50)</td>
+                        <td style="padding: 10px; color: #10b981;">Social Proof + Loss Aversion</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(148, 163, 184, 0.2);">
+                        <td style="padding: 10px; color: #cbd5e1;">Mid-Price ($100–500)</td>
+                        <td style="padding: 10px; color: #10b981;">All 3 combined</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; color: #cbd5e1;">High-Ticket ($1000+)</td>
+                        <td style="padding: 10px; color: #10b981;">Social Proof (authority + case studies)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 2: SOCIAL PROOF -->
+        <div class="content">
+            <div class="module">
+                <h3>Social Proof: 5 Forms That Actually Work</h3>
+                <p>Not all social proof is equal. Some is 10x more effective.</p>
+                <div style="margin: 20px 0;">
+                    <div style="background: rgba(51, 65, 85, 0.5); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <strong style="color: #fbbf24;">1. Numbers (Reviews + Ratings)</strong><br>
+                        <p style="margin-top: 10px; color: #cbd5e1;">"4.8★ from 3,247 reviews"</p>
+                        <p style="margin-top: 10px; color: #94a3b8;"><em>Effectiveness:</em> 9/10 | <em>When:</em> Always use if you have it</p>
+                    </div>
+
+                    <div style="background: rgba(51, 65, 85, 0.5); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <strong style="color: #fbbf24;">2. Testimonials (Real Customer Quotes)</strong><br>
+                        <p style="margin-top: 10px; color: #cbd5e1;">"This changed my life! – Sarah M., NYC"</p>
+                        <p style="margin-top: 10px; color: #94a3b8;"><em>Effectiveness:</em> 8/10 | <em>When:</em> Emotional products</p>
+                    </div>
+
+                    <div style="background: rgba(51, 65, 85, 0.5); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <strong style="color: #fbbf24;">3. Case Studies (Detailed Stories)</strong><br>
+                        <p style="margin-top: 10px; color: #cbd5e1;">"John increased his revenue 3x in 90 days. Here's how..."</p>
+                        <p style="margin-top: 10px; color: #94a3b8;"><em>Effectiveness:</em> 10/10 | <em>When:</em> High-ticket / B2B</p>
+                    </div>
+
+                    <div style="background: rgba(51, 65, 85, 0.5); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <strong style="color: #fbbf24;">4. Authority (Celebrity / Expert)</strong><br>
+                        <p style="margin-top: 10px; color: #cbd5e1;">"As seen on Forbes" // "Recommended by doctors"</p>
+                        <p style="margin-top: 10px; color: #94a3b8;"><em>Effectiveness:</em> 9/10 | <em>When:</em> Trust is your blocker</p>
+                    </div>
+
+                    <div style="background: rgba(51, 65, 85, 0.5); padding: 15px; border-radius: 8px;">
+                        <strong style="color: #fbbf24;">5. Social Proof Badges</strong><br>
+                        <p style="margin-top: 10px; color: #cbd5e1;">#1 Seller on Amazon // 50k+ people use this monthly</p>
+                        <p style="margin-top: 10px; color: #94a3b8;"><em>Effectiveness:</em> 7/10 | <em>When:</em> Marketplace selling</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module">
+                <h3>How to Use Social Proof Without Looking Fake</h3>
+                <p><strong>❌ Wrong:</strong> "Everyone's buying this!" (generic, unbelievable)</p>
+                <p><strong>✅ Right:</strong> "4.8 from 2,347 real customers in Q4 2024" (specific, current, real numbers)</p>
+                <p style="margin-top: 20px; color: #fbbf24; font-weight: 600;">Rule: Be specific. Specificity = believability.</p>
+            </div>
+        </div>
+
+        <!-- TAB 3: LOSS AVERSION -->
+        <div class="content">
+            <div class="module">
+                <h3>Loss Aversion: Creating Urgency (The Ethical Way)</h3>
+                <p>Loss Aversion is powerful. But there's a line between "urgency" and "scammy".</p>
+
+                <div style="background: rgba(139, 92, 246, 0.1); border-left: 4px solid #d8b4fe; padding: 15px; border-radius: 8px; margin: 20px 0; color: #cbd5e1;">
+                    <strong style="color: #d8b4fe;">❌ Fake Urgency (Avoid):</strong><br>
+                    "Only 2 items left!" (But it's unlimited stock)<br>
+                    "Sale ends TODAY!" (It ends again tomorrow)<br>
+                    "Last chance!" (Used every day)
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; padding: 15px; border-radius: 8px; margin: 20px 0; color: #cbd5e1;">
+                    <strong style="color: #10b981;">✅ Real Urgency (Use):</strong><br>
+                    "Only 5 of 100 left in this batch" (True scarcity)<br>
+                    "Sale ends Dec 24 at 11:59pm" (Real deadline)<br>
+                    "Discount goes away when [X] inventory runs out" (Natural scarcity)
+                </div>
+
+                <p style="margin-top: 20px; color: #fbbf24; font-weight: 600;">The difference: Real urgency converts better BECAUSE it's real.</p>
+            </div>
+
+            <div class="module">
+                <h3>3 Types of Loss Aversion That Work</h3>
+                <div style="margin: 20px 0;">
+                    <div style="background: rgba(51, 65, 85, 0.5); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <strong style="color: #fbbf24;">1. Time-Based Loss</strong><br>
+                        <p style="margin-top: 10px; color: #cbd5e1;">"Offer expires Dec 31" / "Only during Black Friday"</p>
+                    </div>
+                    <div style="background: rgba(51, 65, 85, 0.5); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <strong style="color: #fbbf24;">2. Quantity-Based Loss</strong><br>
+                        <p style="margin-top: 10px; color: #cbd5e1;">"Only 10 available" / "Limited to 3 per customer"</p>
+                    </div>
+                    <div style="background: rgba(51, 65, 85, 0.5); padding: 15px; border-radius: 8px;">
+                        <strong style="color: #fbbf24;">3. Price-Based Loss</strong><br>
+                        <p style="margin-top: 10px; color: #cbd5e1;">"Price increases $50 tomorrow" / "Early bird price: $99 (normally $299)"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: CURIOSITY -->
+        <div class="content">
+            <div class="module">
+                <h3>The Curiosity Gap: Open Loops That Force Clicks</h3>
+                <p>The brain HATES unanswered questions. A good curiosity hook leaves the answer just out of reach.</p>
+
+                <div style="background: rgba(51, 65, 85, 0.5); padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <p style="color: #fbbf24; font-weight: 600; margin-bottom: 15px;">The Curiosity Formula:</p>
+                    <p style="color: #cbd5e1;"><strong>1. State a surprising fact or contradiction</strong><br>"Most people do [X]. But the best do [Y]."</p>
+                    <p style="color: #cbd5e1; margin-top: 15px;"><strong>2. Leave the "how" or "why" unanswered</strong><br>"See how inside..."</p>
+                    <p style="color: #cbd5e1; margin-top: 15px;"><strong>3. Make the curiosity relevant to their problem</strong><br>"This is why your ROAS is stuck at 2x"</p>
+                </div>
+
+                <p style="margin-top: 20px;">Examples that work:</p>
+                <ul style="margin-left: 20px; color: #cbd5e1; line-height: 2;">
+                    <li>"This is what Meta doesn't want you to know"</li>
+                    <li>"The #1 reason people fail at [thing]"</li>
+                    <li>"How [person] went from [bad] to [good] in [timeframe]"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TAB 5: AUDIT -->
+        <div class="content">
+            <div class="module">
+                <h3>🔍 Audit Your Current Ads</h3>
+            </div>
+
+            <div class="checklist">
+                <h4 style="color: #fbbf24; margin-bottom: 20px;">Your Ad Psychology Checklist</h4>
+                <div class="checklist-item">
+                    <input type="checkbox">
+                    <label>Ad includes social proof (reviews, ratings, testimonials)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox">
+                    <label>Ad creates urgency (deadline, scarcity, real or implied)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox">
+                    <label>Ad uses curiosity (open loop, unanswered question)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox">
+                    <label>Social proof is specific (not just "people love this")</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox">
+                    <label>Urgency is real (not daily fake urgency)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox">
+                    <label>Ad appeals to emotion, not just logic</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox">
+                    <label>Ad triggers at least 2 of the 3 psychological triggers</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox">
+                    <label>Ad addresses a real pain point (not generic benefits)</label>
+                </div>
+            </div>
+
+            <div class="module" style="margin-top: 30px;">
+                <p style="color: #fbbf24; font-weight: 600;">Score: __ / 8 checkboxes</p>
+                <ul style="margin-left: 20px; color: #cbd5e1; margin-top: 15px;">
+                    <li><strong>6–8:</strong> Your ads have strong psychology. Minor tweaks only.</li>
+                    <li><strong>4–5:</strong> Good start. Add 1–2 more triggers.</li>
+                    <li><strong>0–3:</strong> Redesign from scratch with psychology in mind.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TAB 6: RESOURCES -->
+        <div class="content">
+            <div class="module">
+                <h3>📥 Free Resources</h3>
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 25px; margin-bottom: 20px;">
+                    <h4 style="color: #10b981; margin-bottom: 15px;">Psychology Ad Audit Checklist</h4>
+                    <p style="color: #cbd5e1; margin-bottom: 15px;">25-point framework to audit your ads for psychological effectiveness:</p>
+                    <button class="btn" onclick="alert('📥 Checklist wird heruntergeladen...')">📥 Download Checklist (PDF)</button>
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 25px;">
+                    <h4 style="color: #10b981; margin-bottom: 15px;">Psychology Copy Swipe File</h4>
+                    <p style="color: #cbd5e1; margin-bottom: 15px;">100+ proven ad copies organized by psychological trigger:</p>
+                    <button class="btn" onclick="alert('📥 Copy-File wird heruntergeladen...')">📥 Download Swipe File (Google Docs)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.content');
+
+        function switchTab(index) {
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            tabs[index].classList.add('active');
+            contents[index].classList.add('active');
+        }
+    </script>
+</body>
+</html>
