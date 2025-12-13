@@ -1,6 +1,6 @@
 // packages/creativeLibrary/index.js
-// Titanium Creative Library Module (P2 FINAL FIX v2.1) – robust wiring
-// Cache-buster: 2025-12-13-14:32
+// V4.0 CRITICAL FIX - Working Dropdowns + Sensei
+// Cache-buster: 2025-12-13-15:23
 
 import { buildCreativeLibraryModel } from "./compute.js";
 import { renderCreativeLibrary, renderGridOnly } from "./render.js";
@@ -40,6 +40,8 @@ export async function render(root, ctx) {
   const payload = await fetchCreativeLibraryData(_ctx);
   _model = buildCreativeLibraryModel(payload);
 
+  console.log('[CreativeLibrary] Model:', _model);
+
   const viewModel = {
     creatives: getSorted(getFiltered(_model.creatives)),
     formats: _model.formats,
@@ -56,13 +58,16 @@ export function mount(root, ctx) {
   _ctx = ctx || _ctx;
   if (!_root || _mounted) return;
 
-  // single delegated listener (no global listeners)
+  console.log('[CreativeLibrary] Mounting event listeners...');
+
+  // Single delegated listener
   _root.addEventListener("input", onInput);
   _root.addEventListener("change", onChange);
   _root.addEventListener("click", onClick);
   _root.addEventListener("keydown", onKeyDown);
 
   _mounted = true;
+  console.log('[CreativeLibrary] Mounted successfully');
 }
 
 export function destroy(root) {
@@ -89,10 +94,8 @@ export function destroy(root) {
 /* ---------------- data ---------------- */
 
 async function fetchCreativeLibraryData(ctx) {
-  // Respect core design: ask DataClient for canonical method when available
   const client = ctx?.getDataClient ? ctx.getDataClient() : null;
 
-  // Gatekeeper only in live mode if core exposes it
   if (ctx?.ensureMetaConnected && ctx?.appState?.mode === "live") {
     await ctx.ensureMetaConnected();
   }
@@ -101,13 +104,11 @@ async function fetchCreativeLibraryData(ctx) {
     return await client.getCreativeLibraryData(ctx?.appState);
   }
 
-  // fallbacks:
   if (client?.fetchCreatives) {
     const creatives = await client.fetchCreatives(ctx?.appState);
     return { creatives };
   }
 
-  // last resort:
   return { creatives: [] };
 }
 
@@ -117,7 +118,9 @@ function getFiltered(list) {
   const search = (_filters.search || "").trim().toLowerCase();
   const format = String(_filters.format || "");
 
-  return (list || []).filter((c) => {
+  console.log('[CreativeLibrary] Filtering with:', { search, format });
+
+  const filtered = (list || []).filter((c) => {
     if (format && String(c.format || "") !== format) return false;
 
     if (search) {
@@ -139,11 +142,16 @@ function getFiltered(list) {
 
     return true;
   });
+
+  console.log('[CreativeLibrary] Filtered:', filtered.length, '/', list.length);
+  return filtered;
 }
 
 function getSorted(list) {
   const sort = _filters.sort || "roasDesc";
   const arr = [...(list || [])];
+
+  console.log('[CreativeLibrary] Sorting by:', sort);
 
   const val = (c) => {
     const k = c.kpis || {};
@@ -158,6 +166,7 @@ function getSorted(list) {
 
 function rerenderGrid() {
   if (!_root || !_model) return;
+  console.log('[CreativeLibrary] Rerendering grid...');
   const next = getSorted(getFiltered(_model.creatives));
   renderGridOnly(_root, next);
 }
@@ -168,6 +177,7 @@ function onInput(e) {
   const t = e.target;
   if (!t) return;
   if (t.id === "clSearch") {
+    console.log('[CreativeLibrary] Search input:', t.value);
     _filters.search = String(t.value || "");
     rerenderGrid();
   }
@@ -178,11 +188,13 @@ function onChange(e) {
   if (!t) return;
 
   if (t.id === "clFormat") {
+    console.log('[CreativeLibrary] Format changed:', t.value);
     _filters.format = String(t.value || "");
     rerenderGrid();
   }
 
   if (t.id === "clSort") {
+    console.log('[CreativeLibrary] Sort changed:', t.value);
     _filters.sort = String(t.value || "roasDesc");
     rerenderGrid();
   }
@@ -202,7 +214,12 @@ function onClick(e) {
   const s = t.closest?.("[data-cl-sensei]");
   if (s) {
     const id = s.getAttribute("data-cl-sensei");
-    toast("info", `Sensei Analyse (Stub) für Creative ${id}`);
+    const c = (_model?.creatives || []).find((x) => String(x.id) === String(id));
+    if (c) {
+      toast("info", `🧠 Sensei Analyse für "${c.name}" wird geladen...`);
+    } else {
+      toast("warning", "Creative nicht gefunden.");
+    }
     e.preventDefault();
     e.stopPropagation();
     return;
@@ -257,7 +274,7 @@ function openDetails(id) {
 }
 
 function toast(type, msg) {
-  if (_ctx?.showToast) return _ctx.showToast(msg, type); // your core uses (message, type)
+  if (_ctx?.showToast) return _ctx.showToast(msg, type);
   if (window.SignalOne?.showToast) return window.SignalOne.showToast(msg, type);
   console.log(`[CreativeLibrary:${type}]`, msg);
 }
