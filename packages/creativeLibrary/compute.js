@@ -113,9 +113,8 @@ function normalizeCreative(raw, idx) {
 }
 
 function buildFallbackCreatives() {
-  // Previously thumbUrl: "" -> that caused "no images".
-  // Now we keep data-uri thumbnails so the UI always has a "real" image.
-  return [
+  // FIX: Demo creatives must go through normalizeCreative() to ensure proper kpis structure
+  const rawDemoData = [
     {
       id: "demo-1",
       name: "UGC Hook v3 – Main",
@@ -153,6 +152,9 @@ function buildFallbackCreatives() {
       status: "testing",
     },
   ];
+  
+  // Pass through normalizeCreative to ensure consistent structure
+  return rawDemoData.map((item, idx) => normalizeCreative(item, idx));
 }
 
 export function buildCreativeLibraryModel(dataClientPayload) {
