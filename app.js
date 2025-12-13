@@ -39,6 +39,43 @@ const MODULE_LOADERS = {
 
 let currentModule = null;
 
+/* =========================================================
+   P2 ADD — MODULE CONTEXT (nur Logik, keine Optik)
+   ========================================================= */
+function createModuleContext() {
+  return {
+    appState: AppState,
+
+    getDataClient() {
+      return DataLayer;
+    },
+
+    async ensureMetaConnected() {
+      if (AppState.mode === 'live' && !AppState.metaConnected) {
+        showToast('Bitte zuerst Meta verbinden', 'warning');
+        throw new Error('Meta not connected');
+      }
+    },
+
+    showToast,
+    showGlobalLoader,
+    hideGlobalLoader,
+
+    openSenseiForCreative(creative, health) {
+      if (window.openModal) {
+        const html = `
+          <p><strong>${health.label}</strong> – Score ${health.score}</p>
+          <p>${health.reasonShort}</p>
+          <p style="margin-top:8px;font-size:12px;color:#6b7280;">
+            ${health.reasonLong}
+          </p>
+        `;
+        openModal('Sensei Analyse (Demo)', html);
+      }
+    }
+  };
+}
+
 // ===================================
 // CORE API EVENT HANDLER
 // ===================================
@@ -224,7 +261,7 @@ function updateWelcomeScreenContent() {
 }
 
 // ===================================
-// MODULE LOADING
+// MODULE LOADING (P2 MODIFY – Lifecycle)
 // ===================================
 
 async function loadModule(moduleId) {
@@ -256,11 +293,22 @@ async function loadModule(moduleId) {
     
     const module = await loader();
     currentModule = module;
+
+    const ctx = createModuleContext();
+    
+    if (module.load) {
+      await module.load(ctx);
+    }
     
     if (module.render) {
-      await module.render(container, AppState);
+      // bevorzugt neuer Kontext, Fallback auf AppState
+      await module.render(container, ctx) ?? await module.render(container, AppState);
     } else {
       container.innerHTML = '<div style="text-align: center; padding: 4rem;">Modul hat keine render() Funktion.</div>';
+    }
+
+    if (module.mount) {
+      module.mount(container, ctx);
     }
     
   } catch (error) {
@@ -668,7 +716,7 @@ function closeModal() {
 // EVENT LISTENERS
 // ===================================
 
-window.addEventListener('appStateChange', (event) => {
+window.addEventListener('appStateChange', () => {
   updateStatusDots();
 });
 
