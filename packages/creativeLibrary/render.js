@@ -1,5 +1,5 @@
 // packages/creativeLibrary/render.js
-// Titanium Creative Library Renderer (P2 FINAL FIX)
+// V3.0 ELITE VISUAL UPGRADE - Premium Quality
 
 function esc(s) {
   return String(s ?? "")
@@ -41,6 +41,45 @@ function statusClass(status) {
   return "cl-status-neutral";
 }
 
+function getFormatIcon(format) {
+  const f = (format || "").toLowerCase();
+  if (f.includes("video") || f.includes("reel")) return "🎥";
+  if (f.includes("story")) return "📱";
+  if (f.includes("carousel")) return "🎫";
+  if (f.includes("static") || f.includes("image")) return "🖼️";
+  return "🎨";
+}
+
+function getROASColor(roas) {
+  const r = Number(roas);
+  if (r >= 4.0) return "#10B981"; // Green
+  if (r >= 2.5) return "#F59E0B"; // Orange
+  return "#EF4444"; // Red
+}
+
+function getThumbnailUrl(creative) {
+  // If creative has thumbnail, use it
+  if (creative.thumbUrl && creative.thumbUrl !== "" && !creative.thumbUrl.includes("placeholder")) {
+    return creative.thumbUrl;
+  }
+  
+  // Use Unsplash random image with seed based on creative ID for consistency
+  const seed = creative.id || Math.random().toString(36).substring(7);
+  const width = 600;
+  const height = 400;
+  
+  // Keywords based on format
+  const format = (creative.format || "").toLowerCase();
+  let keyword = "marketing";
+  
+  if (format.includes("video") || format.includes("reel")) keyword = "video,production";
+  else if (format.includes("story")) keyword = "mobile,app";
+  else if (format.includes("carousel")) keyword = "product,showcase";
+  else if (format.includes("static") || format.includes("image")) keyword = "design,creative";
+  
+  return `https://source.unsplash.com/random/${width}x${height}/?${keyword}&sig=${seed}`;
+}
+
 export function renderCreativeLibrary(root, viewModel) {
   const { creatives = [], summary = {}, formats = [], activeFilters = {} } = viewModel || {};
   const hasData = creatives.length > 0;
@@ -62,7 +101,7 @@ export function renderCreativeLibrary(root, viewModel) {
         </div>
         <div class="data-header-right">
           <button type="button" id="clNewCreativeBtn" class="data-btn-primary">
-            <span>+ Upload</span>
+            <span>📤 Upload</span>
           </button>
         </div>
       </div>
@@ -73,7 +112,7 @@ export function renderCreativeLibrary(root, viewModel) {
             type="search"
             id="clSearch"
             class="cl-input"
-            placeholder="Search name, brand, campaign, tags..."
+            placeholder="🔍 Search name, brand, campaign, tags..."
             value="${esc(search)}"
             autocomplete="off"
           />
@@ -103,8 +142,12 @@ export function renderCreativeLibrary(root, viewModel) {
         </div>
       ` : `
         <div class="cl-empty">
+          <div class="cl-empty-icon">🎨</div>
           <div class="cl-empty-title">Keine Creatives gefunden</div>
-          <div class="cl-empty-text">Passe Filter oder Suchbegriff an.</div>
+          <div class="cl-empty-text">Passe Filter oder Suchbegriff an oder lade dein erstes Creative hoch.</div>
+          <button type="button" class="cl-empty-btn" onclick="document.getElementById('clNewCreativeBtn').click()">
+            📤 Creative hochladen
+          </button>
         </div>
       `}
     </div>
@@ -122,17 +165,22 @@ function renderCard(c) {
   const roas = Number(k.roas || 0);
   const ctr = Number(k.ctr || 0) * 100;
   const cpm = Number(k.cpm || 0);
+  const spend = Number(k.spend || 0);
+  
+  const roasColor = getROASColor(roas);
+  const thumbUrl = getThumbnailUrl(c);
+  const formatIcon = getFormatIcon(c.format);
 
-  // IMPORTANT: give every interactive element a deterministic hook
   return `
     <div class="cl-card" data-cl-card="${esc(c.id)}" role="button" tabindex="0">
-      <div class="cl-thumb" style="background-image:url('${esc(c.thumbUrl)}')">
+      <div class="cl-thumb" style="background-image:url('${esc(thumbUrl)}')">
+        <div class="cl-thumb-overlay"></div>
         <div class="cl-thumb-top">
           <button class="cl-select" type="button" data-cl-select="${esc(c.id)}" aria-label="Select creative"></button>
           <span class="cl-status ${statusClass(c.status)}">${esc(statusLabel(c.status))}</span>
         </div>
         <div class="cl-thumb-bottom">
-          <span class="cl-format">${esc(c.format || "Creative")}</span>
+          <span class="cl-format">${formatIcon} ${esc(c.format || "Creative")}</span>
         </div>
       </div>
 
@@ -147,27 +195,31 @@ function renderCard(c) {
         </div>
 
         <div class="cl-kpis">
-          <div class="cl-chip">
+          <div class="cl-chip cl-chip-roas" style="border-color: ${roasColor};">
+            <div class="cl-chip-icon">📊</div>
             <div class="cl-chip-label">ROAS</div>
-            <div class="cl-chip-value">${formatNumber(roas, 2)}×</div>
+            <div class="cl-chip-value" style="color: ${roasColor};">${formatNumber(roas, 2)}×</div>
           </div>
-          <div class="cl-chip">
+          <div class="cl-chip cl-chip-spend">
+            <div class="cl-chip-icon">💰</div>
             <div class="cl-chip-label">Spend</div>
-            <div class="cl-chip-value">${formatCurrency(k.spend || 0)}</div>
+            <div class="cl-chip-value">${formatCurrency(spend)}</div>
           </div>
-          <div class="cl-chip">
+          <div class="cl-chip cl-chip-ctr">
+            <div class="cl-chip-icon">🎯</div>
             <div class="cl-chip-label">CTR</div>
             <div class="cl-chip-value">${formatNumber(ctr, 1)}%</div>
           </div>
-          <div class="cl-chip">
+          <div class="cl-chip cl-chip-cpm">
+            <div class="cl-chip-icon">💸</div>
             <div class="cl-chip-label">CPM</div>
             <div class="cl-chip-value">${formatCurrency(cpm)}</div>
           </div>
         </div>
 
         <div class="cl-actions">
-          <button type="button" class="cl-btn cl-btn-ghost" data-cl-sensei="${esc(c.id)}">Sensei</button>
-          <button type="button" class="cl-btn cl-btn-soft" data-cl-details="${esc(c.id)}">Details</button>
+          <button type="button" class="cl-btn cl-btn-ghost" data-cl-sensei="${esc(c.id)}">🧠 Sensei</button>
+          <button type="button" class="cl-btn cl-btn-primary" data-cl-details="${esc(c.id)}">→ Details</button>
         </div>
       </div>
     </div>
