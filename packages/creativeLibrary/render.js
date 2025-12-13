@@ -1,5 +1,5 @@
 // packages/creativeLibrary/render.js
-// V5.0 NO EXTERNAL IMAGES - Pure CSS Fallback Only
+// V6.0 ELITE - Logo + Demo Badge + Motion.app Level
 
 function esc(s) {
   return String(s ?? "")
@@ -58,21 +58,19 @@ function getROASColor(roas) {
 }
 
 function getGradientForId(id) {
-  // Generate gradient based on creative ID
   const gradients = [
-    "linear-gradient(135deg, #4F80FF 0%, #8B5CF6 100%)", // Blue-Purple
-    "linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)", // Red-Yellow
-    "linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%)", // Teal-Green
-    "linear-gradient(135deg, #F093FB 0%, #F5576C 100%)", // Pink-Red
-    "linear-gradient(135deg, #4FACFE 0%, #00F2FE 100%)", // Blue-Cyan
-    "linear-gradient(135deg, #43E97B 0%, #38F9D7 100%)", // Green-Cyan
-    "linear-gradient(135deg, #FA709A 0%, #FEE140 100%)", // Pink-Yellow
-    "linear-gradient(135deg, #30CFD0 0%, #330867 100%)", // Cyan-Purple
-    "linear-gradient(135deg, #A8EDEA 0%, #FED6E3 100%)", // Mint-Pink
-    "linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%)", // Coral-Peach
+    "linear-gradient(135deg, #4F80FF 0%, #8B5CF6 100%)",
+    "linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%)",
+    "linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%)",
+    "linear-gradient(135deg, #F093FB 0%, #F5576C 100%)",
+    "linear-gradient(135deg, #4FACFE 0%, #00F2FE 100%)",
+    "linear-gradient(135deg, #43E97B 0%, #38F9D7 100%)",
+    "linear-gradient(135deg, #FA709A 0%, #FEE140 100%)",
+    "linear-gradient(135deg, #30CFD0 0%, #330867 100%)",
+    "linear-gradient(135deg, #A8EDEA 0%, #FED6E3 100%)",
+    "linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%)",
   ];
   
-  // Hash the ID to get consistent gradient per creative
   let hash = 0;
   for (let i = 0; i < id.length; i++) {
     hash = ((hash << 5) - hash) + id.charCodeAt(i);
@@ -173,11 +171,11 @@ function renderCard(c) {
   const formatIcon = getFormatIcon(c.format);
   const gradient = getGradientForId(c.id);
 
-  // NO external images - always show logo
   return `
     <div class="cl-card" data-cl-card="${esc(c.id)}" role="button" tabindex="0">
-      <div class="cl-thumb cl-thumb-logo" style="background: ${gradient};">
-        <div class="cl-thumb-logo-text">S1</div>
+      <div class="cl-thumb" style="background: ${gradient};">
+        <img src="/assets/logo.png" alt="SignalOne Logo" class="cl-thumb-logo-img" />
+        <div class="cl-thumb-demo-badge">Demo Bild</div>
         <div class="cl-thumb-overlay"></div>
         <div class="cl-thumb-top">
           <button class="cl-select" type="button" data-cl-select="${esc(c.id)}" aria-label="Select creative"></button>
@@ -222,8 +220,12 @@ function renderCard(c) {
         </div>
 
         <div class="cl-actions">
-          <button type="button" class="cl-btn cl-btn-ghost" data-cl-sensei="${esc(c.id)}">🧠 Sensei</button>
-          <button type="button" class="cl-btn cl-btn-primary" data-cl-details="${esc(c.id)}">→ Details</button>
+          <button type="button" class="cl-btn cl-btn-ghost" data-cl-sensei="${esc(c.id)}">
+            🧠 Sensei
+          </button>
+          <button type="button" class="cl-btn cl-btn-primary" data-cl-details="${esc(c.id)}">
+            → Details
+          </button>
         </div>
       </div>
     </div>
