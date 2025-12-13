@@ -1,5 +1,5 @@
 // packages/creativeLibrary/render.js
-// V3.0 ELITE VISUAL UPGRADE - Premium Quality
+// V4.0 CRITICAL FIX - Working Images + Fallback
 
 function esc(s) {
   return String(s ?? "")
@@ -45,7 +45,7 @@ function getFormatIcon(format) {
   const f = (format || "").toLowerCase();
   if (f.includes("video") || f.includes("reel")) return "🎥";
   if (f.includes("story")) return "📱";
-  if (f.includes("carousel")) return "🎫";
+  if (f.includes("carousel")) return "🎡";
   if (f.includes("static") || f.includes("image")) return "🖼️";
   return "🎨";
 }
@@ -58,26 +58,18 @@ function getROASColor(roas) {
 }
 
 function getThumbnailUrl(creative) {
-  // If creative has thumbnail, use it
+  // If creative has valid thumbnail, use it
   if (creative.thumbUrl && creative.thumbUrl !== "" && !creative.thumbUrl.includes("placeholder")) {
     return creative.thumbUrl;
   }
   
-  // Use Unsplash random image with seed based on creative ID for consistency
-  const seed = creative.id || Math.random().toString(36).substring(7);
+  // Use Picsum.photos with consistent seed (works without CORS issues)
+  const seed = creative.id || Math.floor(Math.random() * 1000);
   const width = 600;
   const height = 400;
   
-  // Keywords based on format
-  const format = (creative.format || "").toLowerCase();
-  let keyword = "marketing";
-  
-  if (format.includes("video") || format.includes("reel")) keyword = "video,production";
-  else if (format.includes("story")) keyword = "mobile,app";
-  else if (format.includes("carousel")) keyword = "product,showcase";
-  else if (format.includes("static") || format.includes("image")) keyword = "design,creative";
-  
-  return `https://source.unsplash.com/random/${width}x${height}/?${keyword}&sig=${seed}`;
+  // Picsum is reliable and fast
+  return `https://picsum.photos/seed/${seed}/${width}/${height}`;
 }
 
 export function renderCreativeLibrary(root, viewModel) {
@@ -145,7 +137,7 @@ export function renderCreativeLibrary(root, viewModel) {
           <div class="cl-empty-icon">🎨</div>
           <div class="cl-empty-title">Keine Creatives gefunden</div>
           <div class="cl-empty-text">Passe Filter oder Suchbegriff an oder lade dein erstes Creative hoch.</div>
-          <button type="button" class="cl-empty-btn" onclick="document.getElementById('clNewCreativeBtn').click()">
+          <button type="button" class="cl-empty-btn" onclick="document.getElementById('clNewCreativeBtn')?.click()">
             📤 Creative hochladen
           </button>
         </div>
@@ -173,7 +165,14 @@ function renderCard(c) {
 
   return `
     <div class="cl-card" data-cl-card="${esc(c.id)}" role="button" tabindex="0">
-      <div class="cl-thumb" style="background-image:url('${esc(thumbUrl)}')">
+      <div class="cl-thumb" data-has-image="true">
+        <img 
+          src="${esc(thumbUrl)}" 
+          alt="${esc(c.name || 'Creative')}" 
+          class="cl-thumb-img"
+          loading="lazy"
+          onerror="this.parentElement.setAttribute('data-has-image', 'false');"
+        />
         <div class="cl-thumb-overlay"></div>
         <div class="cl-thumb-top">
           <button class="cl-select" type="button" data-cl-select="${esc(c.id)}" aria-label="Select creative"></button>
