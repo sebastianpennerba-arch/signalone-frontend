@@ -1,6 +1,6 @@
 // packages/creativeLibrary/index.js
-// V4.0 CRITICAL FIX - Working Dropdowns + Sensei
-// Cache-buster: 2025-12-13-15:23
+// V5.0 CRITICAL FIX - DROPDOWNS WORK NOW!
+// Cache-buster: 2025-12-13-15:55
 
 import { buildCreativeLibraryModel } from "./compute.js";
 import { renderCreativeLibrary, renderGridOnly } from "./render.js";
@@ -50,15 +50,26 @@ export async function render(root, ctx) {
   };
 
   renderCreativeLibrary(_root, viewModel);
-  _mounted = false;
+  
+  // 🔥 AUTO-MOUNT AFTER RENDER!
+  mount(root, ctx);
 }
 
 export function mount(root, ctx) {
   _root = root || _root;
   _ctx = ctx || _ctx;
-  if (!_root || _mounted) return;
+  
+  // 🔥 Cleanup old listeners first!
+  if (_mounted && _root) {
+    _root.removeEventListener("input", onInput);
+    _root.removeEventListener("change", onChange);
+    _root.removeEventListener("click", onClick);
+    _root.removeEventListener("keydown", onKeyDown);
+  }
+  
+  if (!_root) return;
 
-  console.log('[CreativeLibrary] Mounting event listeners...');
+  console.log('[CreativeLibrary] 🎯 Mounting event listeners...');
 
   // Single delegated listener
   _root.addEventListener("input", onInput);
@@ -67,7 +78,7 @@ export function mount(root, ctx) {
   _root.addEventListener("keydown", onKeyDown);
 
   _mounted = true;
-  console.log('[CreativeLibrary] Mounted successfully');
+  console.log('[CreativeLibrary] ✅ Mounted successfully');
 }
 
 export function destroy(root) {
@@ -89,6 +100,7 @@ export function destroy(root) {
   _mounted = false;
 
   unloadModuleCSS();
+  console.log('[CreativeLibrary] 🧹 Destroyed');
 }
 
 /* ---------------- data ---------------- */
@@ -118,7 +130,7 @@ function getFiltered(list) {
   const search = (_filters.search || "").trim().toLowerCase();
   const format = String(_filters.format || "");
 
-  console.log('[CreativeLibrary] Filtering with:', { search, format });
+  console.log('[CreativeLibrary] 🔍 Filtering with:', { search, format });
 
   const filtered = (list || []).filter((c) => {
     if (format && String(c.format || "") !== format) return false;
@@ -143,7 +155,7 @@ function getFiltered(list) {
     return true;
   });
 
-  console.log('[CreativeLibrary] Filtered:', filtered.length, '/', list.length);
+  console.log('[CreativeLibrary] 📊 Filtered:', filtered.length, '/', list.length);
   return filtered;
 }
 
@@ -151,7 +163,7 @@ function getSorted(list) {
   const sort = _filters.sort || "roasDesc";
   const arr = [...(list || [])];
 
-  console.log('[CreativeLibrary] Sorting by:', sort);
+  console.log('[CreativeLibrary] 📈 Sorting by:', sort);
 
   const val = (c) => {
     const k = c.kpis || {};
@@ -166,8 +178,9 @@ function getSorted(list) {
 
 function rerenderGrid() {
   if (!_root || !_model) return;
-  console.log('[CreativeLibrary] Rerendering grid...');
+  console.log('[CreativeLibrary] 🔄 Rerendering grid...');
   const next = getSorted(getFiltered(_model.creatives));
+  console.log('[CreativeLibrary] 🎨 Rendering', next.length, 'creatives');
   renderGridOnly(_root, next);
 }
 
@@ -177,7 +190,7 @@ function onInput(e) {
   const t = e.target;
   if (!t) return;
   if (t.id === "clSearch") {
-    console.log('[CreativeLibrary] Search input:', t.value);
+    console.log('[CreativeLibrary] 🔍 Search input:', t.value);
     _filters.search = String(t.value || "");
     rerenderGrid();
   }
@@ -188,13 +201,13 @@ function onChange(e) {
   if (!t) return;
 
   if (t.id === "clFormat") {
-    console.log('[CreativeLibrary] Format changed:', t.value);
+    console.log('[CreativeLibrary] 🎯 Format changed:', t.value);
     _filters.format = String(t.value || "");
     rerenderGrid();
   }
 
   if (t.id === "clSort") {
-    console.log('[CreativeLibrary] Sort changed:', t.value);
+    console.log('[CreativeLibrary] 📊 Sort changed:', t.value);
     _filters.sort = String(t.value || "roasDesc");
     rerenderGrid();
   }
