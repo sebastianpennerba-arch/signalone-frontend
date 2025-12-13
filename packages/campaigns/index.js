@@ -1,11 +1,11 @@
 /**
- * SignalOne - Campaigns Module
+ * SignalOne - Campaigns Module V2.0
  * 
- * Features:
- * - Table view mit allen Kampagnen
- * - Status filter (Active, Paused, All)
- * - KPIs: Spend, Revenue, ROAS, CTR
- * - Search & Sort
+ * 🔥 FIXED:
+ * - Filters work without infinite loop
+ * - Clean mount/destroy pattern
+ * - Proper event listener management
+ * - Console debugging
  */
 
 import { CoreAPI } from '../../core-api.js';
@@ -17,7 +17,11 @@ export const meta = {
   requiresData: true
 };
 
-let moduleData = null;
+let _root = null;
+let _moduleData = null;
+let _state = null;
+let _mounted = false;
+
 let filters = {
   status: 'all',
   search: '',
@@ -25,15 +29,17 @@ let filters = {
 };
 
 export async function render(container) {
+  _root = container;
+  
   try {
-    container.innerHTML = '<div style="text-align: center; padding: 4rem; color: #6b7280;">Lade Campaigns...</div>';
+    container.innerHTML = '<div style="text-align: center; padding: 4rem; color: #6b7280;">📦 Lade Campaigns...</div>';
     
     loadModuleCSS();
     
-    const state = CoreAPI.getState();
+    _state = CoreAPI.getState();
     
     const campaigns = await DataLayer.fetchCampaigns(
-      state.selectedBrand,
+      _state.selectedBrand,
       null
     );
     
@@ -41,13 +47,17 @@ export async function render(container) {
       throw new Error('Keine Kampagnen verfügbar');
     }
     
-    moduleData = campaigns;
+    _moduleData = campaigns;
     
-    container.innerHTML = renderCampaigns(campaigns, state);
-    bindEvents(container);
+    console.log('[Campaigns] 📊 Loaded', campaigns.length, 'campaigns');
+    
+    container.innerHTML = renderCampaigns(campaigns, _state);
+    
+    // 🔥 AUTO-MOUNT!
+    mount(container);
     
   } catch (error) {
-    console.error('[Campaigns] Error:', error);
+    console.error('[Campaigns] ❌ Error:', error);
     container.innerHTML = `
       <div style="text-align: center; padding: 4rem;">
         <h2 style="font-size: 1.5rem; color: #ef4444; margin-bottom: 1rem;">⚠️ Campaigns konnte nicht geladen werden</h2>
@@ -57,12 +67,49 @@ export async function render(container) {
   }
 }
 
-export async function destroy(container) {
-  container.innerHTML = '';
-  unloadModuleCSS();
-  moduleData = null;
-  filters = { status: 'all', search: '', sort: 'spend-desc' };
+export function mount(container) {
+  _root = container || _root;
+  
+  // Cleanup old listeners
+  if (_mounted && _root) {
+    _root.removeEventListener('input', onInput);
+    _root.removeEventListener('change', onChange);
+    _root.removeEventListener('click', onClick);
+  }
+  
+  if (!_root) return;
+  
+  console.log('[Campaigns] 🎯 Mounting event listeners...');
+  
+  _root.addEventListener('input', onInput);
+  _root.addEventListener('change', onChange);
+  _root.addEventListener('click', onClick);
+  
+  _mounted = true;
+  console.log('[Campaigns] ✅ Mounted successfully');
 }
+
+export async function destroy(container) {
+  const r = container || _root;
+  if (r) {
+    r.removeEventListener('input', onInput);
+    r.removeEventListener('change', onChange);
+    r.removeEventListener('click', onClick);
+    r.innerHTML = '';
+  }
+  
+  unloadModuleCSS();
+  
+  _root = null;
+  _moduleData = null;
+  _state = null;
+  _mounted = false;
+  filters = { status: 'all', search: '', sort: 'spend-desc' };
+  
+  console.log('[Campaigns] 🧹 Destroyed');
+}
+
+/* ==================== RENDERING ==================== */
 
 function renderCampaigns(campaigns, state) {
   const filtered = filterCampaigns(campaigns);
@@ -122,44 +169,50 @@ function renderCampaigns(campaigns, state) {
         
         <div class="filter-group">
           <select id="filterStatus" class="filter-select">
-            <option value="all">Alle Status</option>
-            <option value="active">Aktiv</option>
-            <option value="paused">Pausiert</option>
+            <option value="all" ${filters.status === 'all' ? 'selected' : ''}>Alle Status</option>
+            <option value="active" ${filters.status === 'active' ? 'selected' : ''}>Aktiv</option>
+            <option value="paused" ${filters.status === 'paused' ? 'selected' : ''}>Pausiert</option>
           </select>
         </div>
         
         <div class="filter-group">
           <select id="filterSort" class="filter-select">
-            <option value="spend-desc">Spend (Höchster zuerst)</option>
-            <option value="roas-desc">ROAS (Höchster zuerst)</option>
-            <option value="revenue-desc">Revenue (Höchster zuerst)</option>
-            <option value="name-asc">Name (A-Z)</option>
+            <option value="spend-desc" ${filters.sort === 'spend-desc' ? 'selected' : ''}>Spend (Höchster zuerst)</option>
+            <option value="roas-desc" ${filters.sort === 'roas-desc' ? 'selected' : ''}>ROAS (Höchster zuerst)</option>
+            <option value="revenue-desc" ${filters.sort === 'revenue-desc' ? 'selected' : ''}>Revenue (Höchster zuerst)</option>
+            <option value="name-asc" ${filters.sort === 'name-asc' ? 'selected' : ''}>Name (A-Z)</option>
           </select>
         </div>
       </div>
       
       <!-- TABLE -->
-      <div class="campaigns-table-wrapper">
-        <table class="campaigns-table">
-          <thead>
-            <tr>
-              <th>Kampagne</th>
-              <th>Status</th>
-              <th>Objective</th>
-              <th>Spend (30d)</th>
-              <th>Revenue (30d)</th>
-              <th>ROAS</th>
-              <th>CTR</th>
-              <th>Conversions</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${sorted.map(campaign => renderCampaignRow(campaign)).join('')}
-          </tbody>
-        </table>
+      <div class="campaigns-table-wrapper" data-table-wrapper>
+        ${renderTable(sorted)}
       </div>
       
     </div>
+  `;
+}
+
+function renderTable(sorted) {
+  return `
+    <table class="campaigns-table">
+      <thead>
+        <tr>
+          <th>Kampagne</th>
+          <th>Status</th>
+          <th>Objective</th>
+          <th>Spend (30d)</th>
+          <th>Revenue (30d)</th>
+          <th>ROAS</th>
+          <th>CTR</th>
+          <th>Conversions</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${sorted.map(campaign => renderCampaignRow(campaign)).join('')}
+      </tbody>
+    </table>
   `;
 }
 
@@ -186,6 +239,24 @@ function renderCampaignRow(campaign) {
   `;
 }
 
+function renderTableOnly() {
+  if (!_root || !_moduleData) return;
+  
+  console.log('[Campaigns] 🔄 Updating table...');
+  
+  const filtered = filterCampaigns(_moduleData);
+  const sorted = sortCampaigns(filtered);
+  
+  console.log('[Campaigns] 📊 Showing', sorted.length, '/', _moduleData.length, 'campaigns');
+  
+  const wrapper = _root.querySelector('[data-table-wrapper]');
+  if (wrapper) {
+    wrapper.innerHTML = renderTable(sorted);
+  }
+}
+
+/* ==================== FILTERING & SORTING ==================== */
+
 function filterCampaigns(campaigns) {
   return campaigns.filter(c => {
     if (filters.status !== 'all' && c.status !== filters.status) return false;
@@ -211,45 +282,56 @@ function sortCampaigns(campaigns) {
   }
 }
 
+/* ==================== EVENTS ==================== */
+
+function onInput(e) {
+  const t = e.target;
+  if (!t) return;
+  
+  if (t.id === 'searchInput') {
+    console.log('[Campaigns] 🔍 Search:', t.value);
+    filters.search = t.value;
+    renderTableOnly();
+  }
+}
+
+function onChange(e) {
+  const t = e.target;
+  if (!t) return;
+  
+  if (t.id === 'filterStatus') {
+    console.log('[Campaigns] 🎯 Status filter:', t.value);
+    filters.status = t.value;
+    renderTableOnly();
+  }
+  
+  if (t.id === 'filterSort') {
+    console.log('[Campaigns] 📈 Sort:', t.value);
+    filters.sort = t.value;
+    renderTableOnly();
+  }
+}
+
+function onClick(e) {
+  const t = e.target;
+  if (!t) return;
+  
+  const row = t.closest?.('.campaign-row');
+  if (row) {
+    const id = row.dataset.campaignId;
+    const campaign = _moduleData?.find(c => c.id === id);
+    if (campaign) {
+      console.log('[Campaigns] 👁️ Clicked:', campaign.name);
+      CoreAPI.toast(`Campaign Details: ${campaign.name}`, 'info');
+    }
+  }
+}
+
+/* ==================== HELPERS ==================== */
+
 function formatCurrency(value) {
   if (!value) return '0€';
   return `${Math.round(value).toLocaleString('de-DE')}€`;
-}
-
-function bindEvents(container) {
-  const searchInput = container.querySelector('#searchInput');
-  const filterStatus = container.querySelector('#filterStatus');
-  const filterSort = container.querySelector('#filterSort');
-  
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      filters.search = e.target.value;
-      render(container);
-    });
-  }
-  
-  if (filterStatus) {
-    filterStatus.addEventListener('change', (e) => {
-      filters.status = e.target.value;
-      render(container);
-    });
-  }
-  
-  if (filterSort) {
-    filterSort.addEventListener('change', (e) => {
-      filters.sort = e.target.value;
-      render(container);
-    });
-  }
-  
-  // Campaign row click
-  const rows = container.querySelectorAll('.campaign-row');
-  rows.forEach(row => {
-    row.addEventListener('click', () => {
-      const id = row.dataset.campaignId;
-      CoreAPI.toast(`Campaign Details: ${id}`, 'info');
-    });
-  });
 }
 
 function loadModuleCSS() {
