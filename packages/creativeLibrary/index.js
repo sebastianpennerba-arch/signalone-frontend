@@ -1,256 +1,378 @@
-/**
- * SignalOne - Creative Library Module
- * 
- * Features:
- * - Grid view mit Thumbnails
- * - Filter: Status, Type, Campaign
- * - Sortierung: ROAS, Spend, Date
- * - Detail-View Modal
- */
+// packages/creativeLibrary/index.js
+// SignalOne Titanium – Creative Library (P2 FINAL)
+// Contract: load(ctx), render(root, ctx), mount(root, ctx), destroy(root, ctx)
 
-import { CoreAPI } from '../../core-api.js';
-import * as DataLayer from '../../data/index.js';
+import { buildCreativeLibraryModel } from "./compute.js";
+import { createDefaultFilters, applyFilters, applySort } from "./filters.js";
+import {
+  renderCreativeLibrary,
+  renderGridOnly,
+  renderEmptyState,
+  renderErrorState,
+} from "./render.js";
+import { openCreativeModal, closeCreativeModal } from "./modal.js";
+import { computeCreativeHealth } from "./health.js";
 
 export const meta = {
-  id: 'creativeLibrary',
-  label: 'Creative Library',
-  requiresData: true
+  id: "creativeLibrary",
+  title: "Creative Library",
+  subtitle: "Assets, KPIs & Varianten – Titanium Ready.",
+  requiresMeta: false,
 };
 
-let moduleData = null;
-let filters = {
-  status: 'all',
-  type: 'all',
-  campaign: 'all',
-  sort: 'roas-desc'
-};
+let _root = null;
+let _ctx = null;
 
-export async function render(container) {
+let _model = null;
+let _filters = createDefaultFilters();
+let _selection = new Set();
+let _mounted = false;
+
+export async function load(ctx) {
+  // Optional preload hook – keep light
+  _ctx = ctx || null;
+  ensureModuleCSS();
+}
+
+export async function render(root, ctx) {
+  _root = root;
+  _ctx = ctx || _ctx;
+
   try {
-    container.innerHTML = '<div style="text-align: center; padding: 4rem; color: #6b7280;">Lade Creative Library...</div>';
-    
-    loadModuleCSS();
-    
-    const state = CoreAPI.getState();
-    
-    const creatives = await DataLayer.fetchCreatives(
-      state.selectedBrand,
-      null,
-      state.selectedCampaign
-    );
-    
-    if (!creatives || creatives.length === 0) {
-      throw new Error('Keine Creatives verfügbar');
+    ensureModuleCSS();
+    closeCreativeModal();
+
+    // --- Data Gatekeeper (wenn Shell es anbietet) ---
+    // Jede datenabhängige Funktion MUSS Token-Check respektieren (P5).
+    if (_ctx?.ensureMetaConnected && _ctx?.appState?.dataMode === "live") {
+      await _ctx.ensureMetaConnected(); // wirft bei fehlender Auth ggf. Error
     }
-    
-    moduleData = creatives;
-    
-    container.innerHTML = renderCreativeLibrary(creatives, state);
-    bindEvents(container);
-    
-  } catch (error) {
-    console.error('[CreativeLibrary] Error:', error);
-    container.innerHTML = `
-      <div style="text-align: center; padding: 4rem;">
-        <h2 style="font-size: 1.5rem; color: #ef4444; margin-bottom: 1rem;">⚠️ Creative Library konnte nicht geladen werden</h2>
-        <p style="color: #6b7280;">${error.message}</p>
-      </div>
-    `;
+
+    const data = await fetchCreativeLibraryData(_ctx);
+    _model = buildCreativeLibraryModel(data);
+
+    if (!_model?.creatives?.length) {
+      renderEmptyState(_root, _ctx?.appState?.dataMode === "live" ? "Live Mode" : "Demo Mode");
+      return;
+    }
+
+    // Reset selection on hard re-render
+    _selection = new Set();
+
+    const creatives = getFilteredCreatives();
+    renderCreativeLibrary(_root, {
+      summary: _model.summary,
+      formats: _model.formats,
+      filters: _filters,
+      creatives,
+      selectionCount: _selection.size,
+      modeLabel: _ctx?.appState?.dataMode === "live" ? "Live Mode" : "Demo Mode",
+    });
+
+    _mounted = false; // mount() soll Events frisch verdrahten
+  } catch (err) {
+    console.error("[creativeLibrary] render error:", err);
+    renderErrorState(_root, err?.message || "Creative Library konnte nicht geladen werden.");
   }
 }
 
-export async function destroy(container) {
-  container.innerHTML = '';
+export function mount(root, ctx) {
+  _root = root || _root;
+  _ctx = ctx || _ctx;
+  if (!_root || _mounted) return;
+
+  // Controls
+  _root.addEventListener("input", onInput);
+  _root.addEventListener("change", onChange);
+  _root.addEventListener("click", onClick);
+
+  _mounted = true;
+}
+
+export function destroy() {
+  if (_root) {
+    _root.removeEventListener("input", onInput);
+    _root.removeEventListener("change", onChange);
+    _root.removeEventListener("click", onClick);
+    _root.innerHTML = "";
+  }
+
+  closeCreativeModal();
+
+  _root = null;
+  _ctx = null;
+  _model = null;
+  _filters = createDefaultFilters();
+  _selection = new Set();
+  _mounted = false;
+
   unloadModuleCSS();
-  moduleData = null;
-  filters = { status: 'all', type: 'all', campaign: 'all', sort: 'roas-desc' };
 }
 
-function renderCreativeLibrary(creatives, state) {
-  const filtered = filterCreatives(creatives);
-  const sorted = sortCreatives(filtered);
-  
-  const brandName = state.selectedBrand?.name || 'Brand';
-  const campaignName = state.selectedCampaign?.name || 'Alle Kampagnen';
-  
-  return `
-    <div class="creative-library-container">
-      
-      <!-- HEADER -->
-      <div class="creative-library-header">
-        <div>
-          <h1 class="creative-library-title">🎨 Creative Library</h1>
-          <p class="creative-library-subtitle">${brandName} • ${campaignName} • ${sorted.length} Creatives</p>
-        </div>
-      </div>
-      
-      <!-- FILTERS -->
-      <div class="creative-filters">
-        <div class="filter-group">
-          <label class="filter-label">Status</label>
-          <select id="filterStatus" class="filter-select">
-            <option value="all">Alle</option>
-            <option value="winner">Winner</option>
-            <option value="scaling">Scaling</option>
-            <option value="testing">Testing</option>
-            <option value="paused">Paused</option>
-            <option value="archived">Archived</option>
-          </select>
-        </div>
-        
-        <div class="filter-group">
-          <label class="filter-label">Type</label>
-          <select id="filterType" class="filter-select">
-            <option value="all">Alle</option>
-            <option value="UGC">UGC</option>
-            <option value="Product Shot">Product Shot</option>
-            <option value="Founder Story">Founder Story</option>
-            <option value="Testimonial">Testimonial</option>
-            <option value="Brand Content">Brand Content</option>
-          </select>
-        </div>
-        
-        <div class="filter-group">
-          <label class="filter-label">Sortierung</label>
-          <select id="filterSort" class="filter-select">
-            <option value="roas-desc">ROAS (Höchste zuerst)</option>
-            <option value="roas-asc">ROAS (Niedrigste zuerst)</option>
-            <option value="spend-desc">Spend (Höchster zuerst)</option>
-            <option value="spend-asc">Spend (Niedrigster zuerst)</option>
-            <option value="date-desc">Datum (Neueste zuerst)</option>
-          </select>
-        </div>
-      </div>
-      
-      <!-- GRID -->
-      <div class="creative-grid">
-        ${sorted.map(creative => renderCreativeCard(creative)).join('')}
-      </div>
-      
-    </div>
-  `;
+/* ----------------------------- Events ----------------------------- */
+
+function onInput(e) {
+  const t = e.target;
+  if (!t) return;
+
+  if (t.id === "soClSearch") {
+    _filters.search = String(t.value || "");
+    rerenderGrid();
+  }
 }
 
-function renderCreativeCard(creative) {
-  const statusClass = `status-${creative.status}`;
-  const roasColor = creative.roas >= 5.0 ? '#10b981' : creative.roas >= 3.0 ? '#f59e0b' : '#ef4444';
-  
-  return `
-    <div class="creative-card" data-creative-id="${creative.id}">
-      
-      <!-- THUMBNAIL -->
-      <div class="creative-thumbnail">
-        <img src="${creative.thumbnail}" alt="${creative.name}" loading="lazy" />
-        <div class="creative-status-badge ${statusClass}">${creative.status}</div>
-      </div>
-      
-      <!-- INFO -->
-      <div class="creative-info">
-        <div class="creative-name">${creative.name}</div>
-        <div class="creative-meta">${creative.format} • ${creative.type}</div>
-        
-        <!-- KPIs -->
-        <div class="creative-kpis">
-          <div class="creative-kpi">
-            <span class="kpi-label">ROAS</span>
-            <span class="kpi-value" style="color: ${roasColor}; font-weight: 700;">${creative.roas}x</span>
-          </div>
-          <div class="creative-kpi">
-            <span class="kpi-label">Spend</span>
-            <span class="kpi-value">${formatCurrency(creative.spend)}</span>
-          </div>
-          <div class="creative-kpi">
-            <span class="kpi-label">Revenue</span>
-            <span class="kpi-value">${formatCurrency(creative.revenue)}</span>
-          </div>
-        </div>
-        
-        <!-- CAMPAIGN -->
-        <div class="creative-campaign">🎯 ${creative.campaignName}</div>
-      </div>
-      
-    </div>
-  `;
+function onChange(e) {
+  const t = e.target;
+  if (!t) return;
+
+  if (t.id === "soClFormat") {
+    _filters.format = String(t.value || "");
+    rerenderGrid();
+  }
+
+  if (t.id === "soClBucket") {
+    _filters.bucket = String(t.value || "all");
+    rerenderGrid();
+  }
+
+  if (t.id === "soClType") {
+    _filters.type = String(t.value || "all");
+    rerenderGrid();
+  }
+
+  if (t.id === "soClSort") {
+    _filters.sort = String(t.value || "roas-desc");
+    rerenderGrid();
+  }
 }
 
-function filterCreatives(creatives) {
-  return creatives.filter(c => {
-    if (filters.status !== 'all' && c.status !== filters.status) return false;
-    if (filters.type !== 'all' && c.type !== filters.type) return false;
-    return true;
+function onClick(e) {
+  const t = e.target;
+  if (!t) return;
+
+  // Checkbox selection
+  const cb = t.closest?.("[data-so-cl-select]");
+  if (cb) {
+    const id = cb.getAttribute("data-so-cl-select");
+    toggleSelection(id);
+    rerenderSelectionOnly();
+    e.preventDefault();
+    return;
+  }
+
+  // Bulk actions
+  const bulk = t.closest?.("[data-so-cl-bulk]");
+  if (bulk) {
+    const action = bulk.getAttribute("data-so-cl-bulk");
+    handleBulkAction(action);
+    e.preventDefault();
+    return;
+  }
+
+  // Analyze / Sensei (single)
+  const senseiBtn = t.closest?.("[data-so-cl-sensei]");
+  if (senseiBtn) {
+    const id = senseiBtn.getAttribute("data-so-cl-sensei");
+    analyzeWithSensei(id);
+    e.preventDefault();
+    return;
+  }
+
+  // Card open (avoid opening when clicking buttons/checkbox inside)
+  const card = t.closest?.("[data-so-cl-card]");
+  if (card) {
+    const id = card.getAttribute("data-so-cl-card");
+    if (!id) return;
+    openDetails(id);
+  }
+
+  // Upload stub
+  const uploadBtn = t.closest?.("#soClUploadBtn");
+  if (uploadBtn) {
+    toast("info", "Upload folgt in P2.1+ (Backend / Storage).");
+    e.preventDefault();
+  }
+}
+
+/* ----------------------------- Rendering helpers ----------------------------- */
+
+function getFilteredCreatives() {
+  const list = _model?.creatives || [];
+  const filtered = applyFilters(list, _filters);
+  return applySort(filtered, _filters.sort);
+}
+
+function rerenderGrid() {
+  if (!_root || !_model) return;
+
+  // Selection bereinigen (falls Items rausgefiltert wurden)
+  const visibleIds = new Set(getFilteredCreatives().map((c) => String(c.id)));
+  _selection = new Set([..._selection].filter((id) => visibleIds.has(String(id))));
+
+  const creatives = getFilteredCreatives();
+  renderGridOnly(_root, creatives, {
+    filters: _filters,
+    selection: _selection,
+    selectionCount: _selection.size,
   });
 }
 
-function sortCreatives(creatives) {
-  const sorted = [...creatives];
-  
-  switch (filters.sort) {
-    case 'roas-desc':
-      return sorted.sort((a, b) => b.roas - a.roas);
-    case 'roas-asc':
-      return sorted.sort((a, b) => a.roas - b.roas);
-    case 'spend-desc':
-      return sorted.sort((a, b) => b.spend - a.spend);
-    case 'spend-asc':
-      return sorted.sort((a, b) => a.spend - b.spend);
-    case 'date-desc':
-      return sorted.sort((a, b) => b.daysActive - a.daysActive);
-    default:
-      return sorted;
+function rerenderSelectionOnly() {
+  if (!_root) return;
+  const el = _root.querySelector("[data-so-cl-selectionbar]");
+  if (!el) {
+    // falls selection bar noch nicht da ist -> full grid refresh
+    rerenderGrid();
+    return;
   }
-}
-
-function formatCurrency(value) {
-  if (!value) return '0€';
-  return `${Math.round(value).toLocaleString('de-DE')}€`;
-}
-
-function bindEvents(container) {
-  const filterStatus = container.querySelector('#filterStatus');
-  const filterType = container.querySelector('#filterType');
-  const filterSort = container.querySelector('#filterSort');
-  
-  if (filterStatus) {
-    filterStatus.addEventListener('change', (e) => {
-      filters.status = e.target.value;
-      render(container);
-    });
-  }
-  
-  if (filterType) {
-    filterType.addEventListener('change', (e) => {
-      filters.type = e.target.value;
-      render(container);
-    });
-  }
-  
-  if (filterSort) {
-    filterSort.addEventListener('change', (e) => {
-      filters.sort = e.target.value;
-      render(container);
-    });
-  }
-  
-  // Creative cards click
-  const cards = container.querySelectorAll('.creative-card');
-  cards.forEach(card => {
-    card.addEventListener('click', () => {
-      const id = card.dataset.creativeId;
-      CoreAPI.toast(`Creative Details: ${id}`, 'info');
-    });
+  // update selection bar count + card selected states
+  renderGridOnly(_root, getFilteredCreatives(), {
+    filters: _filters,
+    selection: _selection,
+    selectionCount: _selection.size,
+    selectionOnly: true,
   });
 }
 
-function loadModuleCSS() {
-  if (document.getElementById('creative-library-css')) return;
-  const link = document.createElement('link');
-  link.id = 'creative-library-css';
-  link.rel = 'stylesheet';
-  link.href = '/packages/creativeLibrary/module.css';
+/* ----------------------------- Actions ----------------------------- */
+
+function toggleSelection(id) {
+  const key = String(id);
+  if (_selection.has(key)) _selection.delete(key);
+  else _selection.add(key);
+}
+
+function openDetails(id) {
+  const c = findCreativeById(id);
+  if (!c) return;
+
+  openCreativeModal(c, {
+    onSensei: () => analyzeWithSensei(id),
+    onCompare: () => {
+      toggleSelection(id);
+      rerenderSelectionOnly();
+      toast("info", "Creative zur Vergleichsliste hinzugefügt.");
+    },
+  });
+}
+
+function analyzeWithSensei(id) {
+  const c = findCreativeById(id);
+  if (!c) return;
+
+  const k = c.kpis || {};
+  const health = computeCreativeHealth({
+    metrics: {
+      roas: k.roas,
+      ctr: (k.ctr || 0) * 100, // health expects %
+      cpm: k.cpm,
+      spend: k.spend,
+    },
+    bucket: c.status,
+  });
+
+  if (_ctx?.openSenseiForCreative) {
+    _ctx.openSenseiForCreative(c, health);
+    return;
+  }
+
+  if (window.openSystemModal) {
+    const html = `
+      <p><strong>${health.label}</strong> – Score ${health.score}</p>
+      <p>${health.reasonShort}</p>
+      <p style="margin-top:8px; font-size:12px; color:var(--grey-600);">
+        ${health.reasonLong}
+      </p>
+    `;
+    window.openSystemModal("Sensei Analyse (Demo)", html);
+    return;
+  }
+
+  toast("info", health.reasonShort);
+}
+
+function handleBulkAction(action) {
+  const ids = [..._selection];
+  if (!ids.length) {
+    toast("warning", "Keine Creatives ausgewählt.");
+    return;
+  }
+
+  if (action === "clear") {
+    _selection = new Set();
+    rerenderSelectionOnly();
+    toast("info", "Selection geleert.");
+    return;
+  }
+
+  if (action === "compare") {
+    toast("info", `Compare (P2.5): ${ids.length} Creatives vorgemerkt.`);
+    return;
+  }
+
+  if (action === "sensei") {
+    // Analyze first selected as demo behavior
+    analyzeWithSensei(ids[0]);
+    return;
+  }
+
+  toast("warning", "Unbekannte Bulk-Action.");
+}
+
+/* ----------------------------- Data ----------------------------- */
+
+async function fetchCreativeLibraryData(ctx) {
+  const client = ctx?.getDataClient ? ctx.getDataClient() : null;
+
+  // Prefer canonical method
+  if (client?.getCreativeLibraryData) {
+    return await client.getCreativeLibraryData(ctx?.appState);
+  }
+
+  // Fallback to dashboard data shapes / demo data shapes
+  if (client?.getCreatives) {
+    const list = await client.getCreatives(ctx?.appState);
+    return { creatives: list };
+  }
+
+  // Plain shapes
+  if (Array.isArray(client?.creatives)) return { creatives: client.creatives };
+  if (Array.isArray(client?.ads)) return { creatives: client.ads };
+  if (Array.isArray(client?.creativeLibrary)) return { creatives: client.creativeLibrary };
+
+  // Last resort: global demo
+  if (window.SignalOneDemoClient?.getCreativeLibraryData) {
+    return await window.SignalOneDemoClient.getCreativeLibraryData(ctx?.appState);
+  }
+
+  return { creatives: [] };
+}
+
+function findCreativeById(id) {
+  const key = String(id);
+  return (_model?.creatives || []).find((c) => String(c.id) === key);
+}
+
+/* ----------------------------- UI helpers ----------------------------- */
+
+function toast(type, msg) {
+  if (_ctx?.showToast) return _ctx.showToast(type, msg);
+  if (window.SignalOne?.showToast) return window.SignalOne.showToast(type, msg);
+  console.log(`[creativeLibrary toast:${type}]`, msg);
+}
+
+/* ----------------------------- CSS loader ----------------------------- */
+
+function ensureModuleCSS() {
+  if (document.getElementById("so-creative-library-css")) return;
+  const link = document.createElement("link");
+  link.id = "so-creative-library-css";
+  link.rel = "stylesheet";
+  link.href = "/packages/creativeLibrary/module.css";
   document.head.appendChild(link);
 }
 
 function unloadModuleCSS() {
-  const link = document.getElementById('creative-library-css');
+  const link = document.getElementById("so-creative-library-css");
   if (link) link.remove();
 }
