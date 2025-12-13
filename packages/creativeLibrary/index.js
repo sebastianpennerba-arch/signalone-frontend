@@ -1,5 +1,6 @@
 // packages/creativeLibrary/index.js
-// Titanium Creative Library Module (P2 FINAL FIX) – robust wiring
+// Titanium Creative Library Module (P2 FINAL FIX v2.1) – robust wiring
+// Cache-buster: 2025-12-13-14:32
 
 import { buildCreativeLibraryModel } from "./compute.js";
 import { renderCreativeLibrary, renderGridOnly } from "./render.js";
