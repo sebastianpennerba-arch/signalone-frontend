@@ -158,18 +158,24 @@ const CREATIVE_TYPES = [
 const CREATIVE_STATUS = ['winner', 'scaling', 'testing', 'paused', 'archived'];
 
 // ===================================
-// HELPER FUNCTIONS
+// HELPER FUNCTIONS (SAFE WITH UNDEFINED)
 // ===================================
 
 function random(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  // Guard against undefined parameters
+  const safeMin = Number.isFinite(min) ? min : 0;
+  const safeMax = Number.isFinite(max) ? max : 100;
+  return Math.floor(Math.random() * (safeMax - safeMin + 1)) + safeMin;
 }
 
 function randomFloat(min, max, decimals = 2) {
-  return parseFloat((Math.random() * (max - min) + min).toFixed(decimals));
+  const safeMin = Number.isFinite(min) ? min : 0;
+  const safeMax = Number.isFinite(max) ? max : 1;
+  return parseFloat((Math.random() * (safeMax - safeMin) + safeMin).toFixed(decimals));
 }
 
 function randomElement(array) {
+  if (!Array.isArray(array) || array.length === 0) return 'Unknown';
   return array[Math.floor(Math.random() * array.length)];
 }
 
@@ -186,6 +192,11 @@ function generateCampaignId() {
 // ===================================
 
 function generateCampaigns(brand) {
+  if (!brand || !brand.campaignCount) {
+    console.warn('[Demo] Invalid brand object, using fallback');
+    return [];
+  }
+  
   const count = random(brand.campaignCount.min, brand.campaignCount.max);
   const campaigns = [];
   const namePool = CAMPAIGN_NAMES[brand.vertical] || CAMPAIGN_NAMES.generic;
@@ -226,6 +237,16 @@ function generateCampaigns(brand) {
 // ===================================
 
 function generateCreatives(brand, campaigns) {
+  if (!brand || !brand.creativeCount) {
+    console.warn('[Demo] Invalid brand object for creatives, using fallback');
+    return [];
+  }
+  
+  if (!Array.isArray(campaigns) || campaigns.length === 0) {
+    console.warn('[Demo] No campaigns available for creatives');
+    return [];
+  }
+  
   const count = random(brand.creativeCount.min, brand.creativeCount.max);
   const creatives = [];
   
@@ -276,14 +297,30 @@ function generateCreatives(brand, campaigns) {
 // ===================================
 
 function generateDashboardData(brand, campaigns, creatives) {
-  const totalSpend = creatives.reduce((sum, c) => sum + c.spend, 0);
-  const totalRevenue = creatives.reduce((sum, c) => sum + c.revenue, 0);
-  const avgRoas = totalRevenue / totalSpend;
-  const totalImpressions = creatives.reduce((sum, c) => sum + c.impressions, 0);
-  const totalClicks = creatives.reduce((sum, c) => sum + c.clicks, 0);
-  const avgCtr = (totalClicks / totalImpressions) * 100;
-  const avgCpm = (totalSpend / totalImpressions) * 1000;
-  const totalConversions = creatives.reduce((sum, c) => sum + c.conversions, 0);
+  if (!Array.isArray(creatives) || creatives.length === 0) {
+    console.warn('[Demo] No creatives for dashboard data');
+    return {
+      spend: 0,
+      revenue: 0,
+      roas: 0,
+      profit: 0,
+      ctr: 0,
+      cpm: 0,
+      conversions: 0,
+      trend: { spend: 0, revenue: 0, roas: 0 },
+      weeklyData: [],
+      alerts: []
+    };
+  }
+  
+  const totalSpend = creatives.reduce((sum, c) => sum + (c.spend || 0), 0);
+  const totalRevenue = creatives.reduce((sum, c) => sum + (c.revenue || 0), 0);
+  const avgRoas = totalSpend > 0 ? totalRevenue / totalSpend : 0;
+  const totalImpressions = creatives.reduce((sum, c) => sum + (c.impressions || 0), 0);
+  const totalClicks = creatives.reduce((sum, c) => sum + (c.clicks || 0), 0);
+  const avgCtr = totalImpressions > 0 ? (totalClicks / totalImpressions) * 100 : 0;
+  const avgCpm = totalImpressions > 0 ? (totalSpend / totalImpressions) * 1000 : 0;
+  const totalConversions = creatives.reduce((sum, c) => sum + (c.conversions || 0), 0);
   
   // Weekly performance
   const weeklyData = [];
@@ -341,6 +378,9 @@ export async function fetchBrands() {
 
 export async function fetchAccounts(brand) {
   await new Promise(resolve => setTimeout(resolve, 100));
+  if (!brand || !brand.id) {
+    return [];
+  }
   return [
     { id: `${brand.id}_account_1`, name: `${brand.name} - Main Account` }
   ];
@@ -348,12 +388,18 @@ export async function fetchAccounts(brand) {
 
 export async function fetchCampaigns(brand, account) {
   await new Promise(resolve => setTimeout(resolve, 200));
+  if (!brand) {
+    return [];
+  }
   const campaigns = generateCampaigns(brand);
   return campaigns;
 }
 
 export async function fetchCreatives(brand, account, campaign) {
   await new Promise(resolve => setTimeout(resolve, 300));
+  if (!brand) {
+    return [];
+  }
   const campaigns = generateCampaigns(brand);
   const creatives = generateCreatives(brand, campaigns);
   
@@ -367,6 +413,9 @@ export async function fetchCreatives(brand, account, campaign) {
 
 export async function fetchDashboardData(brand, account, campaign) {
   await new Promise(resolve => setTimeout(resolve, 300));
+  if (!brand) {
+    return null;
+  }
   const campaigns = generateCampaigns(brand);
   const creatives = generateCreatives(brand, campaigns);
   
@@ -431,6 +480,9 @@ export async function fetchTestingLog(brand, account) {
 
 export async function fetchReportsData(brand, account, range) {
   await new Promise(resolve => setTimeout(resolve, 300));
+  if (!brand) {
+    return null;
+  }
   
   const campaigns = generateCampaigns(brand);
   const creatives = generateCreatives(brand, campaigns);
@@ -441,7 +493,7 @@ export async function fetchReportsData(brand, account, range) {
       totalSpend: dashboard.spend,
       totalRevenue: dashboard.revenue,
       avgRoas: dashboard.roas,
-      topCampaign: campaigns[0].name
+      topCampaign: campaigns[0]?.name || 'N/A'
     }
   };
 }
