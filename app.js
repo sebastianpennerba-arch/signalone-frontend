@@ -39,9 +39,10 @@ const MODULE_LOADERS = {
 
 let currentModule = null;
 
-/* =========================================================
-   P2 ADD — MODULE CONTEXT (nur Logik, keine Optik)
-   ========================================================= */
+// ===================================
+// P2: MODULE CONTEXT (Core API for Modules)
+// ===================================
+
 function createModuleContext() {
   return {
     appState: AppState,
@@ -62,6 +63,7 @@ function createModuleContext() {
     hideGlobalLoader,
 
     openSenseiForCreative(creative, health) {
+      // Fallback – Sensei UI kommt in P4
       if (window.openModal) {
         const html = `
           <p><strong>${health.label}</strong> – Score ${health.score}</p>
@@ -71,6 +73,8 @@ function createModuleContext() {
           </p>
         `;
         openModal('Sensei Analyse (Demo)', html);
+      } else {
+        showToast(health.reasonShort || 'Sensei Analyse', 'info');
       }
     }
   };
@@ -261,7 +265,7 @@ function updateWelcomeScreenContent() {
 }
 
 // ===================================
-// MODULE LOADING (P2 MODIFY – Lifecycle)
+// MODULE LOADING  ✅ FIXED (Lifecycle)
 // ===================================
 
 async function loadModule(moduleId) {
@@ -275,6 +279,7 @@ async function loadModule(moduleId) {
   
   showView(viewId);
   
+  // teardown previous module
   if (currentModule && currentModule.destroy) {
     try {
       currentModule.destroy(container);
@@ -295,18 +300,25 @@ async function loadModule(moduleId) {
     currentModule = module;
 
     const ctx = createModuleContext();
-    
+
+    // Optional preload hook
     if (module.load) {
       await module.load(ctx);
     }
-    
+
+    // Render: prefer ctx-signature; fallback to legacy AppState signature
     if (module.render) {
-      // bevorzugt neuer Kontext, Fallback auf AppState
-      await module.render(container, ctx) ?? await module.render(container, AppState);
+      if (module.render.length >= 2) {
+        await module.render(container, ctx);
+      } else {
+        await module.render(container, AppState);
+      }
     } else {
       container.innerHTML = '<div style="text-align: center; padding: 4rem;">Modul hat keine render() Funktion.</div>';
+      return;
     }
 
+    // Mount: events etc.
     if (module.mount) {
       module.mount(container, ctx);
     }
@@ -716,7 +728,7 @@ function closeModal() {
 // EVENT LISTENERS
 // ===================================
 
-window.addEventListener('appStateChange', () => {
+window.addEventListener('appStateChange', (event) => {
   updateStatusDots();
 });
 
