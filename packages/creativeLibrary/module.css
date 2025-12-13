@@ -1,5 +1,5 @@
 /* packages/creativeLibrary/module.css */
-/* V2.0 PREMIUM VISUAL POLISH - Elite Design */
+/* V3.0 PREMIUM VISUAL POLISH + KPI ICONS */
 
 .cl-container { 
   width: 100%; 
@@ -102,11 +102,10 @@
   overflow: hidden;
 }
 
-.cl-thumb::before {
-  content: '';
+.cl-thumb-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%);
   pointer-events: none;
 }
 
@@ -130,6 +129,8 @@
 
 .cl-format {
   display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 8px 14px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.95);
@@ -175,26 +176,25 @@
 }
 
 .cl-status-success { 
-  color: #065F46; 
-  background: linear-gradient(135deg, rgba(16,185,129,0.95) 0%, rgba(5,150,105,0.95) 100%);
+  color: #FFFFFF; 
   background: rgba(16,185,129,0.95);
   border-color: rgba(16,185,129,0.3);
 }
 
 .cl-status-warning { 
-  color: #7C2D12; 
+  color: #FFFFFF; 
   background: rgba(245,158,11,0.95);
   border-color: rgba(245,158,11,0.3);
 }
 
 .cl-status-neutral { 
-  color: #374151; 
-  background: rgba(156,163,175,0.95);
-  border-color: rgba(156,163,175,0.3);
+  color: #FFFFFF; 
+  background: rgba(107,114,128,0.95);
+  border-color: rgba(107,114,128,0.3);
 }
 
 .cl-status-danger { 
-  color: #7F1D1D; 
+  color: #FFFFFF; 
   background: rgba(239,68,68,0.95);
   border-color: rgba(239,68,68,0.3);
 }
@@ -253,11 +253,15 @@
 
 .cl-chip {
   border-radius: 14px;
-  padding: 12px 8px;
+  padding: 10px 8px;
   border: 1px solid #E5E5EA;
   background: linear-gradient(135deg, #F5F5F7 0%, #FAFAFA 100%);
   text-align: center;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 
 .cl-chip:hover {
@@ -267,20 +271,30 @@
   box-shadow: 0 4px 12px rgba(79, 128, 255, 0.15);
 }
 
+.cl-chip-icon {
+  font-size: 16px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
 .cl-chip-label { 
-  font-size: 10px; 
+  font-size: 9px; 
   font-weight: 900; 
   letter-spacing: 0.08em; 
   text-transform: uppercase; 
   color: #86868B;
-  margin-bottom: 4px;
 }
 
 .cl-chip-value { 
-  font-size: 15px; 
+  font-size: 14px; 
   font-weight: 900; 
   color: #1D1D1F;
   line-height: 1.2;
+}
+
+/* KPI Specific Styles */
+.cl-chip-roas:hover {
+  border-color: currentColor;
 }
 
 /* ==================== ACTION BUTTONS ==================== */
@@ -303,6 +317,9 @@
   background: #FFFFFF;
   color: #1D1D1F;
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .cl-btn:hover {
@@ -310,6 +327,18 @@
   color: #4F80FF;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(79, 128, 255, 0.2);
+}
+
+.cl-btn-primary {
+  background: linear-gradient(135deg, #4F80FF 0%, #8B5CF6 100%);
+  color: #FFFFFF;
+  border-color: transparent;
+}
+
+.cl-btn-primary:hover {
+  color: #FFFFFF;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(79, 128, 255, 0.4);
 }
 
 .cl-btn-soft { 
@@ -340,6 +369,17 @@
   color: #86868B;
 }
 
+.cl-empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+}
+
 .cl-empty-title {
   font-size: 20px;
   font-weight: 800;
@@ -350,6 +390,28 @@
 .cl-empty-text {
   font-size: 15px;
   font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.cl-empty-btn {
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 16px;
+  border: none;
+  background: linear-gradient(135deg, #4F80FF 0%, #8B5CF6 100%);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cl-empty-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(79, 128, 255, 0.3);
 }
 
 /* ==================== MODAL ==================== */
