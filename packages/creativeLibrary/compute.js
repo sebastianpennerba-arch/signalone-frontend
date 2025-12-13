@@ -1,5 +1,5 @@
 // packages/creativeLibrary/compute.js
-// Titanium Creative Library – Normalisierung + KPIs + Fallbacks
+// Titanium Creative Library – Normalisierung + KPIs + robuste Demo-Thumbnails
 
 function safeNumber(v) {
   const n = Number(v);
@@ -27,28 +27,60 @@ function normalizeType(raw) {
   if (!t) return "image";
   if (t.includes("video") || t.includes("reel")) return "video";
   if (t.includes("image") || t.includes("static")) return "image";
-  return raw; // allow custom (UGC/Product/etc) but keep original
+  return raw;
+}
+
+function hashColor(seed) {
+  let h = 0;
+  const s = String(seed || "SignalOne");
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  const a = 200 + (h % 55); // 200-254
+  const b = 120 + ((h >> 8) % 90); // 120-209
+  const c = 180 + ((h >> 16) % 60); // 180-239
+  return { a, b, c };
+}
+
+function makeThumbDataURI(title, subtitle) {
+  const { a, b, c } = hashColor(title);
+  const safeTitle = String(title || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const safeSub = String(subtitle || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  const svg = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="rgb(${a}, ${b}, 255)" stop-opacity="0.92"/>
+        <stop offset="1" stop-color="rgb(180, ${c}, 255)" stop-opacity="0.82"/>
+      </linearGradient>
+      <radialGradient id="r" cx="30%" cy="25%" r="75%">
+        <stop offset="0" stop-color="white" stop-opacity="0.35"/>
+        <stop offset="1" stop-color="white" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="1200" height="700" fill="url(#g)"/>
+    <rect width="1200" height="700" fill="url(#r)"/>
+    <text x="60" y="520" font-family="Inter, system-ui, Arial" font-size="54" font-weight="800" fill="rgba(15,23,42,0.88)">${safeTitle}</text>
+    <text x="60" y="585" font-family="Inter, system-ui, Arial" font-size="28" font-weight="700" fill="rgba(15,23,42,0.60)">${safeSub}</text>
+    <text x="60" y="110" font-family="Inter, system-ui, Arial" font-size="18" font-weight="800" fill="rgba(255,255,255,0.85)">SIGNALONE • DEMO</text>
+  </svg>`;
+  const encoded = encodeURIComponent(svg).replace(/'/g, "%27").replace(/"/g, "%22");
+  return `data:image/svg+xml;charset=utf-8,${encoded}`;
 }
 
 function normalizeCreative(raw, idx) {
-  if (!raw || typeof raw !== "object") {
-    return buildDemoCreative(idx);
-  }
+  if (!raw || typeof raw !== "object") return buildDemoCreative(idx);
 
   const id = raw.id || raw.creative_id || raw.ad_id || `c-${idx}`;
-  const name =
-    raw.name ||
-    raw.title ||
-    raw.creative_name ||
-    raw.ad_name ||
-    `Creative #${idx + 1}`;
-
-  const brand =
-    raw.brand || raw.accountName || raw.ad_account_name || "Unbekannte Brand";
-
+  const name = raw.name || raw.title || raw.creative_name || raw.ad_name || `Creative #${idx + 1}`;
+  const brand = raw.brand || raw.accountName || raw.ad_account_name || "Unbekannte Brand";
   const format = raw.format || raw.placement || raw.ad_format || "Unknown";
 
-  const thumbUrl = raw.thumbUrl || raw.thumbnail_url || raw.image_url || raw.thumbnail || "";
+  const thumbUrl =
+    raw.thumbUrl ||
+    raw.thumbnail_url ||
+    raw.image_url ||
+    raw.thumbnail ||
+    "";
 
   const impressions = safeNumber(raw.impressions || raw.impr || raw.kpis?.impressions);
   const clicks = safeNumber(raw.clicks || raw.ctr_clicks || raw.kpis?.clicks);
@@ -61,6 +93,10 @@ function normalizeCreative(raw, idx) {
   const status = normalizeStatus(raw.status || raw.lifecycle || raw.bucket);
   const type = normalizeType(raw.type || raw.asset_type || raw.media_type || raw.category || "image");
 
+  const finalThumb = thumbUrl && String(thumbUrl).trim()
+    ? thumbUrl
+    : makeThumbDataURI(name, `${brand} • ${format}`);
+
   return {
     id,
     name,
@@ -68,9 +104,8 @@ function normalizeCreative(raw, idx) {
     format,
     type,
     status,
-    thumbUrl,
+    thumbUrl: finalThumb,
 
-    // KPI primitives (legacy friendly)
     roas,
     spend,
     impressions,
@@ -78,7 +113,6 @@ function normalizeCreative(raw, idx) {
     ctr: clamp(ctr || 0, 0, 1),
     cpm: clamp(cpm || 0, 0, 9999),
 
-    // canonical KPI object
     kpis: {
       roas,
       spend,
@@ -88,7 +122,6 @@ function normalizeCreative(raw, idx) {
       cpm: clamp(cpm || 0, 0, 9999),
     },
 
-    // optional metadata
     tags: Array.isArray(raw.tags) ? raw.tags : [],
     campaignName: raw.campaignName || raw.campaign_name || "",
     adsetName: raw.adsetName || raw.adset_name || "",
@@ -152,7 +185,7 @@ function buildDemoCreative(idx) {
     format: base.format,
     type: base.type,
     status: base.status,
-    thumbUrl: "",
+    thumbUrl: makeThumbDataURI(base.name, `${base.brand} • ${base.format}`),
 
     roas,
     spend,
@@ -171,7 +204,6 @@ function buildDemoCreative(idx) {
 }
 
 export function buildCreativeLibraryModel(dataClientPayload) {
-  // dataClientPayload can be {creatives: [...] } OR raw list
   let rawList = [];
 
   if (Array.isArray(dataClientPayload)) {
