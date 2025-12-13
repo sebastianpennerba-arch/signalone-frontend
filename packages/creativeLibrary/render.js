@@ -1,5 +1,5 @@
 // packages/creativeLibrary/render.js
-// Titanium UI Renderer (single render path, no inline styles)
+// Titanium UI Renderer (P2 FIXED)
 
 function esc(s) {
   return String(s ?? "")
@@ -152,16 +152,13 @@ export function renderCreativeLibrary(root, viewModel) {
 export function renderGridOnly(root, creatives, opts = {}) {
   const { selection, selectionCount, selectionOnly } = opts;
 
-  // Update selection bar
   const bar = root.querySelector("[data-so-cl-selectionbar]");
   if (bar) bar.outerHTML = renderSelectionBar(selectionCount || 0);
 
-  // Update grid
   const grid = root.querySelector("[data-so-cl-grid]");
   if (!grid) return;
 
   if (selectionOnly) {
-    // only toggle selected classes + checkbox state (fast path)
     grid.querySelectorAll("[data-so-cl-card]").forEach((el) => {
       const id = el.getAttribute("data-so-cl-card");
       const selected = selection?.has?.(String(id));
@@ -201,8 +198,6 @@ export function renderErrorState(root, message = "Loading Error") {
   `;
 }
 
-/* ----------------------------- Parts ----------------------------- */
-
 function renderSelectionBar(count) {
   const visible = count > 0 ? "is-visible" : "";
   return `
@@ -229,13 +224,16 @@ function renderCard(c, vm) {
   const ctr = Number(k.ctr || 0) * 100;
   const cpm = Number(k.cpm || 0);
 
-  const hasThumb = !!(c.thumbUrl && String(c.thumbUrl).trim());
   const tone = roasTone(roas);
+
+  const metaLine2 = (c.campaignName || c.adsetName)
+    ? `<div class="so-cl-card-submeta">${esc(c.campaignName || "—")}${c.adsetName ? ` <span class="so-dot">•</span> ${esc(c.adsetName)}` : ""}</div>`
+    : "";
 
   return `
     <div class="so-cl-card ${selected ? "is-selected" : ""}" data-so-cl-card="${id}">
       <div class="so-cl-thumb">
-        ${hasThumb ? `<img src="${esc(c.thumbUrl)}" alt="${esc(c.name)}" loading="lazy" />` : `<div class="so-cl-thumb-fallback"></div>`}
+        <img src="${esc(c.thumbUrl)}" alt="${esc(c.name)}" loading="lazy" />
         <div class="so-cl-thumb-top">
           <label class="so-cl-select" data-so-cl-select="${id}" title="Select">
             <input type="checkbox" ${selected ? "checked" : ""} />
@@ -255,6 +253,7 @@ function renderCard(c, vm) {
           <span class="so-dot">•</span>
           <span class="so-cl-type">${esc(c.type || "image")}</span>
         </div>
+        ${metaLine2}
 
         <div class="so-cl-kpis">
           <div class="so-kpi so-kpi-${tone}">
@@ -276,8 +275,8 @@ function renderCard(c, vm) {
         </div>
 
         <div class="so-cl-card-actions">
-          <button class="so-btn so-btn-ghost" data-so-cl-sensei="${id}">Sensei</button>
-          <button class="so-btn so-btn-secondary">Details</button>
+          <button class="so-btn so-btn-ghost" data-so-cl-sensei="${id}" type="button">Sensei</button>
+          <button class="so-btn so-btn-secondary" data-so-cl-details="${id}" type="button">Details</button>
         </div>
       </div>
     </div>
