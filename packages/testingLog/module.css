@@ -1,0 +1,163 @@
+/**
+ * Testing Log Module CSS
+ */
+
+.testinglog-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.testinglog-header {
+  margin-bottom: 2rem;
+}
+
+.testinglog-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.testinglog-subtitle {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+/* TESTS GRID */
+.tests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.test-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.test-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+.test-date {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+/* COMPARISON */
+.test-comparison {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.test-creative {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.test-creative.winner {
+  background: #d1fae5;
+  border: 2px solid #10b981;
+}
+
+.test-creative.loser {
+  background: #fee2e2;
+  border: 2px solid #ef4444;
+}
+
+.creative-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.winner-badge {
+  background: #10b981;
+  color: white;
+}
+
+.loser-badge {
+  background: #ef4444;
+  color: white;
+}
+
+.creative-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.creative-roas {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.test-vs {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #9ca3af;
+}
+
+/* RESULT */
+.test-result {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #f0fdf4;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.result-icon {
+  font-size: 1.25rem;
+}
+
+.result-text {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #065f46;
+}
+
+/* REASON */
+.test-reason {
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .testinglog-container {
+    padding: 1rem;
+  }
+  
+  .tests-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .test-comparison {
+    flex-direction: column;
+  }
+  
+  .test-vs {
+    transform: rotate(90deg);
+  }
+}
