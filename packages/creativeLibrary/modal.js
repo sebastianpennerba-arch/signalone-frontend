@@ -1,12 +1,10 @@
 // packages/creativeLibrary/modal.js
-// Titanium – Fullscreen Creative Inspector (no inline styles)
+// Titanium Edition – Fullscreen Creative Inspector (P2 FINAL FIX)
 
 let modalEl = null;
 
-export function openCreativeModal(creative, deps = {}) {
+export function openCreativeModal(creative) {
   closeCreativeModal();
-
-  const { onSensei, onCompare } = deps;
 
   modalEl = document.createElement("div");
   modalEl.className = "so-modal-overlay";
@@ -30,32 +28,24 @@ export function openCreativeModal(creative, deps = {}) {
   header.appendChild(title);
   header.appendChild(closeBtn);
 
-  // Preview
   const preview = document.createElement("div");
   preview.className = "so-modal-preview";
 
-  const hasThumb = !!(creative?.thumbUrl && String(creative.thumbUrl).trim());
-  if (hasThumb) {
-    const img = document.createElement("img");
-    img.src = creative.thumbUrl;
-    img.alt = creative?.name || "Creative";
-    img.loading = "lazy";
-    preview.appendChild(img);
-  } else {
-    const fb = document.createElement("div");
-    fb.className = "so-modal-preview-fallback";
-    preview.appendChild(fb);
-  }
+  // Use actual <img> so we always render (background-image can fail silently)
+  const img = document.createElement("img");
+  img.alt = creative?.name || "Creative";
+  img.loading = "lazy";
+  img.src = creative?.thumbUrl || "";
+  preview.appendChild(img);
 
-  // KPI Section
   const kpiWrap = document.createElement("div");
   kpiWrap.className = "so-modal-kpis";
 
   const k = creative?.kpis || {};
-  const impressions = toNumber(k.impressions ?? creative?.impressions);
-  const clicks = toNumber(k.clicks ?? creative?.clicks);
-  const spend = toNumber(k.spend ?? creative?.spend);
-  const roas = toNumber(k.roas ?? creative?.roas);
+  const impressions = toNumber(k.impressions);
+  const clicks = toNumber(k.clicks);
+  const spend = toNumber(k.spend);
+  const roas = toNumber(k.roas);
 
   const ctr = impressions > 0 ? (clicks / impressions) * 100 : null;
   const cpm = impressions > 0 ? (spend / impressions) * 1000 : null;
@@ -67,39 +57,26 @@ export function openCreativeModal(creative, deps = {}) {
   kpiWrap.appendChild(kpiRow("Impressions", formatNumber(impressions)));
   kpiWrap.appendChild(kpiRow("Clicks", formatNumber(clicks)));
 
-  // Meta
   const meta = document.createElement("div");
   meta.className = "so-modal-meta";
+
   meta.appendChild(metaRow("Brand", creative?.brand || "–"));
   meta.appendChild(metaRow("Format", creative?.format || "–"));
   meta.appendChild(metaRow("Type", creative?.type || "–"));
   meta.appendChild(metaRow("Status", creative?.status || "–"));
+  if (creative?.campaignName) meta.appendChild(metaRow("Campaign", creative.campaignName));
+  if (creative?.adsetName) meta.appendChild(metaRow("Adset", creative.adsetName));
   meta.appendChild(metaRow("ID", creative?.id || "–"));
 
-  // Actions
   const actions = document.createElement("div");
   actions.className = "so-modal-actions";
 
-  const btnSensei = document.createElement("button");
-  btnSensei.className = "so-btn so-btn-primary";
-  btnSensei.type = "button";
-  btnSensei.textContent = "In Sensei öffnen";
-  btnSensei.addEventListener("click", () => (onSensei ? onSensei() : null));
-
-  const btnCompare = document.createElement("button");
-  btnCompare.className = "so-btn so-btn-secondary";
-  btnCompare.type = "button";
-  btnCompare.textContent = "Zur Vergleichsliste";
-  btnCompare.addEventListener("click", () => (onCompare ? onCompare() : null));
-
   const btnClose = document.createElement("button");
-  btnClose.className = "so-btn so-btn-ghost";
+  btnClose.className = "so-btn-secondary";
   btnClose.type = "button";
   btnClose.textContent = "Schließen";
   btnClose.addEventListener("click", closeCreativeModal);
 
-  actions.appendChild(btnSensei);
-  actions.appendChild(btnCompare);
   actions.appendChild(btnClose);
 
   box.appendChild(header);
@@ -123,8 +100,6 @@ export function closeCreativeModal() {
     modalEl = null;
   }
 }
-
-/* ---------------- Helpers ---------------- */
 
 function toNumber(v) {
   const n = Number(v);
