@@ -1,0 +1,15 @@
+{
+  "name": "signalone-backend",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node src/index.js",
+    "start": "NODE_ENV=production node src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "node-fetch": "^3.3.2"
+  }
+}
