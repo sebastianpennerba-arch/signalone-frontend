@@ -1,5 +1,5 @@
 // packages/creativeLibrary/compute.js
-// Titanium Creative Library – normalize + robust fallbacks (P2 FINAL FIX)
+// Titanium Creative Library – normalize + robust fallbacks (P2 FINAL FIX v2)
 
 function safeNumber(v) {
   const n = Number(v);
@@ -65,6 +65,15 @@ function escapeXml(str) {
 }
 
 function normalizeCreative(raw, idx) {
+  // Guard: If already normalized (has kpis object structure), return as-is
+  if (raw && typeof raw === 'object' && raw.kpis && typeof raw.kpis === 'object') {
+    // Already normalized - just ensure thumbUrl exists
+    if (!raw.thumbUrl) {
+      raw.thumbUrl = makeSvgThumb(raw.name || 'Creative');
+    }
+    return raw;
+  }
+
   const id = raw?.id || raw?.creative_id || raw?.ad_id || `c-${idx + 1}`;
   const name = raw?.name || raw?.title || raw?.creative_name || raw?.ad_name || `Creative #${idx + 1}`;
   const brand = raw?.brand || raw?.accountName || raw?.ad_account_name || "Unbekannte Brand";
@@ -113,19 +122,27 @@ function normalizeCreative(raw, idx) {
 }
 
 function buildFallbackCreatives() {
-  // FIX: Demo creatives must go through normalizeCreative() to ensure proper kpis structure
-  const rawDemoData = [
+  // Return pre-normalized demo creatives with complete kpis structure
+  return [
     {
       id: "demo-1",
       name: "UGC Hook v3 – Main",
       brand: "SignalOne Demo",
       format: "Story / Reel",
       type: "video",
-      roas: 4.8,
-      spend: 12340,
-      impressions: 185000,
-      clicks: 4200,
       status: "winner",
+      thumbUrl: makeSvgThumb("UGC Hook v3 – Main"),
+      campaignName: "",
+      adsetName: "",
+      tags: [],
+      kpis: {
+        roas: 4.8,
+        spend: 12340,
+        impressions: 185000,
+        clicks: 4200,
+        ctr: 4200 / 185000,
+        cpm: (12340 / 185000) * 1000,
+      },
     },
     {
       id: "demo-2",
@@ -133,11 +150,19 @@ function buildFallbackCreatives() {
       brand: "Brand A",
       format: "Feed Video",
       type: "video",
-      roas: 3.9,
-      spend: 8210,
-      impressions: 124000,
-      clicks: 3100,
       status: "winner",
+      thumbUrl: makeSvgThumb("Product Focus 2.1"),
+      campaignName: "",
+      adsetName: "",
+      tags: [],
+      kpis: {
+        roas: 3.9,
+        spend: 8210,
+        impressions: 124000,
+        clicks: 3100,
+        ctr: 3100 / 124000,
+        cpm: (8210 / 124000) * 1000,
+      },
     },
     {
       id: "demo-3",
@@ -145,16 +170,21 @@ function buildFallbackCreatives() {
       brand: "Brand B",
       format: "Static",
       type: "image",
-      roas: 2.7,
-      spend: 4980,
-      impressions: 76000,
-      clicks: 1400,
       status: "testing",
+      thumbUrl: makeSvgThumb("Static USP Split"),
+      campaignName: "",
+      adsetName: "",
+      tags: [],
+      kpis: {
+        roas: 2.7,
+        spend: 4980,
+        impressions: 76000,
+        clicks: 1400,
+        ctr: 1400 / 76000,
+        cpm: (4980 / 76000) * 1000,
+      },
     },
   ];
-  
-  // Pass through normalizeCreative to ensure consistent structure
-  return rawDemoData.map((item, idx) => normalizeCreative(item, idx));
 }
 
 export function buildCreativeLibraryModel(dataClientPayload) {
