@@ -1,12 +1,12 @@
 /**
- * SignalOne - Dashboard V7.0 DATA-DRIVEN VISUAL POWER
- * Asymmetric Layout | Maximum Data Density | WOW Factor
+ * SignalOne - Dashboard V7.1 ENHANCED VISUAL IMPACT
+ * Asymmetric Layout | Color-Coded KPIs | Performance Indicators
  * 
  * FEATURES:
  * - Asymmetric 30/70 Layout
  * - Left Sidebar: Sensei, Actions, Budget, Alerts
- * - Right Main: KPI Bars, Top Performers with Metrics, Critical Actions
- * - Visual Hierarchy
+ * - Right Main: KPI Bars with Color Coding, Top Performers with Metrics, Critical Actions
+ * - Visual Hierarchy with Data-Driven Colors
  * - Elite Design
  */
 
@@ -117,6 +117,19 @@ function calculateSenseiScore(data, creatives) {
   }
   
   return { score, status, icon, color, message };
+}
+
+function getPerformanceLevel(roas) {
+  if (roas >= 6.0) return 'excellent';
+  if (roas >= 4.0) return 'good';
+  return 'average';
+}
+
+function getActionSeverity(action) {
+  if (action.action === 'pauseLoserAds') return 'critical';
+  if (action.action === 'adjustBudget') return 'warning';
+  if (action.action === 'scaleWinners') return 'info';
+  return 'info';
 }
 
 function renderDashboard(data, creatives, campaigns, sensei, state) {
@@ -244,14 +257,14 @@ function renderDashboard(data, creatives, campaigns, sensei, state) {
         <!-- RIGHT MAIN CONTENT -->
         <div class="main-content-v7">
           
-          <!-- KPI BARS (COMPACT) -->
+          <!-- KPI BARS (WITH COLOR CODING) -->
           <div class="kpi-bars-v7">
             ${renderKPIBar('Spend', formatCurrency(data.spend), spendTrend, 'spend')}
             ${renderKPIBar('Revenue', formatCurrency(data.revenue), revenueTrend, 'revenue')}
             ${renderKPIBar('ROAS', formatRoas(data.roas), roasTrend, 'roas')}
           </div>
           
-          <!-- TOP PERFORMERS (WITH FULL METRICS) -->
+          <!-- TOP PERFORMERS (WITH PERFORMANCE INDICATORS) -->
           <div class="performers-section-v7">
             <div class="section-header-v7">
               <div class="section-title-v7">TOP PERFORMERS</div>
@@ -262,7 +275,7 @@ function renderDashboard(data, creatives, campaigns, sensei, state) {
             </div>
           </div>
           
-          <!-- CRITICAL ACTIONS LIST -->
+          <!-- CRITICAL ACTIONS LIST (WITH SEVERITY LEVELS) -->
           ${criticalActions.length > 0 ? `
             <div class="critical-section-v7">
               <div class="section-header-v7">
@@ -270,7 +283,7 @@ function renderDashboard(data, creatives, campaigns, sensei, state) {
               </div>
               <div class="critical-list-v7">
                 ${criticalActions.map(action => `
-                  <div class="critical-item-v7" data-action="${action.action}">
+                  <div class="critical-item-v7" data-action="${action.action}" data-severity="${getActionSeverity(action)}">
                     <span class="critical-icon-v7" style="color: ${action.color};">${action.icon}</span>
                     <span class="critical-text-v7">${action.text}</span>
                     <button class="critical-btn-v7">Action</button>
@@ -296,7 +309,7 @@ function renderKPIBar(label, value, trend, type) {
   const barWidth = Math.min(100, Math.abs(trend) * 5);
   
   return `
-    <div class="kpi-bar-v7">
+    <div class="kpi-bar-v7" data-type="${type}">
       <div class="kpi-bar-left-v7">
         <div class="kpi-bar-label-v7">${label}</div>
         <div class="kpi-bar-value-v7">${value}</div>
@@ -313,10 +326,12 @@ function renderKPIBar(label, value, trend, type) {
 
 function renderPerformerCard(creative) {
   const performancePercent = Math.min(100, (creative.roas / 8.0) * 100);
+  const performanceLevel = getPerformanceLevel(creative.roas);
+  const roasDisplay = formatRoas(creative.roas);
   
   return `
-    <div class="performer-card-v7" data-creative-id="${creative.id}">
-      <div class="performer-thumb-v7">
+    <div class="performer-card-v7" data-creative-id="${creative.id}" data-performance="${performanceLevel}">
+      <div class="performer-thumb-v7" data-roas="${roasDisplay}">
         <img src="${creative.thumbnail}" alt="${creative.name}" loading="lazy" />
       </div>
       <div class="performer-info-v7">
@@ -324,7 +339,7 @@ function renderPerformerCard(creative) {
         <div class="performer-metrics-v7">
           <div class="metric-row-v7">
             <span class="metric-label-v7">ROAS</span>
-            <span class="metric-value-v7">${formatRoas(creative.roas)}</span>
+            <span class="metric-value-v7">${roasDisplay}</span>
           </div>
           <div class="metric-row-v7">
             <span class="metric-label-v7">Revenue</span>
