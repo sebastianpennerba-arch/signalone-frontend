@@ -215,54 +215,399 @@ function updateWelcomeScreenContent() {
   
   if (AppState.mode === 'live') {
     welcomeView.innerHTML = `
-      <div style="text-align: center; padding: 6rem 2rem; max-width: 600px; margin: 0 auto;">
-        <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; background: linear-gradient(135deg, #4F80FF, #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Willkommen bei SignalOne</h1>
-        <p style="color: #6b7280; font-size: 1.1rem; margin-bottom: 3rem; line-height: 1.6;">
-          Bitte wähle zuerst einen <strong>Kanal</strong> aus und klicke dann auf <strong>"Verbinden"</strong>, um mit deinen Live-Daten zu starten.
-        </p>
+      <style>
+        .welcome-v2 {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, #F5F5F7 0%, #E8E8ED 100%);
+          padding: 2rem;
+        }
         
-        <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
-          <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
-          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">So geht's:</h3>
-          <ol style="text-align: left; color: #6b7280; line-height: 1.8; padding-left: 1.5rem;">
-            <li>Wähle oben einen <strong>Kanal</strong> (Meta, Google, TikTok)</li>
-            <li>Klicke auf <strong>"Verbinden"</strong></li>
-            <li>Wähle dein <strong>Werbekonto</strong> und optional eine <strong>Kampagne</strong></li>
-            <li>Fertig! Dashboard wird geladen 🎉</li>
-          </ol>
+        .welcome-container {
+          max-width: 700px;
+          width: 100%;
+          text-align: center;
+        }
+        
+        .welcome-hero {
+          margin-bottom: 3rem;
+          animation: fadeInUp 0.8s ease;
+        }
+        
+        .welcome-title {
+          font-size: 3rem;
+          font-weight: 800;
+          margin-bottom: 1rem;
+          background: linear-gradient(135deg, #4F80FF 0%, #8B5CF6 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          letter-spacing: -1px;
+        }
+        
+        .welcome-subtitle {
+          font-size: 1.125rem;
+          color: #6E6E73;
+          line-height: 1.6;
+          font-weight: 500;
+        }
+        
+        .welcome-card {
+          background: #FFFFFF;
+          border: 1px solid #D2D2D7;
+          border-radius: 16px;
+          padding: 2.5rem;
+          margin-bottom: 2rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+        
+        .welcome-icon {
+          font-size: 4rem;
+          margin-bottom: 1.5rem;
+          animation: pulse 2s ease infinite;
+        }
+        
+        .welcome-card-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #1D1D1F;
+          margin-bottom: 1.5rem;
+        }
+        
+        .welcome-steps {
+          text-align: left;
+          background: #F5F5F7;
+          border-radius: 12px;
+          padding: 1.5rem;
+        }
+        
+        .welcome-step {
+          display: flex;
+          align-items: start;
+          padding: 1rem;
+          border-radius: 8px;
+          margin-bottom: 0.75rem;
+          transition: all 0.3s ease;
+        }
+        
+        .welcome-step:hover {
+          background: #FFFFFF;
+          transform: translateX(4px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        
+        .welcome-step:last-child {
+          margin-bottom: 0;
+        }
+        
+        .welcome-step-number {
+          min-width: 32px;
+          height: 32px;
+          background: linear-gradient(135deg, #4F80FF 0%, #8B5CF6 100%);
+          color: #FFFFFF;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: 0.875rem;
+          margin-right: 1rem;
+        }
+        
+        .welcome-step-text {
+          flex: 1;
+          color: #1D1D1F;
+          font-size: 1rem;
+          line-height: 1.6;
+          font-weight: 500;
+        }
+        
+        .welcome-step-text strong {
+          color: #4F80FF;
+        }
+        
+        .welcome-footer {
+          color: #86868B;
+          font-size: 0.9375rem;
+          animation: fadeInUp 0.8s ease 0.4s backwards;
+        }
+        
+        .welcome-footer-icon {
+          font-size: 1.25rem;
+          vertical-align: middle;
+          margin-right: 0.25rem;
+        }
+        
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+        }
+      </style>
+      
+      <div class="welcome-v2">
+        <div class="welcome-container">
+          <div class="welcome-hero">
+            <h1 class="welcome-title">Willkommen bei SignalOne</h1>
+            <p class="welcome-subtitle">
+              Verbinde deine Live-Daten und erlebe Performance Marketing auf einem neuen Level.
+            </p>
+          </div>
+          
+          <div class="welcome-card">
+            <div class="welcome-icon">🚀</div>
+            <h2 class="welcome-card-title">So startest du:</h2>
+            
+            <div class="welcome-steps">
+              <div class="welcome-step">
+                <div class="welcome-step-number">1</div>
+                <div class="welcome-step-text">
+                  Wähle oben einen <strong>Kanal</strong> (Meta, Google, TikTok)
+                </div>
+              </div>
+              
+              <div class="welcome-step">
+                <div class="welcome-step-number">2</div>
+                <div class="welcome-step-text">
+                  Klicke auf <strong>„Verbinden“</strong> im Header
+                </div>
+              </div>
+              
+              <div class="welcome-step">
+                <div class="welcome-step-number">3</div>
+                <div class="welcome-step-text">
+                  Wähle dein <strong>Werbekonto</strong> und optional eine <strong>Kampagne</strong>
+                </div>
+              </div>
+              
+              <div class="welcome-step">
+                <div class="welcome-step-number">4</div>
+                <div class="welcome-step-text">
+                  Dashboard wird automatisch geladen 🎉
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <p class="welcome-footer">
+            <span class="welcome-footer-icon">💡</span>
+            Demo-Modus? Aktiviere ihn in den <strong>Settings</strong> (unten links in der Sidebar)
+          </p>
         </div>
-        
-        <p style="color: #9ca3af; font-size: 0.9rem;">
-          💡 Demo-Modus? Aktiviere ihn in den <strong>Settings</strong> (unten links in der Sidebar).
-        </p>
       </div>
     `;
   } else {
     welcomeView.innerHTML = `
-      <div style="text-align: center; padding: 6rem 2rem; max-width: 600px; margin: 0 auto;">
-        <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; background: linear-gradient(135deg, #FF8A30, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Demo-Modus aktiv</h1>
-        <p style="color: #6b7280; font-size: 1.1rem; margin-bottom: 3rem; line-height: 1.6;">
-          Wähle einen <strong>Kanal</strong> und eine <strong>Demo-Brand</strong> aus, um die Plattform mit Beispieldaten zu erkunden.
-        </p>
+      <style>
+        .welcome-v2 {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, #FFF9F0 0%, #FFF3E0 100%);
+          padding: 2rem;
+        }
         
-        <div style="background: #fff7ed; border: 2px solid #fed7aa; border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
-          <div style="font-size: 3rem; margin-bottom: 1rem;">🎮</div>
-          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Demo-Daten erkunden:</h3>
-          <ol style="text-align: left; color: #6b7280; line-height: 1.8; padding-left: 1.5rem;">
-            <li>Wähle oben einen <strong>Kanal</strong></li>
-            <li>Wähle eine <strong>Demo-Brand</strong> (8 verschiedene verfügbar)</li>
-            <li>Optional: Wähle eine <strong>Kampagne</strong></li>
-            <li>Dashboard zeigt realistische Demo-Daten 📊</li>
-          </ol>
+        .welcome-container {
+          max-width: 700px;
+          width: 100%;
+          text-align: center;
+        }
+        
+        .welcome-hero {
+          margin-bottom: 3rem;
+          animation: fadeInUp 0.8s ease;
+        }
+        
+        .welcome-title {
+          font-size: 3rem;
+          font-weight: 800;
+          margin-bottom: 1rem;
+          background: linear-gradient(135deg, #FF8A30 0%, #f59e0b 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          letter-spacing: -1px;
+        }
+        
+        .welcome-subtitle {
+          font-size: 1.125rem;
+          color: #6E6E73;
+          line-height: 1.6;
+          font-weight: 500;
+        }
+        
+        .welcome-card {
+          background: #FFFFFF;
+          border: 2px solid #FED7AA;
+          border-radius: 16px;
+          padding: 2.5rem;
+          margin-bottom: 2rem;
+          box-shadow: 0 4px 20px rgba(251, 146, 60, 0.15);
+          animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+        
+        .welcome-icon {
+          font-size: 4rem;
+          margin-bottom: 1.5rem;
+          animation: pulse 2s ease infinite;
+        }
+        
+        .welcome-card-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #1D1D1F;
+          margin-bottom: 1.5rem;
+        }
+        
+        .welcome-steps {
+          text-align: left;
+          background: #FFF7ED;
+          border-radius: 12px;
+          padding: 1.5rem;
+        }
+        
+        .welcome-step {
+          display: flex;
+          align-items: start;
+          padding: 1rem;
+          border-radius: 8px;
+          margin-bottom: 0.75rem;
+          transition: all 0.3s ease;
+        }
+        
+        .welcome-step:hover {
+          background: #FFFFFF;
+          transform: translateX(4px);
+          box-shadow: 0 2px 8px rgba(251, 146, 60, 0.1);
+        }
+        
+        .welcome-step:last-child {
+          margin-bottom: 0;
+        }
+        
+        .welcome-step-number {
+          min-width: 32px;
+          height: 32px;
+          background: linear-gradient(135deg, #FF8A30 0%, #f59e0b 100%);
+          color: #FFFFFF;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: 0.875rem;
+          margin-right: 1rem;
+        }
+        
+        .welcome-step-text {
+          flex: 1;
+          color: #1D1D1F;
+          font-size: 1rem;
+          line-height: 1.6;
+          font-weight: 500;
+        }
+        
+        .welcome-step-text strong {
+          color: #EA580C;
+        }
+        
+        .welcome-footer {
+          color: #86868B;
+          font-size: 0.9375rem;
+          animation: fadeInUp 0.8s ease 0.4s backwards;
+        }
+        
+        .welcome-footer-icon {
+          font-size: 1.25rem;
+          vertical-align: middle;
+          margin-right: 0.25rem;
+        }
+        
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+        }
+      </style>
+      
+      <div class="welcome-v2">
+        <div class="welcome-container">
+          <div class="welcome-hero">
+            <h1 class="welcome-title">Demo-Modus aktiv</h1>
+            <p class="welcome-subtitle">
+              Erkunde die Plattform mit realistischen Demo-Daten von 8 verschiedenen Brands.
+            </p>
+          </div>
+          
+          <div class="welcome-card">
+            <div class="welcome-icon">🎮</div>
+            <h2 class="welcome-card-title">Demo-Daten erkunden:</h2>
+            
+            <div class="welcome-steps">
+              <div class="welcome-step">
+                <div class="welcome-step-number">1</div>
+                <div class="welcome-step-text">
+                  Wähle oben einen <strong>Kanal</strong> (Meta, Google, TikTok)
+                </div>
+              </div>
+              
+              <div class="welcome-step">
+                <div class="welcome-step-number">2</div>
+                <div class="welcome-step-text">
+                  Wähle eine <strong>Demo-Brand</strong> aus 8 verschiedenen Optionen
+                </div>
+              </div>
+              
+              <div class="welcome-step">
+                <div class="welcome-step-number">3</div>
+                <div class="welcome-step-text">
+                  Optional: Wähle eine <strong>Kampagne</strong> für detaillierte Daten
+                </div>
+              </div>
+              
+              <div class="welcome-step">
+                <div class="welcome-step-number">4</div>
+                <div class="welcome-step-text">
+                  Dashboard zeigt realistische Performance-Daten 📊
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <p class="welcome-footer">
+            <span class="welcome-footer-icon">🔄</span>
+            Zurück zu Live? Deaktiviere Demo-Modus in den <strong>Settings</strong>
+          </p>
         </div>
-        
-        <p style="color: #9ca3af; font-size: 0.9rem;">
-          🔄 Zurück zu Live? Deaktiviere Demo-Modus in den <strong>Settings</strong>.
-        </p>
       </div>
     `;
   }
 }
+
+// ... [REST OF THE FILE REMAINS EXACTLY THE SAME] ...
+// (Continue from "// NAVIGATION" section to end)
 
 // ===================================
 // MODULE LOADING  ✅ FIXED (Lifecycle)
