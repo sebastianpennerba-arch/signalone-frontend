@@ -1,10 +1,12 @@
 // packages/creativeLibrary/modal.js
-// Titanium Edition – Fullscreen Creative Inspector (Smooth)
+// Titanium – Fullscreen Creative Inspector (no inline styles)
 
 let modalEl = null;
 
-export function openCreativeModal(creative) {
-  closeCreativeModal(); // falls bereits offen
+export function openCreativeModal(creative, deps = {}) {
+  closeCreativeModal();
+
+  const { onSensei, onCompare } = deps;
 
   modalEl = document.createElement("div");
   modalEl.className = "so-modal-overlay";
@@ -12,46 +14,51 @@ export function openCreativeModal(creative) {
   const box = document.createElement("div");
   box.className = "so-modal";
 
-  /* ---------- HEADER ---------- */
-
   const header = document.createElement("div");
   header.className = "so-modal-header";
 
   const title = document.createElement("div");
   title.className = "so-modal-title";
-  title.textContent = creative.name || "Creative Detail";
+  title.textContent = creative?.name || "Creative Detail";
 
   const closeBtn = document.createElement("button");
   closeBtn.className = "so-modal-close";
+  closeBtn.type = "button";
   closeBtn.textContent = "×";
   closeBtn.addEventListener("click", closeCreativeModal);
 
   header.appendChild(title);
   header.appendChild(closeBtn);
 
-  /* ---------- PREVIEW ---------- */
-
+  // Preview
   const preview = document.createElement("div");
   preview.className = "so-modal-preview";
 
-  if (creative.thumbUrl) {
-    preview.style.backgroundImage = `url(${creative.thumbUrl})`;
+  const hasThumb = !!(creative?.thumbUrl && String(creative.thumbUrl).trim());
+  if (hasThumb) {
+    const img = document.createElement("img");
+    img.src = creative.thumbUrl;
+    img.alt = creative?.name || "Creative";
+    img.loading = "lazy";
+    preview.appendChild(img);
+  } else {
+    const fb = document.createElement("div");
+    fb.className = "so-modal-preview-fallback";
+    preview.appendChild(fb);
   }
 
-  /* ---------- KPI SECTION ---------- */
-
+  // KPI Section
   const kpiWrap = document.createElement("div");
   kpiWrap.className = "so-modal-kpis";
 
-  const impressions = toNumber(creative.impressions);
-  const clicks = toNumber(creative.clicks);
-  const spend = toNumber(creative.spend);
-  const roas = toNumber(creative.roas);
+  const k = creative?.kpis || {};
+  const impressions = toNumber(k.impressions ?? creative?.impressions);
+  const clicks = toNumber(k.clicks ?? creative?.clicks);
+  const spend = toNumber(k.spend ?? creative?.spend);
+  const roas = toNumber(k.roas ?? creative?.roas);
 
-  const ctr =
-    impressions > 0 && clicks >= 0 ? (clicks / impressions) * 100 : null;
-  const cpm =
-    impressions > 0 && spend >= 0 ? (spend / impressions) * 1000 : null;
+  const ctr = impressions > 0 ? (clicks / impressions) * 100 : null;
+  const cpm = impressions > 0 ? (spend / impressions) * 1000 : null;
 
   kpiWrap.appendChild(kpiRow("ROAS", formatRatio(roas)));
   kpiWrap.appendChild(kpiRow("Spend", formatCurrency(spend)));
@@ -60,55 +67,40 @@ export function openCreativeModal(creative) {
   kpiWrap.appendChild(kpiRow("Impressions", formatNumber(impressions)));
   kpiWrap.appendChild(kpiRow("Clicks", formatNumber(clicks)));
 
-  /* ---------- META DATA ---------- */
-
+  // Meta
   const meta = document.createElement("div");
   meta.className = "so-modal-meta";
+  meta.appendChild(metaRow("Brand", creative?.brand || "–"));
+  meta.appendChild(metaRow("Format", creative?.format || "–"));
+  meta.appendChild(metaRow("Type", creative?.type || "–"));
+  meta.appendChild(metaRow("Status", creative?.status || "–"));
+  meta.appendChild(metaRow("ID", creative?.id || "–"));
 
-  meta.appendChild(metaRow("Brand", creative.brand || "–"));
-  meta.appendChild(metaRow("Format", creative.format || "–"));
-  meta.appendChild(metaRow("Status", creative.status || "–"));
-  meta.appendChild(metaRow("ID", creative.id || "–"));
-
-  /* ---------- ACTIONS ---------- */
-
+  // Actions
   const actions = document.createElement("div");
   actions.className = "so-modal-actions";
 
   const btnSensei = document.createElement("button");
-  btnSensei.className = "so-btn-primary";
+  btnSensei.className = "so-btn so-btn-primary";
+  btnSensei.type = "button";
   btnSensei.textContent = "In Sensei öffnen";
-
-  btnSensei.addEventListener("click", () => {
-    if (window.SignalOne?.showToast) {
-      window.SignalOne.showToast("info", "Sensei wird bald aktiviert.");
-    } else {
-      console.log("[CreativeLibrary] Sensei Stub", creative);
-    }
-  });
+  btnSensei.addEventListener("click", () => (onSensei ? onSensei() : null));
 
   const btnCompare = document.createElement("button");
-  btnCompare.className = "so-btn-secondary";
-  btnCompare.textContent = "Vergleich starten";
-
-  btnCompare.addEventListener("click", () => {
-    if (window.SignalOne?.showToast) {
-      window.SignalOne.showToast("info", "Compare-Modus folgt bald.");
-    } else {
-      console.log("[CreativeLibrary] Compare Stub", creative);
-    }
-  });
+  btnCompare.className = "so-btn so-btn-secondary";
+  btnCompare.type = "button";
+  btnCompare.textContent = "Zur Vergleichsliste";
+  btnCompare.addEventListener("click", () => (onCompare ? onCompare() : null));
 
   const btnClose = document.createElement("button");
-  btnClose.className = "so-btn-ghost";
+  btnClose.className = "so-btn so-btn-ghost";
+  btnClose.type = "button";
   btnClose.textContent = "Schließen";
   btnClose.addEventListener("click", closeCreativeModal);
 
   actions.appendChild(btnSensei);
   actions.appendChild(btnCompare);
   actions.appendChild(btnClose);
-
-  /* ---------- COMPOSE ---------- */
 
   box.appendChild(header);
   box.appendChild(preview);
@@ -118,11 +110,8 @@ export function openCreativeModal(creative) {
 
   modalEl.appendChild(box);
 
-  // Klick auf Overlay schließt Modal
   modalEl.addEventListener("click", (e) => {
-    if (e.target === modalEl) {
-      closeCreativeModal();
-    }
+    if (e.target === modalEl) closeCreativeModal();
   });
 
   document.body.appendChild(modalEl);
@@ -135,7 +124,7 @@ export function closeCreativeModal() {
   }
 }
 
-/* ---------- HELPERS ---------- */
+/* ---------------- Helpers ---------------- */
 
 function toNumber(v) {
   const n = Number(v);
@@ -149,16 +138,12 @@ function formatNumber(value) {
 
 function formatCurrency(value) {
   if (!Number.isFinite(value)) return "–";
-  return value.toLocaleString("de-DE", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 0,
-  });
+  return value.toLocaleString("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 }
 
 function formatRatio(value) {
   if (!Number.isFinite(value)) return "–";
-  return `${value.toFixed(1)}x`;
+  return `${value.toFixed(2)}x`;
 }
 
 function formatPercent(value) {
