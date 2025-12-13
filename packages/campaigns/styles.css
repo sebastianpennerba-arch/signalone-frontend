@@ -1,0 +1,368 @@
+/* =========================================================
+   CAMPAIGNS - ELITE VISUAL STYLES
+   Dashboard-aligned design system
+   ========================================================= */
+
+.camp-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+
+/* ========================================
+   VIEW TOGGLE
+   ======================================== */
+
+.camp-view-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--grey-100, #F8F9FB);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.camp-toggle-btn {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: var(--grey-600, #5A6378);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.camp-toggle-btn:hover {
+  color: var(--grey-900, #1E2330);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.camp-toggle-btn.is-active {
+  background: white;
+  color: var(--primary-blue, #2563EB);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* ========================================
+   SUMMARY GRID
+   ======================================== */
+
+.camp-summary {
+  margin-bottom: 24px;
+}
+
+.camp-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.camp-summary-card {
+  padding: 20px;
+  text-align: center;
+}
+
+.camp-summary-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--grey-500, #7B8496);
+  margin-bottom: 8px;
+}
+
+.camp-summary-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--grey-900, #1E2330);
+}
+
+.camp-value-success {
+  color: var(--success, #10B981);
+}
+
+.camp-value-warning {
+  color: var(--warning, #F59E0B);
+}
+
+.camp-value-critical {
+  color: var(--danger, #EF4444);
+}
+
+/* ========================================
+   CONTROLS
+   ======================================== */
+
+.camp-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.camp-control-item {
+  flex: 1;
+}
+
+.camp-input,
+.camp-select {
+  width: 100%;
+  height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--grey-200, #DFE3E8);
+  border-radius: 8px;
+  background: var(--white-pure, #FFFFFF);
+  color: var(--grey-900, #1E2330);
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.camp-input:focus,
+.camp-select:focus {
+  outline: none;
+  border-color: var(--primary-blue, #2563EB);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.camp-input::placeholder {
+  color: var(--grey-400, #9CA3B4);
+}
+
+/* Status Filter Buttons */
+#campaignStatusFilter {
+  display: flex;
+  gap: 6px;
+}
+
+.camp-status-btn {
+  padding: 10px 16px;
+  border: 1px solid var(--grey-200, #DFE3E8);
+  background: white;
+  color: var(--grey-600, #5A6378);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.camp-status-btn:hover {
+  border-color: var(--primary-blue, #2563EB);
+  color: var(--primary-blue, #2563EB);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.camp-status-btn.is-active {
+  background: var(--primary-blue, #2563EB);
+  border-color: var(--primary-blue, #2563EB);
+  color: white;
+}
+
+/* ========================================
+   CAMPAIGN CARDS
+   ======================================== */
+
+.camp-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+.camp-card {
+  padding: 24px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.camp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+}
+
+.camp-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.camp-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--grey-900, #1E2330);
+  line-height: 1.4;
+  flex: 1;
+}
+
+.camp-card-badges {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.camp-card-meta {
+  margin-bottom: 16px;
+}
+
+.camp-health {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--grey-100, #F8F9FB);
+}
+
+.camp-health-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--grey-400, #9CA3B4);
+}
+
+.camp-health-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success, #10B981);
+}
+
+.camp-health-success .camp-health-dot {
+  background: var(--success, #10B981);
+}
+
+.camp-health-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning, #F59E0B);
+}
+
+.camp-health-warning .camp-health-dot {
+  background: var(--warning, #F59E0B);
+}
+
+.camp-health-critical {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger, #EF4444);
+}
+
+.camp-health-critical .camp-health-dot {
+  background: var(--danger, #EF4444);
+}
+
+/* ========================================
+   CAMPAIGN KPIs
+   ======================================== */
+
+.camp-card-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.camp-kpi {
+  background: var(--grey-100, #F8F9FB);
+  border-radius: 8px;
+  padding: 12px;
+  transition: all 0.2s ease;
+}
+
+.camp-kpi:hover {
+  background: var(--grey-200, #DFE3E8);
+}
+
+.camp-kpi-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--grey-500, #7B8496);
+  margin-bottom: 4px;
+}
+
+.camp-kpi-value {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--grey-900, #1E2330);
+}
+
+/* KPI Status Colors */
+.camp-kpi-success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+}
+
+.camp-kpi-success .camp-kpi-value {
+  color: var(--success, #10B981);
+}
+
+.camp-kpi-warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+}
+
+.camp-kpi-warning .camp-kpi-value {
+  color: var(--warning, #F59E0B);
+}
+
+.camp-kpi-critical {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+}
+
+.camp-kpi-critical .camp-kpi-value {
+  color: var(--danger, #EF4444);
+}
+
+/* ========================================
+   TABLE WRAPPER
+   ======================================== */
+
+.camp-table-wrapper {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .camp-list {
+    grid-template-columns: 1fr;
+  }
+
+  .camp-controls {
+    flex-direction: column;
+  }
+
+  .camp-control-item {
+    width: 100%;
+  }
+
+  #campaignStatusFilter {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .camp-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .camp-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .camp-card-kpis {
+    grid-template-columns: 1fr;
+  }
+}

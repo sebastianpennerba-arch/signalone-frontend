@@ -1,0 +1,204 @@
+/**
+ * Campaigns Module CSS
+ */
+
+.campaigns-container {
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.campaigns-header {
+  margin-bottom: 2rem;
+}
+
+.campaigns-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.campaigns-subtitle {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+/* SUMMARY */
+.campaigns-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.summary-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+/* FILTERS */
+.campaigns-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #111827;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4F80FF;
+  box-shadow: 0 0 0 3px rgba(79, 128, 255, 0.1);
+}
+
+.filter-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #111827;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-select:hover {
+  border-color: #4F80FF;
+}
+
+/* TABLE */
+.campaigns-table-wrapper {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.campaigns-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.campaigns-table thead {
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.campaigns-table th {
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.campaigns-table tbody tr {
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.campaigns-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.campaigns-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.campaigns-table td {
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+/* CAMPAIGN NAME */
+.campaign-name {
+  font-weight: 600;
+}
+
+.name-main {
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.name-sub {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+/* STATUS */
+.campaign-status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-paused {
+  background: #e5e7eb;
+  color: #6b7280;
+}
+
+/* OBJECTIVE */
+.campaign-objective {
+  color: #6b7280;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .campaigns-container {
+    padding: 1rem;
+  }
+  
+  .campaigns-table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .campaigns-table {
+    min-width: 900px;
+  }
+}
