@@ -1,0 +1,220 @@
+/**
+ * Reports V7.0 CSS
+ */
+
+.reports-v7 {
+  padding: 1.5rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  background: #F5F5F7;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+}
+
+.reports-header-v7 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.reports-header-v7 h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1D1D1F;
+  margin: 0 0 0.5rem 0;
+}
+
+.header-actions-v7 {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.date-picker-v7 {
+  padding: 0.625rem 1rem;
+  border: 1px solid #D2D2D7;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  background: #FFFFFF;
+  color: #1D1D1F;
+}
+
+.btn-export-v7 {
+  padding: 0.625rem 1.25rem;
+  background: #1D1D1F;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-export-v7:hover {
+  background: #000000;
+  transform: translateY(-1px);
+}
+
+/* METRICS GRID */
+.metrics-grid-v7 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.metric-card-v7 {
+  background: #FFFFFF;
+  border: 1px solid #D2D2D7;
+  border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.metric-label-v7 {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #86868B;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value-v7 {
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: 'SF Mono', monospace;
+  color: #1D1D1F;
+  letter-spacing: -1px;
+  margin-bottom: 0.5rem;
+}
+
+.metric-change-v7 {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.metric-change-v7.positive {
+  color: #10B981;
+}
+
+.metric-change-v7.negative {
+  color: #EF4444;
+}
+
+/* CHART CARD */
+.chart-card-v7 {
+  background: #FFFFFF;
+  border: 1px solid #D2D2D7;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+}
+
+.chart-header-v7 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #F5F5F7;
+}
+
+.chart-title-v7 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1D1D1F;
+}
+
+.chart-filter-v7 {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #D2D2D7;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  background: #FFFFFF;
+  color: #1D1D1F;
+}
+
+.chart-placeholder-v7 {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FAFAFA;
+  border: 2px dashed #D2D2D7;
+  border-radius: 8px;
+}
+
+.placeholder-text-v7 {
+  font-size: 0.875rem;
+  color: #86868B;
+  font-weight: 600;
+}
+
+/* TABLE CARD */
+.table-card-v7 {
+  background: #FFFFFF;
+  border: 1px solid #D2D2D7;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.table-header-v7 {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #F5F5F7;
+}
+
+.table-title-v7 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1D1D1F;
+}
+
+.reports-table-v7 {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reports-table-v7 thead {
+  background: #FAFAFA;
+}
+
+.reports-table-v7 th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6E6E73;
+}
+
+.reports-table-v7 td {
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
+  color: #1D1D1F;
+  font-family: 'SF Mono', monospace;
+  font-weight: 600;
+  border-top: 1px solid #F5F5F7;
+}
+
+.reports-table-v7 .roas-cell-v7 {
+  color: #10B981;
+  font-weight: 700;
+}
+
+@media (max-width: 1200px) {
+  .metrics-grid-v7 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .metrics-grid-v7 {
+    grid-template-columns: 1fr;
+  }
+}

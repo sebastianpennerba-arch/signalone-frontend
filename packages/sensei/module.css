@@ -1,0 +1,429 @@
+/**
+ * Sensei V8.3 CSS - LAYOUT FIX + Titanium Look
+ * ✅ Fixed grid layout to show Insights & Recommendations
+ */
+
+#senseiView .sensei-v7 {
+  width: 100%;
+  padding: 0;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==================== HEADER ==================== */
+
+#senseiView .sensei-header-v7 {
+  margin-bottom: 32px;
+}
+
+#senseiView .sensei-header-v7 h1 {
+  font-size: 28px;
+  font-weight: 900;
+  color: #1D1D1F;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.02em;
+}
+
+#senseiView .subtitle-v7 {
+  font-size: 14px;
+  color: #86868B;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ==================== LAYOUT FIX ==================== */
+
+#senseiView .sensei-layout-v7 {
+  display: grid;
+  grid-template-columns: 440px 1fr; /* ✅ FIXED: Was 320px, now 440px for better visibility */
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 1200px) {
+  #senseiView .sensei-layout-v7 {
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 1024px) {
+  #senseiView .sensei-layout-v7 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================== SCORE CARD ==================== */
+
+#senseiView .score-card-v7 {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,254,248,0.95) 100%);
+  backdrop-filter: blur(20px);
+  border: 2px solid #D4AF37;
+  border-radius: 24px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.25);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#senseiView .score-card-v7:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(212, 175, 55, 0.35);
+}
+
+#senseiView .score-icon-v7 {
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+#senseiView .score-number-v7 {
+  font-size: 72px;
+  font-weight: 900;
+  font-family: 'SF Mono', 'Consolas', monospace;
+  letter-spacing: -4px;
+  margin-bottom: 8px;
+  line-height: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#senseiView .score-label-v7 {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #86868B;
+  margin-bottom: 20px;
+}
+
+#senseiView .score-bar-v7 {
+  height: 10px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+#senseiView .score-fill-v7 {
+  height: 100%;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 5px;
+  box-shadow: 0 0 12px currentColor;
+}
+
+#senseiView .score-status-v7 {
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+#senseiView .score-description-v7 {
+  font-size: 12px;
+  color: #6E6E73;
+  line-height: 1.5;
+  font-weight: 500;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ==================== SCORE FACTORS BREAKDOWN ==================== */
+
+#senseiView .score-factors-v7 {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 2px solid rgba(212, 175, 55, 0.15);
+  text-align: left;
+}
+
+#senseiView .factors-title-v7 {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #86868B;
+  margin-bottom: 16px;
+}
+
+#senseiView .factor-item-v7 {
+  margin-bottom: 14px;
+}
+
+#senseiView .factor-item-v7:last-child {
+  margin-bottom: 0;
+}
+
+#senseiView .factor-header-v7 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+#senseiView .factor-name-v7 {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1D1D1F;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#senseiView .factor-value-v7 {
+  font-size: 11px;
+  font-weight: 800;
+  font-family: 'SF Mono', 'Consolas', monospace;
+  color: #6E6E73;
+}
+
+#senseiView .factor-bar-container-v7 {
+  height: 6px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+#senseiView .factor-bar-v7 {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ==================== RIGHT COLUMN SECTIONS ==================== */
+
+#senseiView .insights-section-v7,
+#senseiView .recommendations-section-v7 {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+  width: 100%; /* ✅ FIXED: Ensure full width */
+}
+
+#senseiView .insights-section-v7:hover,
+#senseiView .recommendations-section-v7:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+#senseiView .section-title-v7 {
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #1D1D1F;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+}
+
+/* ==================== INSIGHTS GRID ==================== */
+
+#senseiView .insights-grid-v7 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  width: 100%; /* ✅ FIXED */
+}
+
+#senseiView .insight-card-v7 {
+  display: flex;
+  gap: 12px;
+  padding: 18px;
+  background: linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%);
+  border: 2px solid #E5E5EA;
+  border-left-width: 4px;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+#senseiView .insight-card-v7:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: #4F80FF;
+}
+
+#senseiView .insight-card-v7.priority-high {
+  border-left-color: #D4AF37;
+  background: linear-gradient(135deg, #FFFEF8 0%, #FFF9E6 100%);
+}
+
+#senseiView .insight-card-v7.priority-high:hover {
+  border-color: #D4AF37;
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+}
+
+#senseiView .insight-card-v7.priority-medium {
+  border-left-color: #F59E0B;
+}
+
+#senseiView .insight-card-v7.priority-low {
+  border-left-color: #10B981;
+}
+
+#senseiView .insight-icon-v7 {
+  font-size: 28px;
+  line-height: 1;
+}
+
+#senseiView .insight-content-v7 {
+  flex: 1;
+}
+
+#senseiView .insight-title-v7 {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1D1D1F;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+#senseiView .insight-text-v7 {
+  font-size: 12px;
+  color: #6E6E73;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* ==================== RECOMMENDATIONS ==================== */
+
+#senseiView .recommendation-card-v7 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, #FAFAFA 0%, #F5F5F7 100%);
+  border: 1px solid #E5E5EA;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#senseiView .recommendation-card-v7:last-child {
+  margin-bottom: 0;
+}
+
+#senseiView .recommendation-card-v7:hover {
+  border-color: #4F80FF;
+  box-shadow: 0 8px 24px rgba(79, 128, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+#senseiView .rec-number-v7 {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1D1D1F 0%, #000000 100%);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+#senseiView .rec-content-v7 {
+  flex: 1;
+}
+
+#senseiView .rec-action-v7 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1D1D1F;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+#senseiView .rec-description-v7 {
+  font-size: 13px;
+  color: #6E6E73;
+  margin-bottom: 8px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+#senseiView .rec-impact-v7 {
+  font-size: 12px;
+  font-weight: 800;
+  color: #10B981;
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 8px;
+}
+
+#senseiView .rec-button-v7 {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #4F80FF 0%, #8B5CF6 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(79, 128, 255, 0.2);
+  white-space: nowrap;
+}
+
+#senseiView .rec-button-v7:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 128, 255, 0.3);
+}
+
+#senseiView .rec-button-v7:active {
+  transform: translateY(0);
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 1024px) {
+  #senseiView .score-card-v7 {
+    position: relative;
+    top: 0;
+    max-width: 500px;
+    margin: 0 auto 24px;
+  }
+  
+  #senseiView .insights-grid-v7 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  #senseiView .sensei-header-v7 h1 {
+    font-size: 24px;
+  }
+  
+  #senseiView .score-number-v7 {
+    font-size: 56px;
+  }
+  
+  #senseiView .recommendation-card-v7 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  #senseiView .rec-button-v7 {
+    width: 100%;
+  }
+}
