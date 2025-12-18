@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SignalOne.cloud – Performance Marketing Intelligence</title>
+  
+  <!-- CRITICAL: Cache-Busting Headers -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  
+  <link rel="stylesheet" href="core.css?v=20251218-0352" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <img src="assets/logo.png" alt="SignalOne" class="sidebar-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+      <span class="logo-text" style="display: none;">SignalOne</span>
+    </div>
+    
+    <div class="sidebar-nav">
+      <ul id="navbar"></ul>
+    </div>
+    
+    <!-- STATUS FOOTER -->
+    <div class="sidebar-footer">
+      <div class="status-card">
+        <div class="status-label">SYSTEM</div>
+        <div class="status-dot status-dot-green" id="sidebarSystemDot"></div>
+      </div>
+      
+      <div class="status-card">
+        <div class="status-label">PERFORMANCE</div>
+        <div class="status-dot status-dot-green" id="sidebarPerformanceDot"></div>
+      </div>
+      
+      <div class="status-card">
+        <div class="status-label">DATENMODUS</div>
+        <div class="status-dot status-dot-yellow" id="sidebarModeDot"></div>
+      </div>
+      
+      <button id="settingsButton" class="sidebar-settings-button">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Settings</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div>
+        <div id="topbarGreeting" style="font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 4px;">Guten Tag</div>
+        <div class="topbar-meta-row">
+          <span id="topbarDate" style="color: #6b7280; font-size: 13px;">Samstag, 13.12.2025</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="topbar-center">
+      <div class="topbar-select-group">
+        <label>KANAL</label>
+        <select id="channelSelect" class="topbar-select">
+          <option value="">Wähle Kanal...</option>
+          <option value="meta">Meta (Facebook & Instagram)</option>
+        </select>
+      </div>
+      
+      <div class="topbar-select-group">
+        <label>WERBEKONTO / BRAND</label>
+        <select id="brandSelect" class="topbar-select" disabled>
+          <option value="">Erst Kanal wählen...</option>
+        </select>
+      </div>
+      
+      <div class="topbar-select-group">
+        <label>KAMPAGNE</label>
+        <select id="campaignSelect" class="topbar-select" disabled>
+          <option value="">Erst Brand wählen...</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="topbar-right">
+      <button id="metaConnectButton" style="height: 34px; padding: 0 14px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #4F80FF, #8B5CF6); color: white; font-weight: 700; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; box-shadow: 0 12px 30px rgba(79, 128, 255, 0.25); border: none; cursor: pointer;">
+        <span>🔗</span>
+        <span>Verbinden</span>
+      </button>
+      
+      <button class="topbar-button" id="notificationsButton" style="position: relative;">
+        <span>🔔</span>
+        <span class="notification-badge" style="position: absolute; top: -4px; right: -4px; min-width: 16px; height: 16px; border-radius: 999px; background: #ef4444; color: white; font-size: 10px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; padding: 0 4px;">1</span>
+      </button>
+      
+      <button class="topbar-button" id="profileButton">
+        <span>👤</span>
+      </button>
+      
+      <button class="topbar-button" id="logoutButton">
+        <span>🚪</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <section id="welcomeView" class="view is-active"></section>
+    <section id="dashboardView" class="view"></section>
+    <section id="creativeLibraryView" class="view"></section>
+    <section id="campaignsView" class="view"></section>
+    <section id="testingLogView" class="view"></section>
+    <section id="senseiView" class="view"></section>
+    <section id="academyView" class="view"></section>
+    <section id="reportsView" class="view"></section>
+    <section id="moreToolsView" class="view"></section>
+    <section id="settingsView" class="view"></section>
+  </main>
+
+  <!-- GLOBAL LOADER -->
+  <div id="globalLoader" class="global-loader">
+    <div class="global-loader-inner">
+      <div class="loader-dots">
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+      </div>
+      <span id="globalLoaderLabel">Lade...</span>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toastContainer"></div>
+
+  <!-- MODAL -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle" class="modal-title">Modal Title</h3>
+        <button id="modalCloseButton" class="modal-close-button">✕</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- LOAD ORDER: Core API FIRST, then app.js -->
+  <!-- ✅ CRITICAL: Cache-busting timestamps -->
+  <script>window.CACHE_BUST = '20251218-0352';</script>
+  <script src="core-api.js?v=20251218-0352" type="module"></script>
+  <script src="app.js?v=20251218-0352" type="module"></script>
+
+</body>
+</html>

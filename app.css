@@ -1,0 +1,172 @@
+/* ✅ WELCOME SCREEN REDESIGN */
+#welcomeView {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  padding: 3rem;
+  background: linear-gradient(135deg, #F5F5F7 0%, #FAFAFA 50%, #F5F5F7 100%);
+}
+
+.welcome-container {
+  max-width: 800px;
+  text-align: center;
+}
+
+.welcome-hero {
+  margin-bottom: 3rem;
+}
+
+.welcome-hero h1 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #1D1D1F 0%, #4F80FF 50%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+}
+
+.welcome-hero p {
+  font-size: 1.25rem;
+  color: #6E6E73;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.welcome-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 2rem;
+}
+
+.welcome-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.welcome-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  border-color: #4F80FF;
+}
+
+.welcome-card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1D1D1F;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-card-description {
+  font-size: 0.95rem;
+  color: #6E6E73;
+  line-height: 1.5;
+}
+
+.welcome-cta {
+  margin-top: 2.5rem;
+}
+
+.welcome-cta-button {
+  padding: 1rem 2.5rem;
+  background: linear-gradient(135deg, #4F80FF 0%, #8B5CF6 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(79, 128, 255, 0.3);
+}
+
+.welcome-cta-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(79, 128, 255, 0.4);
+}
+
+/* ✅ DASHBOARD HERO PREMIUM */
+.dashboard-hero-v7 {
+  background: linear-gradient(135deg, 
+    rgba(212, 175, 55, 0.08) 0%, 
+    rgba(79, 128, 255, 0.05) 50%, 
+    rgba(255, 255, 255, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 24px;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.dashboard-hero-v7:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.hero-main-v7 {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hero-brand-v7 {
+  font-size: 28px;
+  font-weight: 900;
+  color: #1D1D1F;
+  letter-spacing: -0.02em;
+}
+
+.hero-campaign-v7 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #6E6E73;
+}
+
+.hero-meta-v7 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #86868B;
+}
+
+.hero-mode-v7 {
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #4F80FF 0%, #8B5CF6 100%);
+  color: #FFFFFF;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hero-divider {
+  color: #C7C7CC;
+}
+
+.hero-period-v7 {
+  font-weight: 600;
+}
+
+/* ... (rest of existing app.css) ... */
