@@ -1,0 +1,281 @@
+/* =========================================================
+   SIGNALONE DASHBOARD – MODULE STYLES (FINAL)
+   Scope: Dashboard ONLY
+   Depends on: global styles.css (:root tokens)
+   ========================================================= */
+
+/* =========================
+   LAYOUT
+   ========================= */
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.dashboard-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard-sidebar-wrapper {
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+}
+
+/* =========================
+   HERO
+   ========================= */
+
+.dashboard-hero {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border-radius: 16px;
+  padding: 32px;
+  color: white;
+}
+
+.hero-greeting {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.02em;
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* =========================
+   KPI GRID
+   ========================= */
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.kpi-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.kpi-card-bg {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient);
+  opacity: 0.08;
+}
+
+.kpi-card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.kpi-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kpi-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.kpi-delta {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.kpi-delta.positive {
+  color: var(--success);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.kpi-delta.negative {
+  color: var(--critical);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* =========================
+   PERFORMANCE CHART
+   ========================= */
+
+.performance-chart-wrapper {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.chart-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.chart-canvas {
+  position: relative;
+  height: 220px;
+}
+
+/* =========================
+   SENSEI SIDEBAR
+   ========================= */
+
+.sensei-sidebar {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.sensei-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.sensei-icon {
+  font-size: 28px;
+}
+
+.sensei-title h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.sensei-subtitle {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.sensei-signals {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sensei-signal {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.signal-success {
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--success);
+}
+
+.signal-warning {
+  background: rgba(245, 158, 11, 0.08);
+  color: var(--warning);
+}
+
+.signal-critical {
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--critical);
+}
+
+.signal-info {
+  background: rgba(99, 102, 241, 0.08);
+  color: var(--neutral);
+}
+
+/* =========================
+   WELCOME STATE
+   ========================= */
+
+.data-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.data-welcome-card {
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.data-logo {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  background: var(--neutral);
+  color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 1024px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-sidebar-wrapper {
+    position: relative;
+    top: 0;
+  }
+}
